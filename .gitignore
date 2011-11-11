@@ -3,3 +3,5 @@
 /Elaborato.dvi
 /Elaborato.out
 /Elaborato.ps
+*.log
+*~
