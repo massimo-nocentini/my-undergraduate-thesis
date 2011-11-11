@@ -1,0 +1,83 @@
+
+Il mio lavoro inizia con lo studio e l'utilizzo del formato
+\textbf{SBML} (\textbf{S}ystems \textbf{B}iology \textbf{M}arkup 
+\textbf{L}anguage). 
+
+Questo formato permette di rappresentare informazioni seguendo uno
+schema gerarchico, basato su XML. Il suo obiettivo \`e quello di
+facilitare la codifica di modelli computazionali di processi
+biologici, pertanto \`e orientato alla descrizione di sistemi in cui
+entit\`a biologiche sono oggetto di manipolazioni eseguite da processi
+nel corso del tempo.
+
+Con SBML si possono codificare diverse classi di fenomeni biologici:
+metabolic networks, cell-signaling pathways, regulatory networks e
+molti altri. In particolare, le reti metaboliche sono oggetto del mio
+elaborato.
+\\\\
+Nelle prossime sezioni descrivo brevemente il contesto scientifico che
+ospita il nostro problema, introducendo i concetti reali oggetto delle
+astrazioni che ho costruito e implementato nel mio codice. Inoltre,
+per migliore la comprensione e giustificare l'utilizzo del formato
+SBML, propongo un relazione che accoppia i concetti reali con la loro
+codifica in un modello SBML.
+
+\section{Metabolic networks, enzimes and pathways}
+
+Prima di definire cosa \`e una metabolic network dobbiamo introdurre i
+seguenti concetti. 
+
+Una \emph{metabolic pathway} \`e una sequenza di reazioni chimiche che
+si verificano all'interno di una cellula. Dal punto di vista
+matematico, possiamo vedere una metabolic pathway come una funzione
+$reaction$ tale che:
+\begin{displaymath}
+reaction : 2^{Molecules} \rightarrow 2^{Molecules}
+\end{displaymath}
+avendo in input un insieme di molecole, esegue delle reazioni chimiche su
+queste e produce come output il risultato delle trasformazioni svolte
+sottoforma di insieme di molecole.
+\\\\
+Ogni reazione chimica \`e regolata da alcuni \emph{enzymes}. 
+
+Un \emph{enzyme} \`e una proteina che gestisce la frequenza e la
+velocit\`a di una reazione chimica. Le molecole a cui si applica la
+reazione vengono identificate con il termine \emph{substrates} (o
+\emph{reactants} usando la terminologia SBML), mentre i prodotti della
+reazione vengono indentificati con il termine \emph{products} (anche la
+terminologia SBML usa questo identificatore).
+
+Durante l'esecuzione di una reazione chimica, ogni \emph{enzyme}
+agisce da \emph{catalyst}, ovvero non viene consumato nella reazione
+e, quindi, pu\`o partecipare in pi\`u di una trasformazione.
+
+L'insieme di \emph{enzymes} "guida" e determina l'insieme di
+\emph{pathways} che possono occorrere nella cellula, in quanto una
+reazione chimica su un substrato pu\`o avvenire se e solo se lo strato
+attivo del substrato complementa quello dell'enzima.
+
+Adesso possiamo definire una \emph{metabolic network} come
+collezione di \emph{metabolic pathways}.
+
+\section{SBML mapping}
+
+Adesso che abbiamo alcuni concetti reali possiamo iniziare a mapparli
+sulle nostre astrazioni, la prima delle quali \`e il mezzo di
+comunicazione SBML.
+
+Nella precedente sezione abbiamo introdotto alcuni concetti che non
+sono influenti sul nostro studio, per cui trattiamo solo quelli
+inerenti al lavoro che ho sviluppato.
+
+I concetti essenziali che interessano questo elaborato sono quelli 
+\emph{chemical reaction}, di cui \emph{reactants, products} sono le
+entit\`a atomiche che utilizzeremo, e l'attributo \emph{reversible}
+per indicare se una reazione \`e reversibile oppure no.
+
+Con questi concetti siamo in grado di costruire, dato un modello
+codificato in SBML, la nostra astrazione del concetto di
+\emph{metabolic network}.
+
+SBML ha molti altri elementi per catturare quanto spiegato nella
+precedente sezione (come gli \emph{enzymes} e vari attributi specifici
+di ogni reazione) ma questi non sono necessari al nostro studio.

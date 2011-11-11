@@ -5,12 +5,15 @@
 \usepackage[T1]{fontenc}
 \usepackage{ae,aecompl}
 \usepackage{graphicx}
-\usepackage[left=2cm, right=2cm, top=2.5cm, bottom=2.5cm]{geometry}
+% \usepackage[left=2cm, right=2cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{geometry}
 \usepackage{latexsym}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{rotating}
 \usepackage{boxedminipage}
 \usepackage{multicol}
+\usepackage{epstopdf}
+\usepackage{charter}
 
 % Package for including code in the document
 \usepackage{listings}
@@ -67,7 +70,16 @@
 %\input{introduction.tex}
 \input{licences.tex}
 
+\chapter{Introduction}
+\input{introduction.tex}
+
 \chapter{Internal organization}
+
 \input{handwritten/handwritten-documents.tex}
 \input{event-journal.tex}
 \end{document} 
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
