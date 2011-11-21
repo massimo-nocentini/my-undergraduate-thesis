@@ -1,0 +1,20 @@
+digraph G {
+	ratio=1;
+	center = true;
+	
+	edge [arrowsize=.5, weight=.1, color="black"];
+	node [shape=circle,height=0.12,width=0.12];
+	a -> a;
+	a -> e;
+	a -> f;
+	b -> a;
+	b -> e;
+	b -> f;
+	c -> a;
+	c -> e;
+	c -> f;
+	d -> a;
+	d -> e;
+	d -> f;
+	
+}
