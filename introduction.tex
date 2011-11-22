@@ -128,12 +128,13 @@ Per costruire questo modello usiamo questo insieme di regole:
 \begin{itemize}
 \item due specie sono uguali se hanno uguale identificatore ed uguale
   compartimento. Questa regola \`e necessaria per evitare una
-  esplosione di nodi del nostro modello, in quanto se $a \in
+  esplosione di nodi del nostro modello, in quanto se per $a \in
   reactants(r) \wedge a' \in reactants(r'), a = a' \wedge r \not = r'$
   si creassero due nodi distinti per $a, a'$, non si avrebbero
   informazioni significative in quanto il grafo degenerebbe ad un
-  insieme di sottografi, ognuno rappresentante una reazione. Quindi
-  una specie non \`e identificata dalle reazioni in cui appare.
+  insieme di sottografi isolati, ognuno rappresentante una
+  reazione. Quindi una specie non \`e identificata dalle reazioni in
+  cui appare.
 \item data una reazione non-reversibile $r$ tale che:
   \begin{displaymath}
     \begin{split} 
@@ -173,4 +174,36 @@ supponendo che la specie $a$ appartenente ad entrambi gli
 insiemi sia la stessa (ovvero se $\exists a': a = a' \rightarrow id(a) =
 id(a') \wedge compart(a) = compart(a')$).
 
+\end{itemize}
+
+Nella prossima sezione descriveremo alcuni dettagli e caratteristiche
+di modelli SBML che non sono esplicitamente documentate sul sito
+ufficiale \footnote{inserire qui riferimento bibliografico a
+  www.sbml.org}, ma che abbiamo capito e dedotto utilizzando il
+concetto di \emph{learning test} implementato con \emph{JUnit}
+\footnote{inserire qui riferimento bibliografico a TDD by example di
+  Kent Beck}.
+
+\section{Learning SBML tips by tests}
+
+Scrivendo alcuni \emph{learning tests} abbiamo dedotto le seguenti
+propriet\`a sui modelli SBML. I seguenti test sono stati esercitati su
+una batteria di modelli biologici reali, tutti con esito positivo:
+\begin{itemize}
+\item sia $r$ una reazione e siano $reactants(r), products(r)$ gli
+  insiemi di \emph{reactants} e \emph{products}
+  rispettivamente. Questi due insiemi catturano il concetto di insieme
+  matematico, ovvero non contengono oggetti duplicati.
+\item $\exists r,t \in Reactions: products(t) = reactants(r)$. Questa
+  propriet\`a permette di avere continuit\`a tra reazioni, ovvero un
+  insiemi di \emph{products} di una reazione $t$ pu\`o essere
+  l'insieme di \emph{reactants} di una reazione $r$. Questa
+  propriet\`a permette di costruire delle \emph{metabolic pathways}
+  composte da quante reazioni si voglia.
+\item ogni species deve essere contenuta in un compartment.
+\item l'identificatore discrimina le species, ovvero se tentiamo di
+  aggiungere al modello due species con lo stesso identificatore, ma
+  contenute in compartimenti diversi, allora nel modello viene
+  inserita una delle due ma non entrambe, scegliendo in ordine
+  cronologico di inserimento
 \end{itemize}
