@@ -66,7 +66,9 @@ costruire nuovi vertici per species gi\`a analizzate.
 
 \section{Patterns and coding idioms}
 
-\subsection*{Description}
+\subsection{Notify specific concept from abstract notification}
+
+\subsubsection*{Description}
 In questa sezione scrivo una breve descrizione di un interessante
 \emph{coding idiom} che ho implementato.
 \begin{description}
@@ -185,3 +187,63 @@ protected class FromProductDriver extends AbstractVertexHandlingListener {
 		}
 	}
 \end{lstlisting}
+
+\subsection{State pattern}
+
+\subsubsection*{Description}
+Riporto la descrizione di questo pattern ripresa da
+\cite[p. 327]{SmalltalkCompanion98}:
+\begin{quotation}
+Allow an object to alter its behaviour when its internal state
+changes. The object will appear to change its class.    
+\end{quotation}
+Nella mia implementazione non ho usato questo pattern ricalcando la
+struttura descritta nel riferimento che ho riportato, ma una sua
+variante, nella quale durante la vita di un oggetto non si cambia il
+suo stato pi\`u volte, bensi viene fissato nel momento della sua
+creazione.
+
+\subsubsection*{Reification}
+La variante descritta nella sezione precedente mi ha permesso di poter
+utilizzare oggetti di tipo \emph{Connector} in due modalit\`a.
+\begin{itemize}
+\item La prima pi\`u orientata al testing, che permette di inviare
+  messaggi ad oggetti \emph{Connector} per leggere delle reazioni e
+  verificare degli invarianti sul risultato della lettura. Questa
+  modalit\`a non necessita di mantenere nessuna informazione di stato
+  all'interno degli oggetti, ma sono di utilizzare parte del loro
+  comportamento. La classe interna \emph{StatelessConnectorState}
+  implementa quanto detto.
+\item la seconda invece \`e quella orientata ad un utilizzo concreto
+  nella computazione, la quale permette di effettuare il parsing delle
+  reazioni ricevendo in input il \emph{file path} del modello che si
+  vuole analizzare. La classe \emph{StatefullConnectorState}
+  implementa quanto detto.
+\end{itemize}
+
+Questo mi ha permesso di non "sporcare" il codice che implementa le
+responsabilit\`a della classe \emph{Connector} con strutture di
+controllo per determinare quale delle due modalit\`a si doveva
+utilizzare ed inoltre, senza l'applicazione di questo pattern, alcuni
+oggetti avrebbero avuto valorizzate delle propriet\`a interne mentre
+altri no: avremmo avuto una ridondanza di informazioni e una
+cattiva gestione della memoria.
+\\\\
+Riporto sotto l'estratto di codice nel quale si associa lo stato in
+fase di costruzione degli oggetti:
+\begin{lstlisting}
+  public static Connector makeConnector() {
+    Connector connector = new Connector();
+    connector.state = connector.new StatelessConnectorState(); 
+    return connector; 
+  }
+
+  public static Connector makeConnector(String path) { 
+    Connector connector = new Connector();
+    connector.state = connector.new StatefullConnectorState(path);
+    return connector;
+  }
+\end{lstlisting}
+Dato che oggetti di tipo \emph{Connector} sono \emph{value object},
+una volta creati non mutano il loro stato, quindi \`e sufficiente
+associare il loro stato (forse meglio dire "ruolo") in costruzione.
