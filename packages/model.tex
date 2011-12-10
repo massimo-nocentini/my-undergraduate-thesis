@@ -48,14 +48,14 @@ Le astrazioni fornite da questo package sono le seguenti:
 Non \`e possibile visualizzare tutte le classi implementate in questo
 package in un unico diagramma di classe, per maggior chiarezza le
 raggruppo in diagrammi pi\`u piccoli, cercando come fatto nelle
-descrizioni degli altri package di rappresentare e commentare gli
+descrizioni degli altri package, di rappresentare e commentare gli
 aspetti pi\`u importanti.
 
 \subsubsection{Vertex and OurModel}
 Il diagramma rappresentato in figura
 \ref{fig:vertex-abstraction-interfaces} rappresenta le interfaccie
 dei concetti fondamentali del progetto, quelli di vertice e del nostro
-modello di grafo.
+modello di grafo. Commento le interfaccie in paragrafi indipendenti:
 
 \begin{figure}
   \centering
@@ -64,12 +64,64 @@ modello di grafo.
   \label{fig:vertex-abstraction-interfaces}
 \end{figure}
 
-Nel diagramma abbiamo tutte interfaccie ed una classe concreta.
+\begin{paragraph}{Vertex}
+
 L'interfaccia \emph{Vertex} cattura queste idee:
 \begin{itemize}
 \item aggiungere informazioni sul vicinato di un vertice, dando la
   possibilit\`a sia di aggiungere vicini che predecessori (quindi
   modelliamo sia una lista di adiacenza, sia una lista di incidenza)
-\item chiedere informazioni sulla tipologia di vertice, ovvero che sia
-  un nodo 
+\item fornire informazioni sulle caratteristiche del vertice, ad
+  esempio se un vertice \`e sorgente o pozzo, qual \`e il suo
+  vicinato, quali sono le informazioni che lo distinguono (riferite
+  alle informazioni sulla specie e sul compartment recuperate dal
+  modello SBML di origine)
+\item dare la possibilit\`a di "rompere" le proprie relazioni di
+  vicinato per permettere una compattazione delle sorgenti in una
+  unica.
+\item accettare un esportatore per costruire un documento .dot,
+  fornendo gli oggetti necessari per la corretta formattazione delle
+  informazioni incapsulate nell'oggetto vertice.
+\item forzare la riscrittura dei metodi \emph{equals} and
+  \emph{hashCode} in modo che tutte le implementazioni di questa
+  interfaccia possano essere trattati come \emph{value objects}, non
+  distinguendoli per riferimento in memoria, bensi dalle informazioni
+  che questi incapsulano.
+\item poter applicare della logica sul vicinato utilizzando uno stile
+  preso dalla programmazione funzionale, catturato dalle interfaccie
+  \emph{VertexLogicApplier} e la sua variante che permette di lavorare
+  sulla coppia \emph{(source, neighbor)}.
+\item imporre una relazione d'ordine totale fra oggetti che
+  implementano questa interfaccia, in modo da rendere gli algoritmi
+  deterministici nel momento di selezione di vertici. Questo \`e stato
+  utile per la stesura dei metodi di unit testing.
 \end{itemize}
+\end{paragraph}
+
+\begin{paragraph}{OurModel}
+La classe concreta \emph{OurModel} cattura queste idee:
+\begin{itemize}
+\item catturare il concetto di grafo da utilizzare come modello di
+  dominio per le computazioni che descriver\`o nel seguito di questo
+  documento.
+\item fornire il comportamento per la costruzione del modello in
+  diverse modalit\`a: costruire un modello vuoto da riempire
+  successivamente, oppure a partire da un modello SBML
+\item implementare la logica per compattare le sorgenti in una unica
+\item applicare della logica fornita da un generico client su tutti i
+  vertici, utilizzando l'idea funzionale descritta nella descrizione
+  dell'interfaccia \emph{Vertex}
+\item implementare un \emph{template} della ricerca \emph{DFS} usando
+  \emph{hook methods} per specializzare la ricerca relativamente alle
+  necessit\`a del client di questa classe.
+\end{itemize}
+\end{paragraph}
+
+\subsubsection{Vertex implementors}
+\begin{figure}
+  \centering
+  \includegraphics[angle=90]{packages/vertex-implementors.eps}
+  \caption{Vertex implementors}
+  \label{fig:vertex-implementors}
+\end{figure}
+fd
