@@ -1,5 +1,5 @@
 
-\section{Preamble}
+\section{SBML format}
 Il mio lavoro inizia con lo studio e l'utilizzo del formato
 \textbf{SBML} (\textbf{S}ystems \textbf{B}iology \textbf{M}arkup 
 \textbf{L}anguage). 
@@ -35,14 +35,13 @@ risultato delle trasformazioni svolte sottoforma di insieme di
 molecole. Questo output pu\`o essere utilizzato come input per
 $reaction_{i+1}$, concatenando quanto si voglia le trasformazioni.
 \\\\
-Ogni reazione chimica \`e regolata da alcuni \emph{enzymes}.
-
-Un \emph{enzyme} \`e una proteina che gestisce la frequenza e la
+Ogni reazione chimica \`e regolata da alcuni \emph{enzymes}. Un
+\emph{enzyme} \`e una proteina che gestisce la frequenza e la
 velocit\`a di una reazione chimica. Le molecole a cui si applica la
 reazione vengono identificate con il termine \emph{substrates} (o
 \emph{reactants} usando la terminologia SBML), mentre i prodotti della
-reazione vengono indentificati con il termine \emph{products} (anche la
-terminologia SBML usa questo identificatore).
+reazione vengono indentificati con il termine \emph{products} (anche
+la terminologia SBML usa questo identificatore).
 
 Durante l'esecuzione di una reazione chimica, ogni \emph{enzyme}
 agisce da \emph{catalyst}, ovvero non viene consumato nella reazione
@@ -62,19 +61,29 @@ definite dal formato SBML.
 
 \section{Model necessary real objects in SBML}
 \label{sec:necessaryRealObjectsModeledInSBML}
-Adesso che abbiamo alcuni concetti reali possiamo iniziare a mapparli
-sulle nostre astrazioni, la prima delle quali \`e il mezzo di
-comunicazione SBML.
 
 Nella precedente sezione abbiamo introdotto alcuni concetti che non
 sono influenti sul nostro studio, per cui trattiamo solo quelli
 inerenti al lavoro che ho sviluppato (molti dei concetti che noi non
 usiamo sono comunque modellabili in SBML).
-\\\\
-Le unit\`a atomiche definibili con SBML sono le \emph{specie}. Una
-specie rappresenta il concetto di molecola (appartenente ad almeno un
-\emph{substrate}). Possiamo modellare molti attributi con un oggetto
-di tipo specie ma, ai nostri fini, due sono quelli che usiamo:
+
+Adesso che abbiamo alcuni concetti reali possiamo iniziare a mapparli
+sulle nostre astrazioni, la prima delle quali \`e il mezzo di
+comunicazione SBML. Nel seguente \emph{entity diagram} si riportano le
+entit\`a di interesse per la nostra trattazione, con le relazioni che
+intercorrono tra di esse e gli attributi che possiamo associare a
+questi oggetti: \footnote{draw here an entity model that catch the
+  fundamental entities.}
+\begin{figure}
+  \centering
+  
+  \caption{Fundamental entities}
+  \label{fig:FundamentalEntities}
+\end{figure}
+Le unit\`a atomiche definibili con SBML sono le \emph{species}. Una
+\emph{species} rappresenta il concetto di molecola (appartenente ad
+almeno un \emph{substrate}). Possiamo modellare molti attributi con un
+oggetto di tipo specie ma, ai nostri fini, due sono quelli che usiamo:
 \begin{itemize}
 \item \emph{identifier}, che permette di assegnare una etichetta univoca
 alla specie all'interno di tutto il modello SBML
@@ -206,3 +215,14 @@ una batteria di modelli biologici reali, tutti con esito positivo:
   inserita una delle due ma non entrambe, scegliendo in ordine
   cronologico di inserimento
 \end{itemize}
+
+\section{Building a java library}
+
+
+\subsection{Working scenarios}
+Descrivere in questa sezione i possibili utilizzi della libreria, dal
+rappresentare un modello SBML, alla possibilit\`a di visualizzare una
+ricerca DFS e il risultato della minimizzazione dell'algoritmo di
+Tarjan. In sostanza \`e un anticipo e un riassunto dei casi d'uso che
+descriver\`o pi\`u avanti, quindi potrebbe essere sensato aggiungere
+un riferimento a quella sezione.
