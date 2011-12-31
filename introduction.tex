@@ -29,7 +29,7 @@ funzioni $reaction_{i}$ tali che:
 \begin{displaymath}
 reaction_{i} : 2^{Molecules} \rightarrow 2^{Molecules}
 \end{displaymath}
-Ognunga di queste funzioni, avendo in input un insieme di molecole,
+Ognuna di queste funzioni, avendo in input un insieme di molecole,
 esegue delle trasformazioni su queste e produce come output, il
 risultato delle trasformazioni svolte sottoforma di insieme di
 molecole. Questo output pu\`o essere utilizzato come input per
@@ -82,11 +82,13 @@ questi oggetti: \footnote{draw here an entity model that catch the
 \end{figure}
 Le unit\`a atomiche definibili con SBML sono le \emph{species}. Una
 \emph{species} rappresenta il concetto di molecola (appartenente ad
-almeno un \emph{substrate}). Possiamo modellare molti attributi con un
-oggetto di tipo specie ma, ai nostri fini, due sono quelli che usiamo:
+almeno un \emph{substrate}).  Un oggetto di tipo \emph{species} ha
+molti attributi ma, ai nostri fini, tre sono quelli necessari:
 \begin{itemize}
 \item \emph{identifier}, che permette di assegnare una etichetta univoca
 alla specie all'interno di tutto il modello SBML
+\item \emph{name}, che permette di codificare delle informazioni di
+  pi\`u alto livello rispetto all'\emph{identifier}
 \item \emph{compartment}, che permette di assegnare ad una specie il
 compartimento della cellula dove risiede (in tutti gli esempi che
 abbiamo avuto modo di testare il compartimento \`e sempre il
@@ -130,21 +132,20 @@ risultati\footnote{Qui potrebbe essere il caso di inserire
 \\\\
 Il nostro modello \`e essenzialmente un grafo orientato, la cui
 caratteristica \`e quella di catturare l'idea dei nodi \emph{black} e
-nodi \emph{white}, definiti nell'articolo Crescenzi-Marino
-\footnote{aggiungere qua riferimento bibliografico all'articolo
-  "Telling Stories"}, componenti essenziali per l'astrazione di \emph{story}.
+nodi \emph{white} (vedi \cite{tellingStories}), essenziali per
+l'astrazione di \emph{story}.
 
 Per costruire questo modello usiamo questo insieme di regole:
 \begin{itemize}
 \item due specie sono uguali se hanno uguale identificatore ed uguale
   compartimento. Questa regola \`e necessaria per evitare una
-  esplosione di nodi del nostro modello, in quanto se per $a \in
-  reactants(r) \wedge a' \in reactants(r'), a = a' \wedge r \not = r'$
-  si creassero due nodi distinti per $a, a'$, non si avrebbero
-  informazioni significative in quanto il grafo degenerebbe ad un
-  insieme di sottografi isolati, ognuno rappresentante una
-  reazione. Quindi una specie non \`e identificata dalle reazioni in
-  cui appare.
+  esplosione di nodi del nostro modello in quanto, date due reazioni
+  $r$ e $r'$, se $a \in reactants(r) \wedge a' \in reactants(r')$ con
+  $a = a' \wedge r \not = r'$, si costruirebbero due nodi distinti
+  rispettivamente per $a, a'$, non si avrebbero informazioni
+  significative in quanto il grafo degenerebbe ad un insieme di
+  sottografi isolati, ognuno rappresentante una reazione. Quindi una
+  specie non \`e identificata dalle reazioni in cui appare.
 \item data una reazione non-reversibile $r$ tale che:
   \begin{displaymath}
     \begin{split} 
