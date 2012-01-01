@@ -79,29 +79,40 @@
 \input{introduction.tex}
 
 \chapter{Theoretical background}
+\label{chapter:theoretical-background}
 \input{theoretical-background.tex}
 
 \chapter{Study}
+\label{chapter:study}
 \input{use-cases.tex}
 \input{domain-model.tex}
 \input{architecture.tex}
 
 \chapter{Implementation}
 
-Nelle prossime sezioni descriveremo gli oggetti implementati nei
-\emph{packages} java. Ogni package verr\`a descritto in una sezione
-dedicata, dandone i concetti principali, alcuni diagrammi usando la
-notazione \emph{UML} e alcuni dettagli implementativi di interesse.
+In questo capitolo daremo delle informazioni di alto livello
+riguardanti l'implementazione dei concetti descritti nel capitolo
+\ref{chapter:study}, descrivendo la metodologia di sviluppo
+utilizzata, quali paradigmi e stili di programmazione sono alla base
+delle implementazioni e un breve overview sulle funzionalit\`a
+incapsulate in ogni \emph{package} della libreria.
+
+\input{development-methodology.tex}
 
 \input{functional-object-oriented.tex}
 
-\section{Packages' descriptions}
+\newpage
+\section*{Packages' descriptions}
+
+Nelle prossime sezioni descriveremo gli oggetti implementati nei
+\emph{packages} java. Ogni package verr\`a descritto in una sezione
+dedicata, dandone i concetti principali, alcuni diagrammi usando la
+notazione \emph{UML} e alcuni dettagli implementativi di interesse ed
+eventuali design patterns and coding idioms che hanno aiutato
+nell'implementazione.
 
 \input{packages/JSBMLInterface.tex}
 \input{packages/model.tex}
-
-
-\input{patterns.tex}
 
 \chapter{Conclusions}
 \input{further-work.tex}
