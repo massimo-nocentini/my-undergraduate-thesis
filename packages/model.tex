@@ -81,9 +81,9 @@ idee principali catturate in ogni contratto:
   recuperate dal modello SBML di origine). Molti di questi metodi sono
   utilizzati soprattutto nei metodi di unit testing e hanno una firma
   che rispetta i concetti espressi nella sezione
-  \nameref{sec:objects-oriented-functional-paradigms}\footnote{in
-    questa sezione descrivere perche si e' evitato metodi di get e set
-    in benificio di metodi della forma is...()}.
+  \ref{sec:objects-oriented-functional-paradigms}\footnote{in questa
+    sezione descrivere perche si e' evitato metodi di get e set in
+    benificio di metodi della forma is...()}.
 
   Tramite questo contratto possiamo interfacciarci con le
   implementazioni definite nel package
@@ -96,6 +96,15 @@ idee principali catturate in ogni contratto:
   questi due comportamenti \emph{loosesly coupled}, in quanto
   cambiamenti agli effettivi implementatori dei due contratti, non
   comportano cambiamenti ai metodi definiti nelle interfaccie.
+
+  Nel precedente paragrafo abbiamo richiesto la possibilit\`a di
+  generare un documento grafico (si creano rappresentazioni del grafo
+  in formato \emph{svg}), ma \`e possibile richiedere anche delle
+  informazioni di carattere testuale dalle quali \`e possibile capire
+  meglio la struttura del grafo (sia di un grafo a cui applichiamo
+  l'algoritmo di Tarjan e non) attraverso una rappresentazione
+  tabulare. Questo comportamento \`e implementato dalla classe
+  \emph{VertexStatsRecorder}, dipendenza di questo contratto.
 
   Una propriet\`a che questo contratto richiede \`e quella di
   riscrivere i metodi \emph{equals} e \emph{hashCode} in modo che
@@ -175,20 +184,20 @@ idee principali catturate in ogni contratto:
   \footnote{aggiungere qui il riferimento bibliografico a Thinking in
     Patterns}) e alcune loro propriet\`a.
 
-  La prima caratterizzazione ad esser stata implementata \`e
-  \emph{SimpleVertex}, la quale cattura il comportamento di un vertice
-  "normale", ovvero l'implementazione pi\`u semplice possibile del
-  contratto. Anche se questa pu\`o sembrare scontata, invece \`e il
-  building-block utilizzato pi\`u o meno indirettamente anche da
-  caratterizzazioni pi\`u complesse. Come vedremo \footnote{nella
-    sezione dei patterns inserire un paragrafo sulla comodit\`a di
-    utilizzare i wrapper per evitare il problema della fragile base
-    class, fare riferimento anche al libro di Josch Block}, queste
-  caratterizzazioni avanzate sono dei \emph{wrapper} che delegano
-  parte del comportamento alla caratterizzazione \emph{SimpleVertex} e
-  ridefiniscono solo il comportamento che differisce da quest'ultima.
+  La prima caratterizzazione introdotta \`e \emph{SimpleVertex}, la
+  quale cattura il comportamento di un vertice "normale", ovvero
+  l'implementazione pi\`u semplice possibile del contratto. Anche se
+  questa pu\`o sembrare scontata, invece \`e il building-block
+  utilizzato, pi\`u o meno indirettamente, da caratterizzazioni pi\`u
+  complesse. Come vedremo \footnote{nella sezione dei patterns
+    inserire un paragrafo sulla comodit\`a di utilizzare i wrapper per
+    evitare il problema della fragile base class, fare riferimento
+    anche al libro di Josch Block}, queste caratterizzazioni avanzate
+  sono dei \emph{wrapper} che delegano parte del comportamento alla
+  caratterizzazione \emph{SimpleVertex} e ridefiniscono solo il
+  comportamento che differisce da quest'ultima.
 
-  La successiva caratterizzazione introdotta \`e stata
+  La seconda caratterizzazione introdotta \`e stata
   \emph{DfsWrapperVertex}, la quale permette di associare l'analogo di
   un "timestamp" nel momento in cui la ricerca visita un vertice e nel
   momento in cui la visita abbandona il vertice. Questo ci ha permesso
@@ -197,5 +206,42 @@ idee principali catturate in ogni contratto:
     il riferimento bibliografico al volume di Algorithms e alle pagine
     in cui si evidenzia la coppia di interi} ed analizzata nel
   capitolo \ref{chapter:study}.
+
+  La terza caratterizzazione introdotta \`e stata
+  \emph{ConnectedComponentWrapperVertex}, in coppia con
+  \emph{TarjanWrapperVertex}. Queste due caratterizzazioni permettono
+  di implementare in modo puramente orientato agli oggetti l'algoritmo
+  di \emph{Tarjan} per la ricerca delle componenti fortemente
+  connesse. In particolare \emph{ConnectedComponentWrapperVertex}
+  cattura la responsabilit\`a di rappresentare una componente
+  fortemente connessa e manipolare l'insieme di nodi del grafo
+  originario che la individuano (il lifetime di questa
+  caratterizzazione \`e relativo alla parte finale e di utilizzo del
+  grafo prodotto dalla minimizzazione), mentre
+  \emph{TarjanWrapperVertex} cattura la responsabilit\`a di mantenere
+  la relazione di vicinato tra componenti fortemente connesse (il
+  lifetime di questa caratterizzazione \`e soprattutto relativo
+  all'esecuzione dell'algoritmo). Inoltre, per poter sviluppare un
+  piccolo programmetto per la visualizzazione di semplici statistiche
+  come descritto nel capitolo \ref{chapter:study}, abbiamo introdotto
+  l'astrazione \emph{ConnectedComponentInfoRecorder}.
+
+  Inoltre, anche se sono classi astratte e quindi non immediatamente
+  istanziabili, abbiamo introdotto \emph{VertexWithLabelWrapperVertex}
+  per dare la possbilit\`a di rappresentare una etichetta sopra alla
+  rappresentazione di un nodo nella generazione dell'output
+  grafico. Questo comportamento \`e possibile utilizzarlo in modo
+  trasparente e permette di fattorizzare e non mischiare nello stesso
+  file sorgente (e quindi in una stessa classe) il codice che
+  implementa la decorazione e il codice che implementa la particolare
+  caratterizzazione del contratto \emph{Vertex}.
+
+  Tutte le precedenti caratterizzazioni sono nascoste ai client del
+  contratto \emph{Vertex} dalla factory \emph{VertexFactory} che
+  espone metodi statici per poter costruire oggetti che implementano
+  il contratto ma avere il codice sorgente il meno accoppiato
+  possibile (questa modalit\`a di creazione implica che abbiamo
+  pensato il contratto \emph{Vertex} come un vero e proprio
+  \emph{abstract data type}).
 \end{paragraph}
 
