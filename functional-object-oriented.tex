@@ -1,2 +1,117 @@
 \section{Pure object-oriented and functional programming paradigms}
 \label{sec:objects-oriented-functional-paradigms}
+
+In questa sezione descriveremo le idee fondamentali e i principi che
+abbiamo cercato di rispettare durante la fase di
+implementazione.
+
+Questi concetti vengono ripetuti ed usati molte volte nel codice: in
+alcuni casi possono rendere la lettura del codice e lo studio pi\`u
+problematico rispetto alle controparti "procedurali", ma hanno i
+grandi valori aggiunti di portare maggior flessibilit\`a e
+manutenibilit\`a delle astrazioni.
+
+Ogni sottosezione ha come titolo una massima, che pu\`o sembrare un po
+"stravagante" ma penso che sia un potente mezzo di comunicazione.
+
+\subsection{Getters and setters are evil}
+Riporto quello che dice Holub nel suo volume \footnote{aggiungere qui
+  riferimento bibliografico a "Holub on Pattern", pag. 27}:
+\begin{quotation}
+  [...] it's a fundamental precept of OO systems that an object not
+  expose any of its implementation details. This way, you can change
+  the implementation without needing to change the code that uses the
+  object. It follows that you should avoid getter and setter
+  functions, which typically do nothing but provide access to
+  implementation details (fields), in OO systems.
+\end{quotation}
+
+Quello che dice Holub ritengo sia il vero principio che permette ai
+sistemi di essere \emph{flessibili}, nonostante non sia facile da
+rispettare in tutte le situazioni. La programmazione procedurale aveva
+come conseguenza l'esistenza di tante funzioni su un insieme di
+argomenti, ognuna delle quali si pu\`o considerare un "piccolo
+controller", capace di decidere e applicare della logica in base agli
+argomenti a disposizione.
+
+Con l'introduzione dell'astrazione \emph{object} e il mantra
+\emph{everything is an object}, possiamo ridurre l'esistenza di questi
+controller e dare potere decisionale sul comportamento da eseguire
+agli oggetti stessi. Di conseguenza gli oggetti non sono delle
+\emph{struct}ure passive, ma raggiungono maggior potenza quando quello
+che modellano \`e solo comportamento.
+
+Quindi seguendo quello che propone Holub, le informazioni devono
+circolare all'interno del sistema, certo, ma se minimizziamo la
+presenza di metodi accessori (termine che accomune sia metodi
+\emph{get} che \emph{set}) possiamo modellare un sistema dove esistono
+solo oggetti che si scambiano messaggi e non dove esistono dei
+\emph{chunk} adibiti a immagazzinare informazioni, per essere usati da
+oggetti "privilegiati".
+
+Nel mio codice un esempio di quanto affermato sopra \`e il contratto
+\emph{Vertex}, il quale, come analizzato nei capitoli precedenti, ha
+come informazioni salienti: identificatore, nome, compartimento e
+vicinato. Quello che il contratto richiede ad un oggetto per essere
+considerato un \emph{Vertex} (detto cos\`i sembra molto lo stile
+\emph{duck typing} dei linguaggi dinamici, in Java \`e pi\`u corretto
+dire che la classe deve implentare tutte le caratteristiche richieste
+dal contratto affinche sulle sue istanze si possano invocare tali
+metodi) non \`e \emph{getIdentifier()} o \emph{getNeighborhood()},
+bensi:
+\begin{lstlisting}
+  boolean isYourNeighborhoodEquals(Set<Vertex> products);
+  boolean isYourNeighborhoodEmpty();
+  boolean isYourSpeciesId(String speciesId);
+  boolean isYourCompartmentId(String compartmentId);
+  boolean isYourSpeciesName(String species_name);
+\end{lstlisting}
+quello che si st\`a chiedendo non \`e tanto una azione passiva, ma un
+controllo attivo a cui solo il destinatario pu\`o rispondere in modo
+univoco.
+
+Si pu\`o andare oltre, in quanto il tipo di ritorno \emph{boolean},
+pu\`o invogliare a scrivere logica condizionale (altro \emph{smell}
+che ritengo sia da minimizzare), nella prossima sezione vedremo
+come si potrebbe far meglio.
+
+\subsection{Don't ask, tell!}
+
+Riporto ancora da Holub, marcato in grassetto nel suo volume
+\footnote{sempre riferimento a Holub on Patterns, pag 30}:
+\begin{quotation}
+  Don't ask for the information that you need to do some work; ask the
+  object that has the information to do the work for you.
+\end{quotation}
+Penso che linguaggi come Smalltalk, Ruby, Lisp incapsulino questo
+principio e il linguaggio stesso sia pi\`u ricco per trattare
+\emph{everything an object}. Tornando alla promessa fatta alla fine
+della sezione precedente, supponiamo di voler eseguire una determinata
+logica se il vicinato di un vertice \`e vuoto. In Java dovremo
+scrivere:
+\begin{lstlisting}
+  if(vertex.isYourNeighborhoodEmpty()){
+    // do some ugly logic...
+  }
+\end{lstlisting}
+In Smalltalk invece:
+\begin{lstlisting}
+  vertex isYourNeighborhoodEmpty ifTrue: anUglyBlock
+\end{lstlisting}
+La differenza \`e che nella versione Java la conoscenza sul vicinato
+adesso \`e in due punti, sia nella classe concreta di cui
+\emph{vertex} \`e una istanza, sia nella classe a cui appartiene il
+blocco di codice riportato.
+
+Nella versione Smalltalk invece la conoscenza sul vicinato \`e
+incapsulata all'interno dell'oggetto \emph{vertex} e in nessun altro
+punto, in quanto il codice client riportato, passa al metodo
+\emph{ifTrue} un \emph{block} da eseguire a discrezione dell'oggetto
+\emph{vertex} (\emph{don't ask, tell!}) se il suo vicinato \`e vuoto.
+
+Quanto detto nell'ultima frase porta naturalmente ad un paradigma
+chiave del paradigma funzionale, che descriviamo nella prossima
+sezione.
+
+\subsection{Functions (or better, behaviours) as values}
+
