@@ -147,13 +147,18 @@ desiderato.
 \end{paragraph}
 
 \begin{paragraph}{DfsEventsListenerTreeBuilder}
-  Questo listener permette di essere notificato riguardo il
-  verificarsi di determinati eventi modellati dal contratto
-  \emph{DfsEventListener} e in base a questi, associare delle
-  informazioni che permettono di costruire l'albero \emph{DFS} che
-  rappresenta la ricerca. Questo ci ha permesso di implementare questa
-  logica disaccoppiandla dal codice che incapsula l'algoritmo della
-  visita. 
+  Questo listener permette di associare ad ogni vertice delle
+  informazioni per costruire l'albero \emph{DFS} che rappresenta la
+  ricerca. In particolare si mantiene una coppia di istanti $(t_{in},
+  t_{out})$ dove $t_{in}$ rappresenta l'istante in cui il vertice
+  viene esplorato, $t_{out}$ rappresenta l'istante in cui si \`e
+  finito di esplorare il rispettivo vicinato e la chiamata ricorsiva
+  termina per tale vertice.
+
+  Inoltre, nella gestione dell'evento \emph{newVertexExplored}, si
+  costruisce la nuova relazione di vicinato, includendo solo quegli
+  archi che hanno portato all'esporazione di nuovi vertici e che
+  caratterizzano l'albero \emph{DFS} risultante.
 
   Riprendendo l'osservazione fatta al termine del paragrafo
   precedente, questo listener non ha bisogno di definire nessuna
@@ -164,10 +169,12 @@ desiderato.
   Questo listener implementa l'algoritmo di Tarjan e codifica il
   comportamento per produrre un grafo i cui nodi sono le componenti
   fortemente connesse che si possono individuare nel grafo di
-  input. Questo grafo contiene degli oggetti che hanno comportamento
-  specifico relativo alle componenti connesse, per cui nelle
-  successive computazioni sar\`a possibile usare il grafo in modo
-  astratto, inviando messaggi polimorfi che produrranno il
+  input. 
+
+  Questo grafo contiene come vertici degli oggetti che hanno
+  comportamento specifico relativo alle componenti connesse, per cui,
+  nelle successive computazioni, sar\`a possibile usare il grafo in
+  modo astratto, inviando messaggi polimorfi che produrranno il
   comportamento desiderato (ad esempio la rappresentazione
   dell'etichetta nel documento grafico sar\`a diversa rispetto a
   quella che si pu\`o ottenere dopo una visita \emph{DFS}).
