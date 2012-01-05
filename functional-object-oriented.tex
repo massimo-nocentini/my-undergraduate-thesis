@@ -1,9 +1,8 @@
-\section{Pure object-oriented and functional programming paradigms}
+\section{Pure object-oriented and functional paradigms}
 \label{sec:objects-oriented-functional-paradigms}
 
 In questa sezione descriveremo le idee fondamentali e i principi che
-abbiamo cercato di rispettare durante la fase di
-implementazione.
+abbiamo cercato di rispettare durante la fase di implementazione.
 
 Questi concetti vengono ripetuti ed usati molte volte nel codice: in
 alcuni casi possono rendere la lettura del codice e lo studio pi\`u
@@ -114,4 +113,84 @@ chiave del paradigma funzionale, che descriviamo nella prossima
 sezione.
 
 \subsection{Functions (or better, behaviours) as values}
+In \footnote{aggiungere qui riferimento bibliografico a The Reasoned
+  Schemer, pag ix}, dopo poche parole della prefazione, compare:
+\begin{quotation}
+  Our main assumption is that you understand the first eight chapters
+  of \emph{The little schemer}. The only true requirement, however, is
+  that you understand functions as values. That is, a function can be
+  both an argument to and the value of a function call. Furthermore,
+  you should know that functions remember the context in which they
+  were created.
+\end{quotation}
+Quello che dice Friedman \`e una caratteristica dei linguaggi
+funzionali (quelli usati nel suo volume sono \emph{Scheme} e
+\emph{Lisp}) e in molti linguaggi orientati agli oggetti si ritrovano
+delle imitazioni di questo concetto.
 
+In \emph{Smalltalk} e \emph{Ruby} esistono i \emph{block}, che
+permettono di costruire un oggetto che incapsula un comportamento ma
+che verr\`a esiguito in un momento successivo e, dato che esso stesso
+\`e un oggetto (\emph{as value}), verr\`a eseguito solo quando
+ricever\`a il messaggio \emph{value}.
+
+In \emph{C\#} sono stati introdotti i \emph{delegates} come costrutto
+del linguaggio, che permette sia di poter referenziare un metodo
+(l'idea assomiglia ai \emph{function pointer} presenti in \emph{C++}
+anche se vi sono nette differenze) sia di poter definire un metodo
+anonimo da eseguire successivamente, e non al momento della sua
+definizione. Con l'evoluzione del linguaggio sono state introdotte le
+\emph{lambda-expressions}, che aggiungono dello zucchero sintattico al
+linguaggio e rendono la costruzione di metodi anonimi (quello che in
+\emph{Lisp} esiste dalla sua creazione nel 1956) pi\`u semplice, anche
+se non aggiungono potere espressivo (quello che \`e possibile scrivere
+con \emph{lambda-expression} ha un suo equivalente utilizzando il
+costrutto \emph{delegate} e viceversa).
+
+Veniamo al linguaggio utilizzato per l'implementazione di questo
+lavoro. \emph{Java} non ha costrutti del linguaggio che permettono di
+esprimere i concetti espressi sopra, e una valutazione superficiale,
+porterebbe a darne un giudizio inferiore rispetto gli altri
+linguaggi. Questo non \`e vero secondo me, in quanto pur mancando un
+supporto diretto del linguaggio, vengono messi a disposizione i
+\emph{building block} essenziali per poter esprimere le stesse idee:
+le \emph{interfacce} e la loro implementazione anonima. Tramite questi
+due strumenti \`e possibile arrivare allo stesso obiettivo, suppure
+con maggior fatica, rispetto ai linguaggi sopra citati. Questo pu\`o
+tedioso per\`o, secondo la mia opinione, \`e uno strumento che porta a
+capire davvero cosa sia una \emph{lambda function} e quali idee ci
+sono dietro.
+
+Ad esempio nel mio codice, quando ho avuto bisogno di eseguire una
+determinata logica su ogni vertice nel vicinato di uno dato, come
+prima cosa non abbiamo azzardato neppure ad inviare un messaggio
+\emph{getNeighbors()} (\emph{getters and setters are evil,
+  remember?}), bensi abbiamo lasciato la resposabilit\`a all'oggetto
+vertice di applicare una logica su ogni suo vicino, cosa che solo
+questo oggetto \`e a conoscenza di come fare. Il problema che rimane
+da sciogliere \`e come incapsulare questa logica. Beh, adesso dovrebbe
+essere facile, in quanto la nostra logica lavora su oggetti di tipo
+\emph{Vertex}, quindi creiamo una interfaccia con un messaggio che lo
+ha come parametro:
+\begin{lstlisting}
+  public interface VertexLogicApplier {
+    void apply(Vertex vertex);
+  }
+\end{lstlisting}
+Ogni classe che implementa questa interfaccia \`e una logica che pu\`o
+essere usata come argomento al vertice di cui ci interessa il
+vicinato. Questo \`e catturato proprio dal contratto \emph{Vertex}:
+\begin{lstlisting}
+  public interface Vertex...
+  void doOnNeighbors(VertexLogicApplier applier);
+\end{lstlisting}
+Questo ci permette di usare il potente concetto di \emph{functions as
+  values} utilizzando due interfaccie. Inoltre, sembrer\`a
+contraddittorio, ma abbiamo molta pi\`u flessibilit\`a: quando
+definiamo una \emph{lambda function} quello che possiamo fare \`e
+codificare un solo comportamento, in quanto questa viene eseguita
+quando riceve \emph{un} messaggio (nel caso di \emph{Smalltalk} il
+messaggio \`e \emph{value}). In \emph{Java} invece stiamo usando
+interfaccie e questo non pone vincoli sul numero di comportamenti che
+\`e possibile aggiungere, \`e sufficiente definire nell'interfaccia
+tanti messaggi quanti sono necessari.

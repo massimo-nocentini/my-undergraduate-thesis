@@ -1,1 +1,183 @@
 \section{Patterns and coding idioms}
+
+\subsection{Forward specific behaviour from abstract notification}
+
+\subsubsection*{Description}
+In questa sezione scrivo una breve descrizione di un interessante
+\emph{coding idiom} che ho implementato.
+\begin{description}
+\item[Problem] Si invoca un metodo il quale ha un parametro con un
+  determinato tipo. Questo parametro permette di modellare due
+  concetti diversi con lo stesso oggetto. Quello che si vuole \`e di
+  poter abilitare un client di ascoltare la computazione ed essere
+  notificato usando un oggetto listener sul metodo relativo alla
+  specializzazione del concetto che si sta usando attualmente.
+\item[Forces] Si vogliono rispettare questi requisiti:
+  \begin{itemize}
+  \item mantenere una firma del metodo con il parametro di tipo che
+    astrae dai diversi concetti. In questo modo il codice non dipende
+    dal concetto specifico ma rimane generico.
+  \item il client vorrebbe essere notificato non in maniera generica,
+    ma sapere quando viene usato un concetto e quando ne viene usato
+    uno diverso. L'interfaccia su cui vorrebbe essere notificato il
+    listener viene fornita dal client e la possiamo vedere come un
+    contratto. 
+  \item nel contesto nel quale avviene l'innesco della computazione
+    \`e possibile stabilire la natura dei concetti che verranno
+    manipolati.
+  \end{itemize}
+\item[Solution] Per risolvere il problema introduciamo una classe
+  astratta che implementa il generico metodo di handling e che
+  incapsula il listener fornito dal client, agendo come un
+  \emph{wrapper}. Il metodo che esegue la computazione, quando
+  incontra un oggetto che modella un concetto, di cui non siamo a
+  conoscenza del tipo a \emph{compile time}, invia un messaggio al
+  listener. Ma non sar\`a il listener fornito dal client a rispondere
+  a tale messaggio, bensi il wrapper. Ma, essendo il wrapper una
+  classe astratta, l'oggetto che effettivamente risponder\`a potr\`a
+  notificare il vero listener, invocando un messaggio che cattura lo
+  specifico concetto che \`e stato elaborato. Lo specifico
+  implementatore della classe astratta viene costruito e passato come
+  argomento nel contesto in cui \`e possibile sapere il tipo di
+  concetti che verranno elaborati dal metodo generico.
+\end{description}
+
+\subsubsection*{Reification}
+Nella mia implementazione il metodo generico che esegue la
+computazione \`e \emph{convertToVertexSet}, il quale ha come parametro
+che astrae su due concetti diversi, \emph{listOfSpeciesReference}. 
+
+La computazione eseguita dal metodo \`e di creare un nuovo vertice
+ogni qualvolta si trova una species non ancora analizzata, e di
+notificare questo vertice al client, tramite il listener passato come
+argomento.
+
+\begin{lstlisting}
+  public Set<Vertex> convertToVertexSet( 
+  ListOf<SpeciesReference> listOfSpeciesReference, 
+  Map<Vertex, Vertex> knownVertices,
+  VertexHandlingListener listener) 
+\end{lstlisting}
+Come si vede la firma di questo metodo \`e molto generica, in quanto
+il parametro \emph{listOfSpeciesReference} una volta pu\`o contenere
+una lista di \emph{reactants}, altre volte una lista di
+\emph{products}. Inoltre il listener che viene usato, non mette a
+disposizione metodi che catturano il tipo di un concetto specifico,
+bensi permette solo di notificare che \`e stato elaborato un vertice,
+ma non possiamo sapere se questo \`e un \emph{reactants} o un
+\emph{products}.
+
+\`E quindi possibile implementare l'idea data nella parte "Solution",
+instanziando il corretto specializzatore della classe astratta nel
+contesto dove \`e possibile sapere se si sta per analizzare una
+collezione di \emph{reactants} oppure di \emph{products}: questo \`e
+possibile farlo nel metodo \emph{readReaction}. Riporto sotto il
+momento della creazione del corretto wrapper:
+\begin{lstlisting}
+Set<Vertex> reactants = this.convertToVertexSet(
+				reaction.getListOfReactants(), knownVertices,
+				new FromReactantDriver(listener));
+
+Set<Vertex> products = this.convertToVertexSet(
+				reaction.getListOfProducts(), knownVertices,
+				new FromProductDriver(listener));
+                              \end{lstlisting}
+Quello che i due wrapper eseguiranno quando verr\`a invocato il metodo
+astratto della classe astratta, sar\`a quello di notificare sul
+relativo metodo del listener il vertice ricevuto dalla classe
+astratta:
+\begin{lstlisting}
+public abstract class AbstractVertexHandlingListener implements
+		VertexHandlingListener {
+
+	private final VertexHandlingWithSourceListener listener;
+
+	protected VertexHandlingWithSourceListener getListener() {
+		return listener;
+	}
+
+	@Override
+	public void vertexHandled(Vertex vertex) {
+		this.getListener().vertexHandled(vertex);
+		this.onVertexHandled(vertex);
+	}
+
+	public abstract void onVertexHandled(Vertex vertex);
+}
+
+  protected class FromReactantDriver extends AbstractVertexHandlingListener {
+
+		@Override
+		public void onVertexHandled(Vertex vertex) {
+			this.getListener().reactantVertexHandled(vertex);
+		}
+	}
+
+protected class FromProductDriver extends AbstractVertexHandlingListener {
+
+		@Override
+		public void onVertexHandled(Vertex vertex) {
+			this.getListener().productVertexHandled(vertex);
+		}
+	}
+\end{lstlisting}
+
+\subsection{State pattern}
+
+\subsubsection*{Description}
+Riporto la descrizione di questo pattern ripresa da
+\cite[p. 327]{SmalltalkCompanion98}:
+\begin{quotation}
+Allow an object to alter its behaviour when its internal state
+changes. The object will appear to change its class.    
+\end{quotation}
+Nella mia implementazione non ho usato questo pattern ricalcando la
+struttura descritta nel riferimento che ho riportato, ma una sua
+variante, nella quale durante la vita di un oggetto non si cambia il
+suo stato pi\`u volte, bensi viene fissato nel momento della sua
+creazione.
+
+\subsubsection*{Reification}
+La variante descritta nella sezione precedente mi ha permesso di poter
+utilizzare oggetti di tipo \emph{Connector} in due modalit\`a.
+\begin{itemize}
+\item La prima pi\`u orientata al testing, che permette di inviare
+  messaggi ad oggetti \emph{Connector} per leggere delle reazioni e
+  verificare degli invarianti sul risultato della lettura. Questa
+  modalit\`a non necessita di mantenere nessuna informazione di stato
+  all'interno degli oggetti, ma sono di utilizzare parte del loro
+  comportamento. La classe interna \emph{StatelessConnectorState}
+  implementa quanto detto.
+\item la seconda invece \`e quella orientata ad un utilizzo concreto
+  nella computazione, la quale permette di effettuare il parsing delle
+  reazioni ricevendo in input il \emph{file path} del modello che si
+  vuole analizzare. La classe \emph{StatefullConnectorState}
+  implementa quanto detto.
+\end{itemize}
+
+Questo mi ha permesso di non "sporcare" il codice che implementa le
+responsabilit\`a della classe \emph{Connector} con strutture di
+controllo per determinare quale delle due modalit\`a si doveva
+utilizzare ed inoltre, senza l'applicazione di questo pattern, alcuni
+oggetti avrebbero avuto valorizzate delle propriet\`a interne mentre
+altri no: avremmo avuto una ridondanza di informazioni e una
+cattiva gestione della memoria.
+\\\\
+Riporto sotto l'estratto di codice nel quale si associa lo stato in
+fase di costruzione degli oggetti:
+\begin{lstlisting}
+  public static Connector makeConnector() {
+    Connector connector = new Connector();
+    connector.state = connector.new StatelessConnectorState(); 
+    return connector; 
+  }
+
+  public static Connector makeConnector(String path) { 
+    Connector connector = new Connector();
+    connector.state = connector.new StatefullConnectorState(path);
+    return connector;
+  }
+\end{lstlisting}
+Dato che oggetti di tipo \emph{Connector} sono \emph{value object},
+una volta creati non mutano il loro stato, quindi \`e sufficiente
+associare il loro stato (forse meglio dire "ruolo") in costruzione.
