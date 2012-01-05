@@ -1,1 +1,142 @@
 \section{Development methodology}
+
+In questa sezione descriver\`o la metodologia di sviluppo che ho
+adottato per sviluppare la fase di implementazione.
+
+Ho sempre avuto molta curiosit\`a sui metodi \emph{agile} e,
+soprattutto, sulla metodo \emph{Test Driven Development}. Non ho mai
+avuto opportunit\`a di affrontare un progetto usando queste linee idee
+e ho pensato che questo lavoro potesse essere un buon banco di prova.
+
+Il volume su cui ho cercato di apprendere questa tecnica \`e
+\footnote{aggiungere riferimento bibliografico qui al volume scritto
+  per intero} \emph{Test Driven Development: By Example} scritto da
+Kent Beck. In questo scritto vi sono molti esempi, scritti usando il
+linguaggio di programmazione \emph{Java}, anche se le idee di avere
+test automatici per assicurare la qualit\`a del codice erano gi\`a
+state battute in \emph{Lisp} e, dallo stesso Beck, in
+\emph{Smalltalk}.
+
+Riporto la prima frase della prefazione:
+\begin{quotation}
+  \emph{Clean code that works}, in Ron Jeffries' pithy phrase, is the
+  goal of Test-Driven Development. Clean code that works is a
+  worthwhile goal for a whole bunch of reasons...
+\end{quotation}
+Non posso certo dire che le mie implementazioni soddisfino la
+citazione precedente (almeno per la parte \emph{that works}), per\`o
+aver guidato l'intero sviluppo tramite test \`e stata una esperienza
+molto istruttiva, di cui sono soddisfatto.
+
+Nelle prossime sezioni descrivo come i \emph{tests} sono stati di
+grande aiuto durante il lavoro.
+
+\subsection{Learning tests}
+Questo tipo di test sono stati scritti soprattutto durante i primi
+momenti di sviluppo, e hanno avuto l'obiettivo di
+familiarizzare l'utilizzo della libreria \emph{JSBML}. 
+
+La documentazione fornita \`e estesa e ben dettagliata, per\`o ci
+sono stati degli aspetti che senza aver esercitato alcuni test non era
+possibile studiarli a priori.
+
+Per questi tests ho dedicato un package dedicato, in modo da
+fattorizzare in un unico contenitore tutta la logica che ho avuto
+bisogno per chiarire tutti gli aspetti necessari all'avanzamento del
+mio lavoro.
+
+In \footnote{aggiungere qui riferimento bibliografico a TDD, pag 136}
+viene spiegato questo "pattern" e un aspetto che non ho potuto
+sperimentare direttamente in questo sviluppo, ma che penso sia
+interessante notare. Se viene rilasciata una nuova versione della
+libreria \emph{JSBML} abbiamo il grande vantaggio di avere delle
+asserzioni che verificano i concetti che abbiamo utilizzato come
+dipendenze per il nostro lavoro. Siamo interessati che nessuna di
+queste \emph{assert} sia violata dal nuovo rilascio. 
+
+Senza questi test avremo dovuto provare il software manualmente per
+controllare che il comportamento non sia cambiato. Avendoli invece,
+\`e sufficiente far "correre" di nuovo tutta la batteria per
+assicurare che i concetti su cui ci siamo basati non abbiano subito
+modifiche.
+
+\subsection{Pros}
+Il maggior vantaggio che ho avuto utilizzando questa metodologia \`e
+stato di poter pensare ad una funzionalit\`a vestendo due
+"cappelli". Dapprima ho potuto concentrarmi sul comportamento che
+desideravo, quindi poter pensare solo il sistema di messaggi che i
+miei oggetti si sarebbero scambiati (e questo corrisponde alla fase
+\emph{test-first}), creando un \emph{test method} per catturare
+l'idea.
+
+Quando vedevo il nuovo test fallire, ho potuto dedicarmi
+all'implementazione necessaria per passare il test. 
+
+A differenza di quanto suggerisce Beck, non ho quasi mai applicato il
+pattern \emph{Fake it, ('Til you make it)} \footnote{aggiungere qui
+  riferimento a TDD, pag. 151}, in modo da arrivare subito alla
+\emph{green bar} e procedere poi alla rimozione dei eventuali
+duplicazioni o \emph{code smell} mediante refactoring, perch\`e in
+molti casi l'implementazione necessaria per superare il test non era
+cosi complessa da dover procedere in \emph{baby step} (usando la
+terminologia di Beck).
+
+Forse sono stato un po' troppo prolisso sotto alcuni aspetti: le mie
+batterie di test contano un totale di 191 metodi di test. Magari si
+sarebbe potuto risparmiare qualcosina, per\`o quasta granularit\`a
+fine penso sia stata di aiuto nella fase di superamento del test, la
+maggior parte delle volte la logica da implementare non \`e stata
+difficoltosa.
+
+\subsection{Cons}
+Una nota negativa che ho registrato riguarda il grado di profondit\`a
+(se si vuole di precisione) che ho associato ai test pi\`u critici.
+
+Nella parti pi\`u delicate mi sono sempre chiesto se i test scritti
+era sufficienti a catturare il comportamento che effettivamente avrei
+voluto. In alcuni punti ho dovuto ricorrere al debugger, ma penso che
+questo sia accettabile, per aiutarmi a capire se qualche aspetto
+necessit\`a di maggior copertura da parte dei metodi di test.
+
+Parte di questi dubbi penso derivino anche della mia non esperienza
+riguardo questo metodo.
+
+Un altro punto in cui ho avuto difficolt\`a e che mi distacco da
+quello che esprime Beck, riguarda lo stile con cui ho scritto le mie
+asserzioni. In \footnote{aggiungere qui riferimento bibliografico a
+  TDD, pag. 157}, Beck suggerisce di essere il maggior precisi
+possibile nella scrittura di una \emph{assert}, riporto un esempio:
+\begin{quotation}
+  I've seen assertions like \emph{assertTrue(rectangle.area() !=
+    0)}. You could return anything not null and satisfy this test, so
+  it isn't very useful. Be specific. If the area should be 50, then
+  say that it should be 50: \emph{assertEquals(50, rectangle.area())}.
+\end{quotation}
+Credendo nei principi espressi nella sezione
+\ref{sec:objects-oriented-functional-paradigms}, quindi riducendo
+l'uso di metodi accessori, ho avuto difficolt\`a a seguire i consigli
+di Beck. Penso per\`o di aver recuperato usando un altra idea che
+ritengo molto importante per la scrittura di solidi metodi di test: la
+\emph{triangolazione} \footnote{aggiugere qui riferimento
+  bibliografico a TDD, pag.153}. 
+
+Questa idea mi ha permesso di utilizzare un approccio molto "chiuso"
+per quanto riguarda l'uso di accessori, usando messaggi con lo
+stile \emph{isSomethingEquals(...)}, e scrivere lo stesso metodi di
+test solidi. Ad esempio:
+\begin{lstlisting}
+  @Test
+  public void matchSpeciesCompartement() {
+    Vertex v1 = VertexFactory.makeSimpleVertex();
+    Vertex v2 = VertexFactory.makeSimpleVertex();
+    Assert.assertNotSame(v1, v2);
+    Assert.assertTrue(v1.matchCompartmentWith(v2));
+    Assert.assertTrue(v2.matchCompartmentWith(v1));
+    Assert.assertFalse(v1.matchSpeciesWith(v2));
+    Assert.assertFalse(v2.matchSpeciesWith(v1));
+  }
+\end{lstlisting}
+Usando questo schema, anche se il metodo \emph{matchCompartmentWith()}
+invocato sull'oggetto \emph{v1} restituisse un valore fittizio solo
+per superare il test, la seguente invocazione su \emph{v2} lo
+contraddirrebbe, fallendo il test.
