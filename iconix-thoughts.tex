@@ -1,0 +1,57 @@
+\section{ICONIX method difficult to see here}
+Durante il corso di \emph{Tecniche di programmazione} ho avuto
+opportunit\`a di sviluppare un progetto utilizzando una metodologia
+sviluppata da Doug Rosemberg e Matt Stephens, chiamata \emph{ICONIX},
+la quale mira ad improntare lo sviluppo partendo da dei documenti di
+specifica del comportamento e, in modo iterativo, raffinarli (in
+seguito a successive convalidazioni) in modo da produrre dei documenti
+tecnici di pi\`u basso livello, contenenti tutte le informazioni
+richieste per una implementazione chiara e precisa \footnote{Su questa
+  tecnica ho avuto modo di discutere e avere delle correzioni da due
+  colleghi, Arash Tavallay e Emanuele Conti, che ringrazio molto per i
+  loro consigli}.
+
+Riporto un passo preso dal volume che introduce
+\emph{ICONIX}\footnote{aggiungere qui riferimento bibliografico a USe
+  Case Driven, pag. 50} che ritengo catturi le idee chiavi da usare
+come punto di partenza:
+\begin{quotation}
+  \textbf{Don't Forget the Rainy-Day}: Scenarios when you're writing
+  your use cases, write them in such a way that your efforts are
+  focused on capturing your users' actions and the associated system
+  responses. As you'll see, use case modeling involves analyzing both
+  the basic course (a user's typical "sunny-day" usage of the system;
+  often thought of as 90\% of the behavior) and the alternate courses
+  (the other 10\% of the system functionality, consisting of
+  "rainy-day" scenarios of the way in which the user interacts with
+  the system; in other words, what happens when things go wrong, or
+  when the user tries some infrequently used feature of the
+  program). If you capture all of this in your use cases, you have the
+  vast majority of the system specced out.
+\end{quotation}
+
+Nonostante ci siano degli aspetti che non condivido appieno del metodo
+(in particolare sui \emph{domain model}, come il lettore si render\`a
+conto al termine delle prime sezioni del capitolo
+\ref{chapter:implementation}), ci sono comunque dei punti di forza (in
+particolare i \emph{robustness diagrams}) che avrei avuto piacere
+utilizzare durante questo lavoro, di cui invece non ho potuto giovarne
+dei vantaggi.
+
+La maggior difficolt\`a che ho trovato nello stilare \emph{use-case}
+seguendo le linee di \emph{ICONIX} sono dovute al fatto che il mio
+lavoro non ha una natura interattiva (anche se si potrebbe obiettare
+che l'attore \emph{user} sia a sua volta un programma e non un utente
+umano) e applicare la regola \emph{two-paragraph rule}
+\footnote{aggiungere riferimento bibliografico al volume Use Case
+  Driven, pag. 52} nella descrizione degli use-case non portava
+vantaggi nella specifica delle mie idee.
+
+Per un esempio di quello che si potrebbe ottenere utilizzando tale
+regola, non applicato ad \emph{toy examples}, bensi ad un progetto
+reale, si rimanda a \footnote{aggiungere qui riferimento bibliografico
+  alla tesi di Arash e Ema}.
+
+Per i motivi sopra esposti, nelle prossime sezioni le descrizione
+degli use-case non sar\`a molto formale ma avr\`a una forma pi\`u
+discorsiva.
