@@ -128,8 +128,119 @@ composto a questo use-case il precedente
 \end{figure}
 
 \subsection{...represent it in \emph{plain text} tabular}
+Questo use case cattura il requisito di rappresentare il grafo in
+input in formato testuale, usando uno schema tabellare.
+
+Il \emph{side-effect} prodotto da questo use-case \`e collezionare le
+informazioni richieste visitando il grafo e scriverle in un file
+dedicato.
+
+Inoltre, per comodit\`a, vogliamo comporre pi\`u di un use-case ed
+avere le informazioni relative ai grafi intermedi inserite nello
+stesso documento.
+
+Vediamo i risultati di una sua esecuzione, allegando un documento
+prodotto:
+\begin{lstlisting}
+phase-PlainTextStatsPipeFilter-level-2
+NOfVertices: 1
+	NOfComponents:	206
+	NOfEdges:	183
+	NOfSources:	108
+	NOfSinks:	96
+	NOfWhites:	2
+
+NOfVertices: 2
+	NOfComponents:	9
+	NOfEdges:	1
+	NOfSources:	1
+	NOfSinks:	8
+	NOfWhites:	0
+
+NOfVertices: 3
+	NOfComponents:	5
+	NOfEdges:	0
+	NOfSources:	0
+	NOfSinks:	5
+	NOfWhites:	0
+
+NOfVertices: 4
+	NOfComponents:	1
+	NOfEdges:	0
+	NOfSources:	0
+	NOfSinks:	1
+	NOfWhites:	0
+
+NOfVertices: 396
+	NOfComponents:	1
+	NOfEdges:	89
+	NOfSources:	0
+	NOfSinks:	0
+	NOfWhites:	1
+
+phase-PlainTextStatsPipeFilter-level-0
+	NOfVertices:	639
+	NOfEdges:	2209
+	NOfSources:	108
+	NOfSinks:	95
+	NOfWhites:	436
+
+\end{lstlisting}
+
 
 \subsection{...\emph{collapse} its source to manage complexity}
+\begin{lstlisting}
+phase-PlainTextStatsPipeFilter-level-1
+	NOfVertices:	386
+	NOfEdges:	1339
+	NOfSources:	1
+	NOfSinks:	85
+	NOfWhites:	300
+
+phase-PlainTextStatsPipeFilter-level-3
+NOfVertices: 255
+	NOfComponents:	1
+	NOfEdges:	77
+	NOfSources:	0
+	NOfSinks:	0
+	NOfWhites:	1
+
+NOfVertices: 1
+	NOfComponents:	88
+	NOfEdges:	69
+	NOfSources:	1
+	NOfSinks:	85
+	NOfWhites:	2
+
+NOfVertices: 2
+	NOfComponents:	8
+	NOfEdges:	0
+	NOfSources:	0
+	NOfSinks:	8
+	NOfWhites:	0
+
+NOfVertices: 3
+	NOfComponents:	4
+	NOfEdges:	0
+	NOfSources:	0
+	NOfSinks:	4
+	NOfWhites:	0
+
+NOfVertices: 4
+	NOfComponents:	2
+	NOfEdges:	2
+	NOfSources:	1
+	NOfSinks:	1
+	NOfWhites:	0
+
+NOfVertices: 7
+	NOfComponents:	1
+	NOfEdges:	0
+	NOfSources:	0
+	NOfSinks:	1
+	NOfWhites:	0
+
+\end{lstlisting}
 
 \subsection{...\emph{inspect} its connected components and \emph{show}
   them in a simple GUI}
