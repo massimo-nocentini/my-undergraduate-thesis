@@ -4,6 +4,9 @@
 \item dire che l'azione di compattare tutte le sorgenti \`e nata dal
   risultato della ricerca delle componenti fortemente connesse in
   quanto avevamo troppe sorgenti.
+\item rivisitare la parte di implementazione e vedere se si possono
+  fare dei collegamenti alla parte degli use-case quando si discutono
+  le implementazioni.
 \end{itemize}
 
 \section{Further work}
@@ -43,5 +46,20 @@ basi di partenza per sviluppi futuri del progetto.
   proprie pipeline in batterie e lasciare al codice il codice di
   costruire i necessari oggetti ed eseguire le rispettive
   computazioni.
+
+\item[render a DFS tree in the original graph] costruire un nuovo
+  filtro che permetta di comporre l'applicazione del filtro della
+  ricerca \emph{DFS} e rappresentare l'albero risultate "sopra" il
+  grafo esistente.
+
+  Realizzare tale idea non dovrebbe essere difficoltoso in quanto si
+  tratterebbe di modificare la logica che implementa la ricerca
+  \emph{DFS}, eseguendola per un vertice scelto (oppure dato), e
+  successivamente colorare gli archi del grafo che sono anche archi
+  dell'albero \emph{DFS} di un colore pi\`u scuro (anche questo passo
+  \`e corto da fare in quanto il colore grigio che adesso viene
+  utilizzato per colorare gli archi non \`e stato scelto a caso).
+
+
   % put here another further-work
 \end{description}
