@@ -1,0 +1,43 @@
+phase-PlainTextStatsPipeFilter-level-2
+NOfVertices: 1
+	NOfComponents:	206
+	NOfEdges:	183
+	NOfSources:	108
+	NOfSinks:	96
+	NOfWhites:	2
+
+NOfVertices: 2
+	NOfComponents:	9
+	NOfEdges:	1
+	NOfSources:	1
+	NOfSinks:	8
+	NOfWhites:	0
+
+NOfVertices: 3
+	NOfComponents:	5
+	NOfEdges:	0
+	NOfSources:	0
+	NOfSinks:	5
+	NOfWhites:	0
+
+NOfVertices: 4
+	NOfComponents:	1
+	NOfEdges:	0
+	NOfSources:	0
+	NOfSinks:	1
+	NOfWhites:	0
+
+NOfVertices: 396
+	NOfComponents:	1
+	NOfEdges:	89
+	NOfSources:	0
+	NOfSinks:	0
+	NOfWhites:	1
+
+phase-PlainTextStatsPipeFilter-level-0
+	NOfVertices:	639
+	NOfEdges:	2209
+	NOfSources:	108
+	NOfSinks:	95
+	NOfWhites:	436
+
