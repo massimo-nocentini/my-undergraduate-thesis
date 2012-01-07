@@ -4,7 +4,7 @@
 La figura \footnote{aggiungere qui una figura che rappresenta gli use
   case in stile overview} riassume tutti i casi d'uso che abbiamo
 implementato nella libreria. La notazione utilizzata \`e quella
-offerta dal linguaggio \emph{UML}, limitandosi ai "costrutti" pi\`u
+offerta dal linguaggio \emph{UML}, limitandoci ai "costrutti" pi\`u
 semplici per favorire la comprensione.
 
 In questa sezione descriveremo i casi d'uso che vogliamo implementare
@@ -13,9 +13,9 @@ e, per ognuno di essi, mostreremo i risultati della realizzazione.
 Come suggerisce il titolo di questa sezione, tutti i successivi use
 case lavorano su un modello metabolico, sul quale vengono effettuate
 le trasformazioni che andiamo a dettagliare. Inoltre, come il lettore
-capir\`a tra nelle prossime righe, ogni use case pu\`o essere messo in
+capir\`a nelle prossime righe, ogni use case pu\`o essere messo in
 corrispondenza con il concetto di filtro. Questa associazione
-porter\`a alla naturale astrazione che cosistuir\`a l'architettura
+porter\`a alla naturale astrazione che costituir\`a l'architettura
 della nostra libreria.
 
 \subsection{...build a model \emph{story-ready}}
@@ -94,6 +94,7 @@ composto a questo use-case il precedente
 
 \subsection{...apply the \emph{Tarjan algorithm} and build the
   minimized graph}
+\label{subsection:use-case-tarjan}
 Questo use case cattura il requisito di applicare l'algoritmo di
 Tarjan per la ricerca delle componenti fortemente connesse al grafo di
 input.
@@ -259,6 +260,7 @@ successive computazioni, ha un solo vertice sorgente.
 
 \subsection{...\emph{inspect} its connected components and \emph{show}
   them in a simple GUI}
+\label{subsection:use-case-result-viewer}
 Questo use case cattura il requisito di rappresentare informazioni
 relative alla componenti fortemente connesse attraverso una semplice
 GUI utilizzando il framework \emph{SWING}.

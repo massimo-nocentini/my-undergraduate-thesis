@@ -1,1 +1,127 @@
-\section{Architecture}
+\section{Architecture: pipes and filters}
+
+In questa sezione descriveremo l'architettura che vogliamo dare al
+nostro lavoro, coscienti degli obiettivi espressi nelle precedenti
+sezioni e delle loro caratteristiche.
+
+Daremo prima alcune idee prese dagli articoli che hanno introdotto
+quest'architettura e, nella seconda parte di questa sezione, vedremo
+come possiamo "mettere a punto" queste idee nel nostro progetto.
+
+\subsection{A bit of theory}
+Quest'architettura \`e molto discussa e vi \`e molta letturatura da
+cui poter attingere, penso per\`o che tornare alle sorgenti che per
+prime hanno permesso la sua diffusione sia di notevole importanza
+prima di analizzare le varianti e studi successivi. 
+
+I volumi da cui ho studiato sono quello che Buschmann
+\footnote{aggiungere qui riferimento bibliografico al volume POSA1} e
+alla miscellanea di Coplien e Schmidt \footnote{aggiungere qui
+  riferimento bibliografico al colume PLOPD1}.
+
+\subsubsection{Basic schema}
+Nella testata che apre il pattern in \footnote{aggiungere qui
+  riferimento bibliografico al volume POSA1, pag. 53} compare:
+\begin{quotation}
+  The \emph{Pipes and Filters} architectural pattern provides a
+  structure for systems that process a stream of data. Each processing
+  step is encapsulated in a filter component. Data is passed through
+  pipes between adjacent filters. Recombining filters allows you to
+  build families or related systems.
+\end{quotation}
+L'idea alla base di questo pattern \`e il principio \emph{separation
+  of concerns}. Quello che si vuole fare \`e dividere tutte le
+responsabilit\`a del sistema in sottotask, ognuno dei quali pu\`o
+essere implementato con una componente software tale che \emph{non
+  abbia dipendenze} comportamentali dalle altre componenti (non \`e
+client di nessun altra, non vi \`e delega di comportamento) e che
+\emph{coopera} con le altre componenti usando l'output di una
+componente come input per un'altra.
+
+\`E interessante quello che aggiungono Coplien e Schmidt, pag. 431:
+\begin{quotation}
+  Usually, transformation of input data is done locally and
+  incrementally, so that output may begin before the input is
+  completely read. This means that a filter may start to work as soon
+  as its predecessor produces its first result.
+\end{quotation}
+Questa idea \`e molto importante se vogliamo introdurre un grado
+maggiore di parallelismo nel sistema (oppure distribuire la
+computazione). Nel nostro lavoro questo non \`e stato possibile, in
+quanto le computazioni che abbiamo incapsulato nei nostri filtri non
+permettono di produrre un output che possa ritenersi un semilavorato,
+pronto per essere raffinato dal filtro successivo.
+
+\subsubsection{Consequences about filters}
+Riporto una osservazione fatta in \footnote{aggiungere qui riferimento
+PLOPD1, pag. 431}:
+\begin{quotation}
+  To preserve the independence of the framework's components, filters
+  may not share a state. The only way to put the results of different
+  filters together is to organize some of them into a sequence such
+  that certain filters perform further transformations on the outputs
+  of others. In addition, a filter should not know the identity of the
+  filters preceding or following it in the computation sequence.
+\end{quotation}
+Lo use-case \ref{subsection:use-case-tarjan} \`e in un certo senso
+quello che Coplien identifica come \emph{certain filter that perform
+  further transformations...} per lo use-case
+\ref{subsection:use-case-result-viewer}, in quanto quest ultimo assume
+di lavorare su un grafo che sia la minimizzazione di un altro grafo
+applicando l'algoritmo di Tarjan.
+
+Aver introdotto formalmente il concetto di filtro come astrazione \`e
+stato molto vantaggioso in quanto ogni computazione, sia effettiva che
+di "adattamento", pu\`o essere trattata indipendentemente e in modo
+trasparente alla stregua delle altre.
+
+\subsubsection{Consequences about pipes}
+Riporto ancora da Coplien, pag.432:
+\begin{quotation}
+  Two principally different possibilities exist for the realization of
+  pipes: pipes may simply be links between filters (such as message
+  calls) or they may be separate components (such as data repositories
+  or sensors). A pipe's only responsibility is to transmit data
+  between filters, eventually by converting their format from the one
+  produced by their sender to the one required by their receiver.
+\end{quotation}
+Nel nostro lavoro non abbiamo avuto bisogno della complessit\`a di
+modellare veri e propri oggetti \emph{pipe}, in quanto, come vedremo
+nella prossima sezione, non \`e necessario adattare il formato
+dell'input per coppie diverse di filtri, che sarebbe stata
+responsabilit\`a di oggetti \emph{pipe}. Abbiamo quindi scelto la
+modalit\`a \emph{links between filters}.
+
+\subsection{Reification in this work}
+L'implementazione di questo pattern nella libreria ha cercato di
+prendere spunto di quanto detto nella sezione precedente ma allo
+stesso tempo abbiamo cercato di dare un taglio che caratterizzasse
+questo progetto. 
+
+Abbiamo introdotto la classe \emph{PipeFilter} per modellare il
+concetto di \emph{filtro} e, come sua propriet\`a, un riferimento al
+filtro successivo, per modellare il concetto di \emph{pipe}.
+
+Inoltre possiamo vedere la \emph{pipeline} come una coda di filtri,
+dove il primo filtro ad essere inserito nella pipeline \`e il primo ad
+essere eseguito. Utilizzando la terminologia usata da Buschmann, la
+nostra implementazione ricade nello scenario \emph{"a pull pipeline"},
+dove la computazione viene innescata dalla richiesta di un client.
+
+Non vi \`e bisogno di logica di conversione dell'output di un filtro
+per esser trattato come input per un altro, in quanto ogni filtro
+lavora con l'astrazione \emph{OurModel}, anche se avremo comportamento
+diverso in base al tipo di oggetti \emph{Vertex} contenuti all'interno
+dell'input.
+
+La precedente osservazione potrebbe indurre il lettore a pensare alla
+nostra architettura non tanto come una pipeline, quanto come un
+sistema di decoratori \footnote{aggiungere qui riferimento
+  bibliografico a DP, trovare pagina in cui si discute il
+  decorator}. Questa, a nostro avviso, non \`e per niente una
+conclusione errata, anzi credo che indebolire il requisito di
+stabilire un'ordinamento rigido dei filtri presente nel pattern
+\emph{pipeline} originale, a favore di maggior dinamicit\`a e
+trasparenza sul formato di input/output, porti ad una soluzione che
+sarebbe stato sufficiente implementare con un tipico schema con
+decoratori.
