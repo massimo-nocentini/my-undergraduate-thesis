@@ -186,9 +186,66 @@ phase-PlainTextStatsPipeFilter-level-0
 	NOfWhites:	436
 
 \end{lstlisting}
+Questo output necessita di alcune spiegazioni. Quello riportato \`e il
+documento che viene generato da questo use-case, collezionando in un
+primo momento le informazioni sul grafo originale (riportate sotto
+l'etichetta \emph{phase-PlainTextStatsPipeFilter-level-0}) e in un
+secondo momento, dopo aver applicato l'algoritmo di Tarjan, le
+informazioni sul grafo minimizzato (riportate sotto l'etichetta
+\emph{phase-PlainTextStatsPipeFilter-level-2}).
 
+Come si nota i formati delle rappresentazioni tabulari sono vicini ma
+non identici.
+
+Le informazioni raccolte dopo il primo passo hanno la seguente
+semantica; sia:
+\begin{lstlisting}
+phase-identifier
+	NOfVertices:	v
+	NOfEdges:	e
+	NOfSources:	s
+	NOfSinks:	d
+	NOfWhites:	w
+\end{lstlisting}
+allora il grafo in input $G = (V, E)$, al passo
+\emph{phase-identifier}, \`e tale che $|E| = e$ e $|V| = v$, di cui
+$s$ vertici sono sorgenti, $d$ vertici sono pozzi e $w (= v -s -d)$
+sono intermedi.
+
+Definiamo adesso la semanrica associata alle informazioni collezionate
+per il secondo passo. Come si pu\`o notare, queste informazioni
+ripetono uno schema, del quale \`e sufficiente dare la semantica,
+quante volte \`e necessario per elencare tutti i dati raccolti. Sia
+dato il \emph{building-block}:
+\begin{lstlisting}
+NOfVertices: v
+	NOfComponents:	c
+	NOfEdges:	e
+	NOfSources:	s
+	NOfSinks:	d
+	NOfWhites:	w  
+\end{lstlisting}
+allora nel grafo minimizzato esistono $c$ componenti fortemente
+connesse, ognuna delle quali raggruppa $v$ vertici. Esistono $e$ archi
+uscenti in totale dalle $c$ componenti e queste sono partizionate in
+$s$ componenti sorgenti, $d$ componenti pozzo e $w$ componenti
+intermedie.
+
+Come abbiamo detto ad inizio sezione, questo use-case non trasforma il
+grafo in input, anzi possiamo \`e ortogonale ed una intera
+composizione di use-case in quanto, elencando i dati raccolti per ogni
+specifico \emph{phase-identifier}, non ha dipendenze da ognuno di
+essi.
 
 \subsection{...\emph{collapse} its source to manage complexity}
+Questo use case cattura il requisito di eliminare tutti i vertici
+sorgenti contenuti nel grafo in input, introducendo al loro posto un
+nuovo vertice sorgente, tale che il suo vicinato sia uguale all'unione
+dei vicinati dei vertici rimossi.
+
+Vediamo i risultati di una sua esecuzione, applicando la
+minimizzazione al grafo di input, dopo aver composto a questo use-case
+il precedente \ref{subsection:represent-it-in-black-and-white}:
 \begin{lstlisting}
 phase-PlainTextStatsPipeFilter-level-1
 	NOfVertices:	386
@@ -196,54 +253,68 @@ phase-PlainTextStatsPipeFilter-level-1
 	NOfSources:	1
 	NOfSinks:	85
 	NOfWhites:	300
-
-phase-PlainTextStatsPipeFilter-level-3
-NOfVertices: 255
-	NOfComponents:	1
-	NOfEdges:	77
-	NOfSources:	0
-	NOfSinks:	0
-	NOfWhites:	1
-
-NOfVertices: 1
-	NOfComponents:	88
-	NOfEdges:	69
-	NOfSources:	1
-	NOfSinks:	85
-	NOfWhites:	2
-
-NOfVertices: 2
-	NOfComponents:	8
-	NOfEdges:	0
-	NOfSources:	0
-	NOfSinks:	8
-	NOfWhites:	0
-
-NOfVertices: 3
-	NOfComponents:	4
-	NOfEdges:	0
-	NOfSources:	0
-	NOfSinks:	4
-	NOfWhites:	0
-
-NOfVertices: 4
-	NOfComponents:	2
-	NOfEdges:	2
-	NOfSources:	1
-	NOfSinks:	1
-	NOfWhites:	0
-
-NOfVertices: 7
-	NOfComponents:	1
-	NOfEdges:	0
-	NOfSources:	0
-	NOfSinks:	1
-	NOfWhites:	0
-
 \end{lstlisting}
+Come si vede dalle informazioni riportate, il nuovo grafo, input per
+successive computazioni, ha un solo vertice sorgente.
 
 \subsection{...\emph{inspect} its connected components and \emph{show}
   them in a simple GUI}
+Questo use case cattura il requisito di rappresentare informazioni
+relative alla componenti fortemente connesse attraverso una semplice
+GUI utilizzando il framework \emph{SWING}.
+
+In realt\`a quello che ci piacerebbe costruire \`e un visualizzatore
+di strutture dati, costruite appositamente per contenere le
+informazioni di interesse, senza essere dipendenti dal risultato di
+una computazione appena conclusa. Ovvero, vorremmo serializzare tale
+struttura dati in una path del file system e poterla visualizzare
+successivamente. Questo secondo noi \`e un approccio pi\`u modulare in
+quanto permette di creare strutture dati e poterle scambiare,
+utilizzando la maschera come semplice \emph{render}, anche se non
+abbiamo generato noi stessi la serializzazione delle informazioni.
+
+Inoltre siamo interessati a condurre la nostra indagine restringendosi
+non solo ad un modello (e quindi ad un solo grafo), bensi vorremmo
+analizzare un insieme di modelli affinch\`e sia possibile studiare in
+che tipo di \emph{strongly connected components} ogni \emph{species}
+incontrata appare.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{images/ResultViewer-execution.eps}
+  \caption{Result Viewer for strongly connected components}
+  \label{fig:result-viewer-scc}
+\end{figure}
+La figura \ref{fig:result-viewer-scc} riporta uno screenshot, diamo
+adesso la semantica alle informazioni rappresentate nella maschera. 
+
+Il frame \`e composto da quattro \emph{list box}, le quali vanno
+utilizzate con l'ordine da sinistra verso destra e dall'alto verso il
+basso.
+
+Nella prima \emph{list-box} vengono elencate tutte le \emph{species}
+contenute in almeno uno dei modelli oggetto dell'indagine. Ogni
+\emph{species} \`e codificata con una stringa composta
+dall'identificatore e, tra parantesi tonde, il nomde del compartimento
+in cui risiede.
+
+Cliccando su una \emph{species} $s$, nella seconda \emph{list-box}
+vengono elencati i tipi delle \emph{strongly connected components} che
+contengono la \emph{species} $s$.
+
+Cliccando su una tipologia $t$ di \emph{strongly connected
+  components}, nella terza \emph{list-box} vengono elencate le
+cardinalit\`a delle \emph{strongly connected components} che
+contengono la \emph{species} $s$ e sono di tipologia $t$. Ad ogni
+cardinalit\`a si concatena un numero intero che indica la
+cardinalit\`a dell'insieme rappresentato nell'ultima \emph{list-box},
+che andiamo a descrivere.
+
+Cliccando su una cardinalit\`a $c$, nella quarta e ultima
+\emph{list-box} vengono elencati i modelli, la cui applicazione
+dell'algoritmo di Tarjan, ha prodotto un grafo in cui esiste una
+\emph{strongly connected component} tale che contiene la
+\emph{species} $s$, \`e di tipo $t$ ed ha una cardinalit\`a $c$.
 
 \subsection{...ignore it and process \emph{your own graph}}
 Nelle precedenti sezioni abbiamo sempre assunto di lavorare su un
