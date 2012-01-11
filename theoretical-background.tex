@@ -127,8 +127,8 @@ connesse di un grafo orientato. Ognuno dei seguenti algoritmi sono in
 realt\`a delle varianti della \emph{Depth First Search}, introducendo
 delle personalizzazioni allo schema visto nella sezione precedente.
 
-\subsection{Focus on sink components and reverse the input graph: the
-  Kosaraju two phase algorithm}
+\subsection{Kosaraju: focus on sink components and reverse the input
+  graph}
 
 Questa idea non introduce nessuna modifica allo schema che abbiamo
 visto, bens\`i utilizza la procedura due volte (\emph{two phases}) su
@@ -175,11 +175,12 @@ questo non \`e sufficiente per usare la precedente osservazione, in
 quanto quello che si richiede \`e un vertice che appartenga ad una
 strongly connected component pozzo.
 
-Per risolvere questo problema possiamo calcolare $G^{R}$. Notiamo che
-le strongly connected components non cambiano la loro composizione in
-$G^{R}$ in quanto consideriamo il sottografo di $G$ composto da una di
-queste: per definizione di strongly connected component, per ogni
-coppia di vertici $(v_{1}, v_{2})$ esiste un cammino $c_{1} =
+Per risolvere questo problema possiamo calcolare $G^{R}$
+(\emph{reverse the graph!}. Notiamo che le strongly connected
+components non cambiano la loro composizione in $G^{R}$ in quanto
+consideriamo il sottografo di $G$ composto da una di queste: per
+definizione di strongly connected component, per ogni coppia di
+vertici $(v_{1}, v_{2})$ esiste un cammino $c_{1} =
 v_{1}\rightarrow^{*} v_{2}$ ed un camino $c_{2} = v_{2}\rightarrow^{*}
 v_{1}$. Invertendo la direzione degli archi, i due cammini continuano
 ad esistere (ovvero $c_{1}$ gioca il ruolo di $c_{2}$ e viceverca) e
@@ -187,11 +188,21 @@ quindi la relazione di connessione forte \`e chiusa rispetto alla
 operazione $\cdot ^{R}$.
 
 Il vantaggio di passare a $G^{R}$ \`e che le strongly connected
-components sorgenti in $G$ diventano pozzi in $G^{R}$, che \`e quello
-che volevamo. Adesso possiamo eseguire una \emph{Depth First Search}
-su $G^{R}$ e, per la seconda osservazione in quota, il vertice con
-associato il massimo \emph{post} appartiene ad una strongly connected
-component sorgente in $G^{R}$ e, di conseguenza, ad una strongly connected
-component pozzo in $G$.
+components sorgenti in $G$ diventano pozzi in $G^{R}$. Adesso possiamo
+eseguire una \emph{Depth First Search} su $G^{R}$ e, per la seconda
+osservazione in quota, il vertice con associato il massimo \emph{post}
+appartiene ad una strongly connected component sorgente in $G^{R}$ e,
+di conseguenza, ad una strongly connected component pozzo in $G$, che
+\`e quello che volevamo.
 
+Quello che adesso rimane da fare \`e lanciare una \emph{Depth First
+  Search} sul grafo di input $G$, scansionando i vertici in ordine
+decrescente di \emph{post}. In questo modo tutte le strongly connected
+components verranno identificate una alla volta per la prima
+osservazione in quota. I vertici esplorati durante ogni invocazione
+della procedura \emph{explore} eseguita dalla procedura \emph{DFS} \`e
+una strongly connected component del grafo $G$.
+
+Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
+del tempo richiesto dallo schema \emph{Depth First Search} classico.
 
