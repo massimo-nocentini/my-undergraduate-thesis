@@ -80,10 +80,10 @@ vertici \emph{pi\`u recentemente esplorati} corrisponde a \emph{ball
   of string}.
 \end{paragraph}
 
-\begin{paragraph}{Pseudocode and complexity}
-  Formalizziamo la visita \emph{Depth First Search} nel seguente
-  pseudo codice:
-  \begin{lstlisting}
+\subsection{Pseudocode and complexity}
+Formalizziamo la visita \emph{Depth First Search} nel seguente pseudo
+codice:
+\begin{lstlisting}
     procedure DFS(G = (V, E))
       for all v in V:
         visited(v) = false
@@ -97,8 +97,8 @@ vertici \emph{pi\`u recentemente esplorati} corrisponde a \emph{ball
       for each edge (v, u) in E:
         if not visited(u): explore(u)
       postvisit(v)
-  \end{lstlisting}
-\end{paragraph}
+\end{lstlisting}
+
 Facciamo una breve analisi della complessit\`a. La prima osservazione
 da fare \`e che ogni vertice viene esaminato una e una sola volta
 grazie all'array \emph{visited}. Durante l'esplorazione di un vertice
@@ -118,4 +118,80 @@ utilizziamo solo $previsit$ il risultato \`e equivalente ad una visita
 \emph{prefissa} dell'albero, mentre se utilizziamo solo
 \emph{postvisit} otteniamo una visita \emph{postfissa} dell'albero.
 
-\section{Tarjan algorithm}
+\section{Finding strongly connected components: a survey of
+  algorithms}
+
+In questa sezione faremo una panoramica sugli algoritmi pi\`u
+conosciuti in letteratura per la ricerca di componenti fortemente
+connesse di un grafo orientato. Ognuno dei seguenti algoritmi sono in
+realt\`a delle varianti della \emph{Depth First Search}, introducendo
+delle personalizzazioni allo schema visto nella sezione precedente.
+
+\subsection{Focus on sink components and reverse the input graph: the
+  Kosaraju two phase algorithm}
+
+Questa idea non introduce nessuna modifica allo schema che abbiamo
+visto, bens\`i utilizza la procedura due volte (\emph{two phases}) su
+grafi di input differenti.
+
+Una osservazione che possiamo fare sullo schema classico \`e che
+l'invocazione della procedura \emph{explore} invocata con input il
+nodo $u$ termina quando tutti i nodi raggiungibili da $u$ sono stati
+esplorati.
+
+Da questo possiamo iniziare a ragionare in questo modo:
+\begin{quotation}
+  Supponiamo di conoscere la decomposizione in strongly connected
+  components di un grafo: sia $C_{i}$ una di queste tale che sia pozzo
+  (ovvero che non ha archi uscenti nel \emph{meta grafo} che ha come
+  nodi le strongly connected components di cui stiamo ipotizzando
+  l'esistenza) e sia $v$ un vertice tale che $v \in C_{i}$. Allora
+  $C_{i} = explore(v)$ (per brevit\`a supponiamo che \emph{explore}
+  ritorni l'insieme di nodi raggiungibili da $v$).\footnote{aggiungere
+    la definizione di meta grafo nella parte di introduzione di questo
+    capitolo dove si introduce un po di terminologia}
+\end{quotation}
+
+Con la precedente osservazione abbiamo un metodo per trovare una
+strongly connected components, dobbiamo per\`o avere un modo per
+trovare il vertice $v$ e cosa fare una volta trovata tale componente.
+
+Prima di continuare, implementiamo le due funzioni \emph{previsit,
+  postvisit} in modo da associare ad ogni vertice il momento in cui
+viene esplorato e il momento in cui il suo vicinato viene
+completamente esplorato, chiamiamo questo secondo istante \emph{post}.
+
+Adesso che abbiamo definito la coppia di istanti possiamo osservare
+che: 
+\begin{quotation}
+  il vertice tale che ha il pi\`u grande \emph{post} calcolato
+  dall'invocazione di un \emph{Depth First Search}, appartiene ad un
+  strongly connected component sorgente.
+\end{quotation}
+
+\`E facile individuare tali vertici, in quanto sono i nodi per i quali
+la procedura \emph{DFS} invoca la procedura \emph{explore}. Per\`o
+questo non \`e sufficiente per usare la precedente osservazione, in
+quanto quello che si richiede \`e un vertice che appartenga ad una
+strongly connected component pozzo.
+
+Per risolvere questo problema possiamo calcolare $G^{R}$. Notiamo che
+le strongly connected components non cambiano la loro composizione in
+$G^{R}$ in quanto consideriamo il sottografo di $G$ composto da una di
+queste: per definizione di strongly connected component, per ogni
+coppia di vertici $(v_{1}, v_{2})$ esiste un cammino $c_{1} =
+v_{1}\rightarrow^{*} v_{2}$ ed un camino $c_{2} = v_{2}\rightarrow^{*}
+v_{1}$. Invertendo la direzione degli archi, i due cammini continuano
+ad esistere (ovvero $c_{1}$ gioca il ruolo di $c_{2}$ e viceverca) e
+quindi la relazione di connessione forte \`e chiusa rispetto alla
+operazione $\cdot ^{R}$.
+
+Il vantaggio di passare a $G^{R}$ \`e che le strongly connected
+components sorgenti in $G$ diventano pozzi in $G^{R}$, che \`e quello
+che volevamo. Adesso possiamo eseguire una \emph{Depth First Search}
+su $G^{R}$ e, per la seconda osservazione in quota, il vertice con
+associato il massimo \emph{post} appartiene ad una strongly connected
+component sorgente in $G^{R}$ e, di conseguenza, ad una strongly connected
+component pozzo in $G$.
+
+
