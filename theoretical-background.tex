@@ -1,5 +1,121 @@
 \section{"Telling stories" characterization}
 
+
 \section{DFS search}
+
+La ricerca (o visita) di un grafo \`e una procedura che rivela molte
+informazioni sulla sua struttura e molte implementazioni richiedono
+tempo lineare.
+
+Prima di descrivere in particolare la ricerca oggetto di questa
+sezione, diamo una breve descrizione del problema pi\`u generico,
+ovvero di cosa significa visitare un grafo. 
+
+\subsection{The search concept}
+
+Sia $G$ il grafo che vogliamo visitare. Inizialmente tutti i vertici
+che compongono il grafo sono sconosciuti, nessuno di essi \`e stato
+\emph{esplorato}. Iniziamo da un vertice e seguiamo uno dei suoi
+archi, che porter\`a ad un nuovo vertice. Continuiamo ad applicare
+questa tecnica: quando arriviamo ad un vertice selezioniamo un arco
+non ancora percorso, uscente da vertici gi\`a conosciuti. Percorrendo
+l'arco che volta volta viene selezionato, si arriva in un vertice che
+possiamo aver gi\`a visitato oppure no. Quando non \`e possibile
+selezionare nessun arco non ancora percorso uscente da vertici gi\`a
+visitati, allora si seleziona un vertice non ancora selezionato e si
+riapplica la tecnica descritta precedentemente.
+
+Come si capisce dal paragrafo precedente, la visita mira ad
+identificare un insieme di vertici del grafo a partire da un vertice
+dato in cui la visita ha inizio.
+
+\subsection{\emph{Depth First} strategy as maze solver}
+Nella precedente sezione abbiamo dato l'idea alla base di una
+visita. Vi sono molte strategie che differenziano una visita
+dall'altra, ognuna caratterizzata dalla modalit\`a con cui si sceglie
+il prossimo arco da percorrere.
+
+La ricerca \emph{Depth First Search} \`e caratterizzata dalla seguente
+strategia: \emph{nella selezione del prossimo arco da percorrere,
+  scegliere un arco uscente non ancora percorso dal vertice pi\`u
+  recentemente esplorato}.
+
+L'insieme dei vertici \emph{pi\`u recentemente esplorati} pu\`o essere
+mantenuto in uno \emph{stack}.
+
+Per capire meglio il pattern di questa tecnica supponiamo di iniziare
+la visita dal vertice $v$. Prima $v$ viene visitato, poi il suo primo
+vicino $v_{1}$ viene scelto e si percorre l'arco $(v, v_{1})$. Adesso
+$v_{1}$ viene visitato e si riapplica lo stesso metodo al vicinato di
+$v_{1}$. Solo quando tutti i vertici nel vicinato di $v_{1}$ sono
+visitati \`e possibile continuare ad esplorare il secondo vicino
+$v_{2}$ di $v$ (\`e possibile che $v_{2}$ venga visitato durante
+l'esplorazione di $v_{1}$, in questo caso non \`e necessaria nessuna
+operazione su $v_{2}$).
+
+L'aggettivo \emph{Depth First} cattura l'idea che la ricerca procede
+in profondit\`a, allontanandosi sempre pi\`u dal punto di partenza,
+spostandosi da un vertice al un vicino di tale vertice, al vicino del
+vicino di tale vertice e cos\`i via, tornando indietro solo quando si
+raggiunge un vertice il cui vicinato \`e completamente esplorato,
+oppure che tale vicinato sia vuoto.
+
+\begin{paragraph}{maze problem solver}
+  Papadimitriou, in \footnote{aggiungere qui riferimento bibliografico
+    a Algorithms, pag 83}, vede questa ricerca come un algoritmo per
+  risolvere un labirinto, identificandone le idee principali che
+  abbbiamo espresso in forma diversa nei precedenti paragrafi:
+\begin{quotation}
+  [...] the reachability problem is rather like exploring a
+  labyrinth[...], a careless choice of passage might lead you around
+  in circles or might cause you to return to passages that you
+  previously saw but did not investigate.[...] Everybody knows that
+  all you need to explore a labyrinth is a ball of string and a piece
+  of chalk. The chalk prevents looping, the string always takes you
+  back...
+\end{quotation}
+Riportando questa idea su quanto detto sopra, il concetto di vertice
+\emph{esplorato} corrisponde al \emph{chalk}, mentre l'insieme di
+vertici \emph{pi\`u recentemente esplorati} corrisponde a \emph{ball
+  of string}.
+\end{paragraph}
+
+\begin{paragraph}{Pseudocode and complexity}
+  Formalizziamo la visita \emph{Depth First Search} nel seguente
+  pseudo codice:
+  \begin{lstlisting}
+    procedure DFS(G = (V, E))
+      for all v in V:
+        visited(v) = false
+
+      for all v in V:
+        if not visited(v):explore(v, E)
+
+    procedure explore(v, E):
+      visited(v) = true
+      previsit(v)
+      for each edge (v, u) in E:
+        if not visited(u): explore(u)
+      postvisit(v)
+  \end{lstlisting}
+\end{paragraph}
+Facciamo una breve analisi della complessit\`a. La prima osservazione
+da fare \`e che ogni vertice viene esaminato una e una sola volta
+grazie all'array \emph{visited}. Durante l'esplorazione di un vertice
+si spende una quantit\`a costante per settare il vertice come visitato
+e per le due invocazioni delle funzioni \emph{previsit,
+  postvisit}. Per quanto riguarda invece la scansione del vicinato,
+abbiamo per ogni vertice un tempo impiegato diverso, per questo motivo
+consideriamo l'intero insieme di archi in una sola volta. Ogni arco
+verr\`a visitato una e una sola nel caso in cui il grafo in input sia
+orientato, altrimenti due volte nel caso in cui il grafo in input sia
+non orientato. Segue che il tempo impiegato dalla visita \`e $O(|V| +
+|E|)$, lineare nella lunghezza dell'input.
+
+Un ultima osservazione sulle due operazioni \emph{previsit,
+  postvisit}. Se il grafo in input $G$ \`e un albero allora se
+utilizziamo solo $previsit$ il risultato \`e equivalente ad una visita
+\emph{prefissa} dell'albero, mentre se utilizziamo solo
+\emph{postvisit} otteniamo una visita \emph{postfissa} dell'albero.
 
 \section{Tarjan algorithm}
