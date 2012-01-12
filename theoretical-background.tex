@@ -112,24 +112,43 @@ orientato, altrimenti due volte nel caso in cui il grafo in input sia
 non orientato. Segue che il tempo impiegato dalla visita \`e $O(|V| +
 |E|)$, lineare nella lunghezza dell'input.
 
-Un ultima osservazione sulle due operazioni \emph{previsit,
-  postvisit}. Se il grafo in input $G$ \`e un albero allora se
-utilizziamo solo $previsit$ il risultato \`e equivalente ad una visita
-\emph{prefissa} dell'albero, mentre se utilizziamo solo
-\emph{postvisit} otteniamo una visita \emph{postfissa} dell'albero.
+\subsection{Introducing hot-spots for extendibility}
+\`E possibile "templetizzare" lo schema classico della ricerca
+\emph{Depth First Search} in modo da inserire degli \emph{hot-spots}
+che permettano di eseguire del comportamento dedicato all'avvenire di
+eventi salienti durante la visita. Nello schema che abbiamo riportato
+ne abbiamo inseriti due: le funzioni \emph{previsit} e
+\emph{postvisit}. Vediamo alcuni usi.
+
+Se il grafo in input $G$ \`e un albero allora se utilizziamo solo
+$previsit$ il risultato \`e equivalente ad una visita \emph{prefissa}
+dell'albero, mentre se utilizziamo solo \emph{postvisit} otteniamo una
+visita \emph{postfissa} dell'albero.
+
+Come vedremo nella sezione \ref{subsection:kosaraju-algorithm}, un
+altro utilizzo \`e quello di associare ad ogni vertice una coppia di
+istanti che indicano l'intervallo di tempo che il vertice rimane nella
+pila, mentre si esplorano i vertici da questo raggiungibili.
+
+TODO\footnote{aggiungere qui un paragrafetto sulla possibilit\`a di
+  risolvere il problema delle otto regine, prendere questa parte dal
+  libro che ho scaricato l'altro giorno sui grafi, dovrebbe essere il
+  primo della cartella.}
 
 \section{Finding strongly connected components: a survey of
   algorithms}
 
 In questa sezione faremo una panoramica sugli algoritmi pi\`u
-conosciuti in letteratura per la ricerca di componenti fortemente
-connesse di un grafo orientato. Ognuno dei seguenti algoritmi sono in
-realt\`a delle varianti della \emph{Depth First Search}, introducendo
-delle personalizzazioni allo schema visto nella sezione precedente.
+conosciuti in letteratura per la ricerca di strongly connected
+components di un grafo orientato. Ognuno dei seguenti algoritmi sono
+in realt\`a delle varianti della \emph{Depth First Search},
+introducendo delle personalizzazioni allo schema visto nella sezione
+precedente \footnote{per ognuno dei seguenti algoritmi riportare i
+  riferimenti bibliografici.}
 
 \subsection{Kosaraju: focus on sink components and reverse the input
   graph}
-
+\label{subsection:kosaraju-algorithm}
 Questa idea non introduce nessuna modifica allo schema che abbiamo
 visto, bens\`i utilizza la procedura due volte (\emph{two phases}) su
 grafi di input differenti.
@@ -154,12 +173,14 @@ Da questo possiamo iniziare a ragionare in questo modo:
 
 Con la precedente osservazione abbiamo un metodo per trovare una
 strongly connected components, dobbiamo per\`o avere un modo per
-trovare il vertice $v$ e cosa fare una volta trovata tale componente.
+trovare il vertice $v$ e cosa fare per trovare le altre componenti.
 
 Prima di continuare, implementiamo le due funzioni \emph{previsit,
   postvisit} in modo da associare ad ogni vertice il momento in cui
 viene esplorato e il momento in cui il suo vicinato viene
-completamente esplorato, chiamiamo questo secondo istante \emph{post}.
+completamente esplorato, chiamiamo questo secondo istante \emph{post}
+\footnote{aggiungere qui collegamento alle mia implementazione del dfs
+  tree builder listener}.
 
 Adesso che abbiamo definito la coppia di istanti possiamo osservare
 che: 
@@ -205,4 +226,67 @@ una strongly connected component del grafo $G$.
 
 Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
 del tempo richiesto dallo schema \emph{Depth First Search} classico.
+
+\subsection{Tarjan}
+Questo algoritmo \`e stato il primo algoritmo per la ricerca delle
+strongly connected components ad operare in tempo lineare.
+
+La caratteristica di questo algoritmo \`e quella di modificare lo
+schema di una \emph{Depth First Search} classica, implementando i due
+\emph{hot-spots} definiti nello pseudo codice ed aggiungere della
+logica sia dopo aver terminato l'invocazione ricorsiva su ogni vertice
+del vicinato non ancora esplorati, sia nel caso si incontrino vertici
+gi\`a conosciuti.
+
+I mattoncini utilizzati da questa variante sono:
+\begin{description}
+\item[number vector] associa ad ogni vertice un intero che rappresenta
+  il momento in cui viene esplorato
+\item[lowlink vector] associa ad vertice un intero che rappresenta il
+  vertice antenato $v$ con minor \emph{number(v)}
+\item[a stack] che contiene tutti i vertici che sono stati esplorati
+  durante l'algoritmo ma che ancora non sono stati associati ad una
+  componente fortemente connessa.
+\end{description}
+
+Inoltre Tarjan classifica gli archi del grafo in input dopo aver
+applicato una \emph{Depth First Search} in questo modo: 
+\begin{description}
+\item[tree edges] sono tutti queli archi che hanno portato
+  l'esplorazione di un nuovo vertice e sono presenti negli alberi
+  \emph{DFS}
+\item[forward edges] sono tutti quegli archi che non appartengono a
+  nessun albero \emph{DFS}, che collegano un antenato ad un suo
+  discendente
+\item[back edges] sono tutti quegli archi che non appartengono a
+  nessun albero \emph{DFS}, che collegano un discendente ad un suo
+  antenato
+\item[cross edges] sono tutti quegli archi che non appartengono a
+  nessun albero \emph{DFS}, che collegano due vertici appartenenti a
+  sottoalberi differenti (questi sotto alberi posso appartenere sia
+  allo stesso albero \emph{DFS}, sia a due alberi \emph{DFS}
+  disgiunti.
+\end{description}
+
+Una osservazione da fare riguardo ai \emph{cross edge} \`e la
+seguente. Sia $(v, w) \in E$ \`e un \emph{cross edge} allora
+$number(w) < number(v)$ ovvero, graficamente parlando, i cross edge
+hanno come unica direzione da destra verso sinistra. Motivare questo
+non \`e difficile in quanto se uno di tali archi avesse direzione
+opposta, allora o verrebbe inserito nell'albero \emph{DFS} (e quindi
+sarebbe un \emph{tree edge}, una contraddizione) oppure raggiungerebbe
+un vertice gi\`a visitato (e quindi sarebbe un \emph{forward edge},
+un'altra contraddizione).
+
+Vediamo adesso le idee principali alla base dell'algoritmo. La prima
+di queste \`e la seguente:
+\begin{quotation}
+  Sia $C$ una strongly connected component e due vertici $v, w \in
+  C$. Sia $F$ l'insieme di alberi \emph{DFS} generati dall'esecuzione
+  di una \emph{Depth First Search}. Allora $v, w$ hanno un antenato
+  comune nella foresta $F$ e, se identifichiamo con $u$ l' antenato
+  tale che $number(u)$ sia massimo tra tutti gli altri antenati comuni
+  (ovvero quello pi\`u vicino ai due vertici), allora $u \in C$
+\end{quotation}
+
 
