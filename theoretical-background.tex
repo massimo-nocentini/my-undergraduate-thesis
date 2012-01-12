@@ -228,6 +228,7 @@ Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
 del tempo richiesto dallo schema \emph{Depth First Search} classico.
 
 \subsection{Tarjan: numbering and \emph{LOWLINK}}
+\label{subsection:tarjan-algorithm}
 Questo algoritmo \`e stato il primo algoritmo per la ricerca delle
 strongly connected components ad operare in tempo lineare.
 
@@ -240,10 +241,10 @@ gi\`a conosciuti.
 
 I mattoncini utilizzati da questa variante sono:
 \begin{description}
-\item[number vector] associa ad ogni vertice un intero che rappresenta
-  il momento in cui viene esplorato
-\item[lowlink vector] associa ad vertice un intero che rappresenta il
-  vertice antenato $v$ con minor \emph{number(v)}
+\item[number function] associa ad ogni vertice un intero che
+  rappresenta il momento in cui viene esplorato
+\item[lowlink function] associa ad vertice un intero che rappresenta
+  il vertice antenato $v$ con minor \emph{number(v)}
 \item[a stack] che contiene tutti i vertici che sono stati esplorati
   durante l'algoritmo ma che ancora non sono stati associati ad una
   componente fortemente connessa.
@@ -342,7 +343,7 @@ di \emph{tree edges} seguito da un \emph{back edge}.
 
 Pertanto un vertice \`e la \emph{root} di una strongly connected
 component solo quando il valore associato dalla funzione $LOWLINK$ \`e
-il $number(v)$ stesso, ovvero da $v$ non \`e possibile ne arrivare in
+$number(v)$ stesso, ovvero da $v$ non \`e possibile ne arrivare in
 sottoalberi a sinistra (in quanto per questi sono gi\`a state
 computate le strongly connected components), ne raggiungere un
 antenato (altrimenti non sarebbe la \emph{root} della strongly
@@ -354,3 +355,108 @@ inserito nello stack dei vertici da assegnare ad una strongly
 connected component una e una sola volta. Inoltre, per verificare se
 un vertice \`e contenuto nello stack possiamo utilizzare un vettore di
 valori booleani, che rende questa operazione lineare.
+
+\subsection{Crescenzi-Gambosi-Grossi: two stacks}
+Anche questa variante personalizza lo schema classico di una
+\emph{Depth First Search}, utilizzando gli stessi \emph{hot-spot}
+della versione di Tarjan descritta in
+\ref{subsection:tarjan-algorithm}. 
+
+Desriveremo questa variante in questa sezione facendo spesso paragoni
+sui punti che possono avvicinare queste idee con quelle usate nella
+versione di Tarjan, in quanto possiamo dire che queste due varianti si
+"mimano" a vicenda.
+\\\\
+Questa variante classifica i vertici in due insiemi:
+\begin{description}
+\item[completi] quelli che sono stati completamente esplorati \emph{e}
+  assegnati ad una strongly connected component
+\item[parziali] sono tutti quei vertici che appartengono ad un cammino
+  relativo ad una esecuzione della visita, di cui alcuni possono
+  essere completamente esplorati, ma che ancora non sono stati
+  associati a nessuna strongly connected component
+\end{description}
+In base a questa classificazione, possiamo indurne una anche sulle
+strongly connected components, avendo rispettivamente delle componenti
+\emph{complete}, \emph{parziali} oppure \emph{ignote}.
+
+Questa classificazione dei vertici viene mantenuta in modo esplicito
+(usando un funzione che associa ad ogni vertice un valore booleano),
+mentre lo stesso concetto esiste, sotto mentite spoglie, nella
+versione di Tarjan, calcolandolo come segue: se $LOWLINK(v) <
+number(v)$ e $v$ \`e nello stack allora $v$ \`e parziale, altrimenti
+\`e completo.
+\\\\
+Un altro concetto in comune con la variante di Tarjan \`e quello di
+\emph{rappresentante} di una strongly connected component. Un vertice
+$v$ si dice \emph{rappresentante} della propria strongly connected
+component se \`e il primo vertice della strongly connected component
+ad esser stato visitato. Il lettore noter\`a subito che \`e possibile
+mappare questo concetto al \emph{root} di una strongly connected
+component utilizzato nella variante di Tarjan.
+
+Una osservazione \`e necessaria riguardo ai rappresentanti:
+\begin{quotation}
+  quando una strongly connected component diviene \emph{completa},
+  tutti i vertici in essa contenuti sono a loro volta \emph{completi}
+  e i vertici che sono dei \emph{rappresentanti} perdono tale ruolo.
+\end{quotation}
+questo implica che se un vertice ha il ruolo di \emph{rappresentante}
+allora appartiene ad una componente parziale. 
+
+Inoltre i vertici \emph{rappresentanti} permettono di distinguere
+l'inizio di una strongly connected component dalla successiva e, come
+vedremo, vengono numerati in ordine crescente rispetto al momento in
+cui vengono esplorati (anche questo concetto lo si ritrova nella
+variante di Tarjan dove si utilizza la funzione $number$).
+\\\\
+La variante di Crescenzi-Gambosi-Grossi, a regime, mantiene due stack,
+uno per mantenere l'insieme dei vertici \emph{parziali}, l'altro per
+mantenere l'insieme dei vertici \emph{rappresentanti}. Tutti i vertici
+che appartengo alla stessa strongly connected component occupano
+posizioni contigue nel relativo stack mentre il primo di essi sar\`a
+inserito anche nello stack dei \emph{rappresentanti} finch\`e la
+strongly connected component non viene chiusa.
+
+L'algoritmo che implementa questa variante procede seguendo la
+seguente idea:
+\begin{quotation}
+  ogni volta che un nuovo vertice viene esplorato, inseriamolo nei due
+  stack ed esploriamo il suo vicinato. Per i vertici non esplorati
+  invochiamo ricorsivamente la visita, per quelli gi\`a incontrati
+  chiediamo: se non sono completi allora si estrae dallo stack dei
+  \emph{rappresentanti}
+\end{quotation}
+queste semplici regole necessitano di qualche
+spiegazione. 
+
+Inizialmente ogni nuovo vertice che viene esplorato viene
+inserito in entrambi gli stack in quanto potrebbe iniziare una nuova
+strongly connected component, di cui il vertice sarebbe il
+\emph{rappresentante}. 
+
+L'altro punto da chiarire \`e quando si debbono estrarre i vertici
+dallo stack dei \emph{rappresentanti}. Se, scandendo il vicinato,
+esiste un vertice gi\`a esplorato e questo non \`e \emph{completo}
+significa che l'arco che porta in questo vertice porta un ciclo e
+quindi, non pu\`o essere un \emph{rappresentante}. Se invece tale
+vertice fosse \emph{completo} allora gi\`a appartiene ad una strongly
+connected component, e l'arco che porta a questo \`e quello che nella
+variante di Tarjan viene classificato come \emph{cross link}.
+
+Nello stack dei rappresentanti saranno presenti solo i vertici che non
+hanno \emph{back edges} e, come nella variante di Tarjan, si
+costruisce una strongly connected component quando un vertice, dopo
+aver esplorato tutto il suo vicinato, si trova in testa allo stack dei
+\emph{rappresentanti}. La nuova strongly connected component sar\`a
+composta da tutti i vertici contenuti nello stack dei \emph{parziali}
+contenuti tra la cima dello stack e la posizione del rappresentante
+compresa. Ognuno di loro viene marcato come \emph{completo} e si
+continua l'eventuale computazione.
+\\\\
+Anche per questa variante il tempo richiesto \`e lineare: ogni vertice
+viene inserito ed estratto al pi\`u una volta in ogni pila (il caso
+degenere \`e un grafo i cui vertici sono tutti isolati, per cui ogni
+vertice corrisponde ad una strongly connected component), non
+aggiungendo asintoticamente niente al tempo richiesto dalla
+\emph{Depth First Search}.
