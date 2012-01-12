@@ -197,7 +197,7 @@ quanto quello che si richiede \`e un vertice che appartenga ad una
 strongly connected component pozzo.
 
 Per risolvere questo problema possiamo calcolare $G^{R}$
-(\emph{reverse the graph!}. Notiamo che le strongly connected
+(\emph{reverse the graph!}). Notiamo che le strongly connected
 components non cambiano la loro composizione in $G^{R}$ in quanto
 consideriamo il sottografo di $G$ composto da una di queste: per
 definizione di strongly connected component, per ogni coppia di
@@ -227,7 +227,7 @@ una strongly connected component del grafo $G$.
 Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
 del tempo richiesto dallo schema \emph{Depth First Search} classico.
 
-\subsection{Tarjan}
+\subsection{Tarjan: numbering and \emph{LOWLINK}}
 Questo algoritmo \`e stato il primo algoritmo per la ricerca delle
 strongly connected components ad operare in tempo lineare.
 
@@ -254,29 +254,29 @@ applicato una \emph{Depth First Search} in questo modo:
 \begin{description}
 \item[tree edges] sono tutti queli archi che hanno portato
   l'esplorazione di un nuovo vertice e sono presenti negli alberi
-  \emph{DFS}
+  \emph{DFS}. Questi archi sono indicati con $\rightarrow$
 \item[forward edges] sono tutti quegli archi che non appartengono a
   nessun albero \emph{DFS}, che collegano un antenato ad un suo
   discendente
 \item[back edges] sono tutti quegli archi che non appartengono a
   nessun albero \emph{DFS}, che collegano un discendente ad un suo
-  antenato
+  antenato. Questi archi sono indicati con $\cdot\rightarrow$
 \item[cross edges] sono tutti quegli archi che non appartengono a
   nessun albero \emph{DFS}, che collegano due vertici appartenenti a
   sottoalberi differenti (questi sotto alberi posso appartenere sia
   allo stesso albero \emph{DFS}, sia a due alberi \emph{DFS}
-  disgiunti.
+  disgiunti. Questi archi sono indicati con $\cdot\rightarrow$
 \end{description}
 
 Una osservazione da fare riguardo ai \emph{cross edge} \`e la
 seguente. Sia $(v, w) \in E$ \`e un \emph{cross edge} allora
-$number(w) < number(v)$ ovvero, graficamente parlando, i cross edge
-hanno come unica direzione da destra verso sinistra. Motivare questo
-non \`e difficile in quanto se uno di tali archi avesse direzione
-opposta, allora o verrebbe inserito nell'albero \emph{DFS} (e quindi
-sarebbe un \emph{tree edge}, una contraddizione) oppure raggiungerebbe
-un vertice gi\`a visitato (e quindi sarebbe un \emph{forward edge},
-un'altra contraddizione).
+$number(w) < number(v)$ ovvero, graficamente parlando, i \emph{cross
+  edge} hanno una unica direzione: da destra verso sinistra. Motivare
+questo non \`e difficile in quanto se uno di tali archi avesse
+direzione opposta, allora o verrebbe inserito nell'albero \emph{DFS}
+(e quindi sarebbe un \emph{tree edge}, una contraddizione) oppure
+raggiungerebbe un vertice gi\`a visitato (e quindi sarebbe un
+\emph{forward edge}, un'altra contraddizione).
 
 Vediamo adesso le idee principali alla base dell'algoritmo. La prima
 di queste \`e la seguente:
@@ -288,5 +288,69 @@ di queste \`e la seguente:
   tale che $number(u)$ sia massimo tra tutti gli altri antenati comuni
   (ovvero quello pi\`u vicino ai due vertici), allora $u \in C$
 \end{quotation}
+Per far vedere la precedente osservazione supponiamo che durante una
+\emph{Depth First Search} il vertice $v$ sia visitato prima di $w$ (e
+quindi $number(v) < number(w)$) e, dato che $v,w$ appartengono alla
+stessa strongly connected component, esiste un cammino $\pi$ tale che
+$v \rightarrow^{*} w$ (e anche un cammino $w \rightarrow^{*} v$ per la
+connettivit\`a forte). Chiamiamo $T_{u}$ il pi\`u piccolo albero che
+ha come radice $u$ e che contiene tutti i vertici attraversati dal
+cammino $\pi$. Il sottoalbero $T_{u}$ esiste in quanto il cammino
+$\pi$ pu\`o attraversare alberi della foresta $F$ i cui vertici hanno
+associato un \emph{number} minore (percorrendo \emph{cross edges}),
+mentre non attraverser\`a alberi con numerazioni maggiori. Osserviamo
+per\`o che se il cammino $\pi$ attraversasse pi\`u di un albero non
+potr\`a arrivare in $w$ (ricordiamo che $\pi$ inizia in $v$)
+contraddicendo l'ipotesi iniziale che $number(v) < number(w)$. Quindi
+il sottoalbero $T_{u}$ esiste e $v,w$ hanno un comune antenato, ma
+dato che $T_{u}$ contiene tutti i vertici attraversati da $\pi$, anche
+$u$ viene attraversato e quindi appartiene alla stessa componente
+fortemente connessa.
+\\\\
+Adesso possiamo affrontare la seconda idea che ci dar\`a un modo per
+identificare le strongly connected components:
+\begin{quotation}
+  Sia $C$ una strongly connected component. Allora i vertici $v_{i}
+  \in C$ appartengono ad uno stesso sottoalbero nella foresta
+  \emph{DFS}. Inoltre la radice del sottoalbero viene chiamata la
+  \emph{root} della strongly connected component $C$
+\end{quotation}
+la precedente idea fa si che il problema di individuare le strongly
+connected components si riduce ad identificare i vertici \emph{root} di
+sottoalberi della foresta. Tarjan propone il seguente criterio per
+individuare tali vertici:
+\begin{quotation}
+  un vertice $v$ \`e \emph{root} di una strongly connected component
+  se e solo se $number(v) = LOWLINK(v)$ 
+\end{quotation}
+quanto detto in quota ha bisogno di alcune spiegazioni. La prima cosa
+che dobbiamo definire \`e come calcolare $LOWLINK(v)$:
+\begin{displaymath}
+  \begin{split}
+    LOWLINK(v) &= \min\{\{number(v)\}, \\
+    & \{number(w): (\exists r \in V: v \rightarrow r \cdot\rightarrow w) \\
+    & \wedge (\exists u \in V: u \rightarrow^{*} v \wedge u
+    \rightarrow^{*} w \wedge \\
+    & u,w \in C, \text{ for some strongly connected component C}) \}\}
+  \end{split}
+\end{displaymath}
+Pu\`o sembrare un po criptico ma non cattura un concetto difficile. Il
+valore che la funzione $LOWLINK$ associa ad un vertice $v$ \`e il
+minimo valore associato ad un vertice $v'$ appartenente alla stessa
+strongly connected component di $v$, attraversando un numero qualsiasi
+di \emph{tree edges} seguito da un \emph{back edge}.
 
-
+Pertanto un vertice \`e la \emph{root} di una strongly connected
+component solo quando il valore associato dalla funzione $LOWLINK$ \`e
+il $number(v)$ stesso, ovvero da $v$ non \`e possibile ne arrivare in
+sottoalberi a sinistra (in quanto per questi sono gi\`a state
+computate le strongly connected components), ne raggiungere un
+antenato (altrimenti non sarebbe la \emph{root} della strongly
+connected component).
+\\\\
+Questo algoritmo lavora in tempo polinomiale in quanto il tempo per
+calcolare la funzione $LOWLINK$ \`e costante ed ogni vertice viene
+inserito nello stack dei vertici da assegnare ad una strongly
+connected component una e una sola volta. Inoltre, per verificare se
+un vertice \`e contenuto nello stack possiamo utilizzare un vettore di
+valori booleani, che rende questa operazione lineare.
