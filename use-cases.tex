@@ -262,7 +262,7 @@ successive computazioni, ha un solo vertice sorgente.
   them in a simple GUI}
 \label{subsection:use-case-result-viewer}
 Questo use case cattura il requisito di rappresentare informazioni
-relative alla componenti fortemente connesse attraverso una semplice
+relative alle componenti fortemente connesse attraverso una semplice
 GUI utilizzando il framework \emph{SWING}.
 
 In realt\`a quello che ci piacerebbe costruire \`e un visualizzatore
@@ -283,40 +283,76 @@ incontrata appare.
 
 \begin{figure}
   \centering
-  \includegraphics[scale=.5]{images/ResultViewer-execution.eps}
+  \includegraphics[scale=.5,
+  angle=90]{images/ResultViewer-execution.eps}
   \caption{Result Viewer for strongly connected components}
   \label{fig:result-viewer-scc}
 \end{figure}
 La figura \ref{fig:result-viewer-scc} riporta uno screenshot, diamo
-adesso la semantica alle informazioni rappresentate nella maschera. 
+adesso la semantica alle informazioni rappresentate nella maschera.
 
-Il frame \`e composto da quattro \emph{list box}, le quali vanno
-utilizzate con l'ordine da sinistra verso destra e dall'alto verso il
-basso.
+Il frame contiene i seguenti componenti, che andiamo a descrivere
+seguendo l'ordine da sinistra verso destra e dall'alto verso il basso:
+\begin{itemize}
+\item una tabella dove vengono elencati tutti i modelli che sono stati
+  oggetto di indagine. Per ogni modello si associano tre triple $(c,
+  v)$ per tre colonne, ognuna rappresentante una tipologia di vertice
+  (\emph{sources, whites, sinks}). Se una coppia $c, v$ appartiene
+  alla riga del modello $m$ e alla colonna $whites$ per esempio,
+  allora significa che nel modello $m$ esistono $c$ strongly connected
+  components di tipo $whites$, le quali contengono in totale $m$
+  vertici (che di conseguenza hanno pure loro il ruolo di $whites$).
+\item una \emph{list-box} nella quale sono riportate delle
+  informazioni relative alle \emph{species}. Ogni entry raggruppa le
+  \emph{species} in base ai ruoli (ovvero in base alla tipologia di
+  vertice) che hanno in tutti i modelli analizzati. 
 
-Nella prima \emph{list-box} vengono elencate tutte le \emph{species}
-contenute in almeno uno dei modelli oggetto dell'indagine. Ogni
-\emph{species} \`e codificata con una stringa composta
-dall'identificatore e, tra parantesi tonde, il nomde del compartimento
-in cui risiede.
+  Inoltre si calcola anche una loro frequenza in percentuale per avere
+  un raffronto immediato riguardo alla predominanza dei ruoli svolti:
+  si considerano tutte le possibili combinazioni dell'insieme
+  ${sources, whites, sinks}$, escludendo l'insieme vuoto.
+\item nella successiva \emph{list-box} vengono elencate tutte le
+  \emph{species} contenute in almeno uno dei modelli oggetto
+  dell'indagine. Ogni \emph{species} \`e codificata con una stringa
+  composta dall'identificatore e, tra parantesi tonde, il nomde del
+  compartimento in cui risiede.
+\item cliccando su una \emph{species} $s$, nella successiva
+  \emph{list-box} vengono elencati i tipi delle \emph{strongly
+    connected components} che contengono la \emph{species} $s$.
+\item cliccando su una tipologia $t$ di \emph{strongly connected
+    components}, nella successiva \emph{list-box} vengono elencate le
+  cardinalit\`a delle \emph{strongly connected components} che
+  contengono la \emph{species} $s$ e sono di tipologia $t$. Ad ogni
+  cardinalit\`a si concatena un numero intero che indica la
+  cardinalit\`a dell'insieme rappresentato nell'ultima
+  \emph{list-box}, che andiamo a descrivere.
+\item cliccando su una cardinalit\`a $c$, nell'ultima \emph{list-box}
+  vengono elencati i modelli, la cui applicazione dell'algoritmo di
+  Tarjan, ha prodotto un grafo in cui esiste una \emph{strongly
+    connected component} tale che contiene la \emph{species} $s$, \`e
+  di tipo $t$ ed ha una cardinalit\`a $c$.
+\end{itemize}
 
-Cliccando su una \emph{species} $s$, nella seconda \emph{list-box}
-vengono elencati i tipi delle \emph{strongly connected components} che
-contengono la \emph{species} $s$.
+Non solo le ultime quattro \emph{list-box} sono contestualmente
+correlate, ma anche la tabella e la \emph{list-box} con le
+informazioni per tipologia di vertice lo sono. In particolare,
+selezionando nella tabella una o pi\`u righe, nella \emph{list-box}
+\`e possibile avere le informazioni riguardo alle species contenute
+nei modelli selezionati. Se la selezione \`e vuota, allora le
+informazioni sono relative a tutti i modelli.
 
-Cliccando su una tipologia $t$ di \emph{strongly connected
-  components}, nella terza \emph{list-box} vengono elencate le
-cardinalit\`a delle \emph{strongly connected components} che
-contengono la \emph{species} $s$ e sono di tipologia $t$. Ad ogni
-cardinalit\`a si concatena un numero intero che indica la
-cardinalit\`a dell'insieme rappresentato nell'ultima \emph{list-box},
-che andiamo a descrivere.
+Inoltre abbiamo esteso queste correlazioni anche tra il percorso
+selezionato nelle ultime quattro \emph{list-box} e la tabella (e di
+conseguenza alla prima \emph{list-box}). Selezionando una
+\emph{species} dalla seconda \emph{list-box} vengono selezionati in
+automatico nella tabella tutti i modelli che la contengono e, come
+spiegato nel paragrafo precedente, anche la \emph{list-box} contenente
+le informazioni per tipologia di vertice verr\`a aggiornata di
+conseguenza.
 
-Cliccando su una cardinalit\`a $c$, nella quarta e ultima
-\emph{list-box} vengono elencati i modelli, la cui applicazione
-dell'algoritmo di Tarjan, ha prodotto un grafo in cui esiste una
-\emph{strongly connected component} tale che contiene la
-\emph{species} $s$, \`e di tipo $t$ ed ha una cardinalit\`a $c$.
+Se si raffina il percorso, ad esempio scegliendo la tipologia di
+vertice e la cardinalit\`a nelle rispettive \emph{list-box}, viene
+raffinata la selezione nella tabella dei modelli.
 
 \subsection{...ignore it and process \emph{your own graph}}
 Nelle precedenti sezioni abbiamo sempre assunto di lavorare su un

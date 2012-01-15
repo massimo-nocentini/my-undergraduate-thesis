@@ -68,13 +68,6 @@ components. Questa idea si base sulle seguenti motivazioni:
   components, \`e possibile astrarre dai cicli e trattare tutte quelle
   \emph{species} "equivalenti" (vedi prossimo punto) come se fossero
   una sola.
-\item il "meta-grafo" che ha come vertici le strongly connected
-  components e come archi gli archi che collegano \emph{species}
-  contenute in strongly connected components differenti (evitando
-  duplicazioni) permette di assegnare alle strongly connected
-  components un ruolo, come siamo interessati ad attribuire ai
-  vertici. Se una strongly connected component \`e sorgente o pozzo
-  nel meta-grafo allora possiamo inserirla nell'insieme $\mathbb{B}$.
 \item come vedremo nella sezione \ref{subsection:some-definitions},
   ogni strongly connected component \`e una classe di
   equivalenza. Ci\`o significa che due \emph{species} appartenenti
@@ -84,12 +77,20 @@ components. Questa idea si base sulle seguenti motivazioni:
   \emph{reversibile}). Possiamo quindi associare a queste
   \emph{species} lo stesso ruolo che viene associato alla strongly
   connected component che le contiene.
+\item il "meta-grafo" che ha come vertici le strongly connected
+  components e come archi gli archi che collegano \emph{species}
+  contenute in strongly connected components differenti (evitando
+  duplicazioni) permette di assegnare alle strongly connected
+  components un ruolo, come siamo interessati ad attribuire ai
+  vertici. Se una strongly connected component \`e \emph{sorgente} o
+  \emph{pozzo} nel meta-grafo allora possiamo inserire i vertici che
+  la compongono nell'insieme $\mathbb{B}$.
 \end{itemize}
 Utilizzando quanto detto sopra procederemo ad applicare al grafo in
 input l'algoritmo di Tarjan (in realt\`a utilizzando la variante
 descritta nella sezione \ref{subsection:crescenzi-gambosi-grossi}),
 determineremo il ruolo delle strongly connected components e, di
-conseguenza sar\`a possibile assegnare un ruolo anche ai vertici del
+conseguenza, sar\`a possibile assegnare un ruolo anche ai vertici del
 grafo in input, rispondendo alla domanda che ci siamo posti nelle
 sezioni precedenti.
 
