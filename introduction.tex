@@ -1,21 +1,36 @@
 
-\section{SBML format}
-Il mio lavoro inizia con lo studio e l'utilizzo del formato
-\textbf{SBML} (\textbf{S}ystems \textbf{B}iology \textbf{M}arkup 
-\textbf{L}anguage). 
+\section{Preamble}
+Numerosi sistemi biologici possono essere modellati con il concetto
+astratto di grafo. Studiare la struttura e la topologia di questa
+astrazione non \`e solo una descrizione astratta dei complessi
+comportamenti del sistema in oggetto ma \`e di grande utilit\`a per
+capire le funzionalit\`a del sistema e le sue dinamiche.
 
-Questo formato permette di rappresentare informazioni seguendo uno
-schema gerarchico, basato su XML. Questo formato \`e orientato alla
-descrizione di sistemi in cui entit\`a biologiche sono oggetto di
-manipolazioni eseguite da processi nel corso del tempo, pertanto
-facilita la codifica di modelli computazionali di processi biologici,
-ad esempio \emph{metabolic networks, cell-signaling pathways,
-  regulatory networks} e molti altri. In particolare, le
-\emph{metabolic network} sono oggetto del mio elaborato.
+Inoltre attraverso questo processo di astrazione, \`e possibile
+studiare quali relazioni possono intercorrere tra il sistema e il
+contesto che lo ospita. Lo studio di queste relazioni pu\`o portare a
+fare delle stime riguardo la potenzialit\`a del sistema di
+"comunicare" con il contesto.
+
+Le idee che abbiamo espresso sono alla base del concetto di
+\emph{story} che avremo modo di studiare meglio nella sezione
+\ref{subsection:whats-a-story}. A grandi linee una \emph{story} \`e un
+modello di un sistema, con la particolarit\`a di assegnare due "ruoli"
+agli oggetti atomici del sistema. Associeremo uno di questi ad un
+particolare insieme $\mathbb{B}$, i cui elementi (che nel contesto
+biologico sono \emph{metaboliti} o \emph{species}) hanno delle
+caratteristiche di interesse individuate mediante studi
+\emph{empirici}.
+
+Questo lavoro si propone di verificare se sia possibile costruire
+l'insieme $\mathbb{B}$ in modo automatico o, in altre parole, se sia
+possibile attribuire i "ruoli" ai componenti del sistema.
 \\\\
-Nella prossima sezione descrivo brevemente il contesto scientifico che
-ospita il nostro problema, introducendo i concetti reali oggetto delle
-astrazioni che ho costruito e implementato nel mio codice.
+Nel resto di questa sezione introdurremo alcune nozioni di natura
+prettamente teorica, in particolare faremo un breve cenno agli oggetti
+reali oggetto delle nostre astrazioni, e daremo alcune informazioni
+sui metodi e sugli strumenti utilizzati durante lo svolgimento del
+progetto.
 
 \section{Metabolic networks, enzimes and pathways}
 
@@ -55,11 +70,24 @@ attivo del substrato complementa quello dell'enzima.
 Adesso possiamo definire una \emph{metabolic network} come collezione
 di \emph{metabolic pathways}.
 \\\\
-Nella prossima sezione vedremo quali di questi concetti sono necessari
+Nelle prossime sezioni vedremo quali di questi concetti sono necessari
 al mio lavoro, cercando di metterli in relazione con le astrazioni
-definite dal formato SBML.
+definite dal formato \emph{SBML}.
 
-\section{Model necessary real objects in SBML}
+\section{Code information in SBML format}
+Il formato \textbf{SBML} (\textbf{S}ystems \textbf{B}iology
+\textbf{M}arkup \textbf{L}anguage) permette di rappresentare
+informazioni seguendo uno schema gerarchico, basato su XML.
+
+Questo formato \`e orientato alla descrizione di sistemi in cui
+entit\`a biologiche sono oggetto di manipolazioni eseguite da processi
+nel corso del tempo, pertanto facilita la codifica di modelli
+computazionali di processi biologici, ad esempio \emph{metabolic
+  networks, cell-signaling pathways, regulatory networks} e molti
+altri. In particolare, le \emph{metabolic network} sono oggetto del
+mio elaborato.
+
+\subsection{Model necessary real objects in SBML}
 \label{sec:necessaryRealObjectsModeledInSBML}
 
 Nella precedente sezione abbiamo introdotto alcuni concetti che non
@@ -117,7 +145,7 @@ Nella prossima sezione descriveremo le regole che abbiamo utilizzato
 per costruire, dato in input un modello SBML, il nostro modello
 dati.
 
-\section{SBML model $\rightarrow$ Our model}
+\subsection{SBML model $\rightarrow$ Our model}
 
 Abbiamo la necessit\`a di modellare i concetti espressi in formato
 SBML con un nostro modello in quanto ci permette di ridurre la
@@ -193,7 +221,7 @@ ufficiale (vedi \cite{sbmlOfficialDocumentation}), ma che abbiamo
 capito e dedotto utilizzando il concetto di \emph{learning test} (vedi
 \cite[p. 136]{beck2003}) implementato con \emph{JUnit}.
 
-\section{Learning SBML tips by tests}
+\subsection{Learning SBML tips by tests}
 
 Scrivendo alcuni \emph{learning tests} abbiamo dedotto le seguenti
 propriet\`a sui modelli SBML. I seguenti test sono stati esercitati su
@@ -217,13 +245,37 @@ una batteria di modelli biologici reali, tutti con esito positivo:
   cronologico di inserimento
 \end{itemize}
 
-\section{Building a java library}
+\section{About this work}
+In questa sezione riportiamo delle informazioni riguardo alla libreria
+java che abbiamo sviluppato, daremo una sinopsi dei prossimi contenuti
 
-
-\subsection{Working scenarios}
+\subsection{The java library}
 Descrivere in questa sezione i possibili utilizzi della libreria, dal
 rappresentare un modello SBML, alla possibilit\`a di visualizzare una
 ricerca DFS e il risultato della minimizzazione dell'algoritmo di
 Tarjan. In sostanza \`e un anticipo e un riassunto dei casi d'uso che
 descriver\`o pi\`u avanti, quindi potrebbe essere sensato aggiungere
 un riferimento a quella sezione.
+
+\subsection{Sinopsi}
+
+\subsection{Used tools}
+Per lo sviluppo di questo progetto sono stati utilizzati i seguenti
+strumenti:
+\begin{itemize}
+\item per la stesura di questo documento \`e stato usato il motore di
+  formattazione \TeX, utilizzando \emph{Emacs} come editor dei file
+  sorgenti, installando la \emph{mojor mode AucTex}
+\item l'implementazione della libreria java \`e stata sviluppata
+  completamente con \emph{Eclipse} versione \emph{Indigo}
+\item i sorgenti, sia dell'elaborato testuale sia
+  dell'implementazione, sono stati versionati utilizzando il sistema
+  \emph{Git}. Abbiamo utilizzato \emph{Github} come provider del
+  servizio. I sorgenti di questo documento possono essere scaricati
+  dall'URL:, mentre i sorgenti dell'implementazione java
+  dall'URL:.
+\end{itemize}
+
+\subsection{Feedback}
+Per riportare consigli, correzioni o domande \`e possibile inviare una
+mail all'indirizzo \emph{massimo.nocentini@gmail.com}
