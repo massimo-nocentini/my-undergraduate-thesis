@@ -247,17 +247,60 @@ una batteria di modelli biologici reali, tutti con esito positivo:
 
 \section{About this work}
 In questa sezione riportiamo delle informazioni riguardo alla libreria
-java che abbiamo sviluppato, daremo una sinopsi dei prossimi contenuti
+java che abbiamo sviluppato, daremo una sinopsi della struttura di
+questo documento e riporteremo alcuni dettagli tecnici relativi agli
+strumenti utilizzati per la realizzazione dell'intero lavoro.
 
 \subsection{The java library}
-Descrivere in questa sezione i possibili utilizzi della libreria, dal
-rappresentare un modello SBML, alla possibilit\`a di visualizzare una
-ricerca DFS e il risultato della minimizzazione dell'algoritmo di
-Tarjan. In sostanza \`e un anticipo e un riassunto dei casi d'uso che
-descriver\`o pi\`u avanti, quindi potrebbe essere sensato aggiungere
-un riferimento a quella sezione.
+Il mio lavoro ha prodotto una libreria java nella quale vengono
+implementati i concetti esposti nel capitolo
+\ref{chapter:theoretical-background} e si prefigge di essere
+utilizzata non come un programma a se stante, bensi \`e molto pi\`u
+orientata ad un utilizzo programmatico. Per questo motivo abbiamo
+ritenuto opportuno riportare nella sezione
+\ref{section:packages-descriptions} una descrizione di ogni
+\emph{package} in modo da favorirne la comprensione e
+l'utilizzo. Nella libreria \`e presente anche una maschera realizzata
+utilizzando il framework \emph{SWING} per la renderizzazione di un
+particolare set di output relativi alla composizione delle strongly
+connected components: questo \`e l'unico oggetto che non \`e possibile
+utilizzare programmaticamente.
 
 \subsection{Sinopsi}
+In questa sezione elenchiamo i capitoli in cui questo documento \`e
+suddiviso e, per ognuno di assi, daremo una breve descrizione del
+contenuto.
+
+Il capitolo \ref{chapter:introduction} contiene una introduzione al
+lavoro svolto. Vengono introdotti i concetti chiave del problema in
+questione, il formato di codifica delle informazioni \emph{SBML}, come
+catturare le informazioni in questo formato ed alcuni dettagli tecnici
+relativi alla realizzazione del progetto.
+
+Il capitolo \ref{chapter:theoretical-background} modella da un punto
+di vista teorico i concetti e gli algoritmi alla base delle
+implementazioni. Verr\`a precisato il concetto di \emph{story} e il
+significato dell'insieme $\mathbb{B}$, cosa significa eseguire una
+visita di un grafo, approfondiremo la strategia \emph{Depth First} e
+si studieranno tre algoritmi per la ricerca di \emph{strongly
+  connected components}.
+
+Il capitolo \ref{chapter:study} formalizza gli obiettivi che vogliamo
+raggiungere con lo sviluppo della libreria java. Vengono proposti gli
+\emph{use-case} che abbiamo implementato e, per ognuno di essi,
+vengono riportati degli esempi del "prodotto finito" in modo da dare
+un'idea se non si \`e avuto modo di utilizzare la libreria. Inoltre si
+analizza l'architettura che caratterizza l'intera implementazione.
+
+Il capitolo \ref{chapter:implementation} affronta tutte le questioni
+inerenti alla fase di implementazione. Si affronta la metodologia di
+sviluppo utilizzata, alcuni paradigmi e idiomi usati ripetutamente
+durante la fase di codifica ed una breve descrizione dei
+\emph{package} che compongono il progetto.
+
+Il capitolo \ref{chapter:conclusions} termina il lavoro esponendo i
+risultati ottenuti ed elencando una lista di sviluppi futuri del
+progetto.
 
 \subsection{Used tools}
 Per lo sviluppo di questo progetto sono stati utilizzati i seguenti
@@ -272,10 +315,15 @@ strumenti:
   dell'implementazione, sono stati versionati utilizzando il sistema
   \emph{Git}. Abbiamo utilizzato \emph{Github} come provider del
   servizio. I sorgenti di questo documento possono essere scaricati
-  dall'URL:, mentre i sorgenti dell'implementazione java
-  dall'URL:.
+  dall'URL:\\
+  \href{https://github.com/massimo-nocentini/my-undergraduate-thesis}{
+    https://github.com/massimo-nocentini/my-undergraduate-thesis}\\
+  mentre i sorgenti dell'implementazione java dall'URL:\\
+  \href{https://github.com/massimo-nocentini/my-undergraduatethesis-java}{
+    https://github.com/massimo-nocentini/my-undergraduatethesis-java}
 \end{itemize}
 
 \subsection{Feedback}
 Per riportare consigli, correzioni o domande \`e possibile inviare una
-mail all'indirizzo \emph{massimo.nocentini@gmail.com}
+mail all'indirizzo \\
+\href{massimo.nocentini@gmail.com}{massimo.nocentini@gmail.com}
