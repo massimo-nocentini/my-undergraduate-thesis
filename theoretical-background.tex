@@ -107,6 +107,50 @@ problema pi\`u generico, ovvero di cosa significa visitare un grafo.
 
 \subsection{Some definitions}
 \label{subsection:some-definitions}
+In questa sezione riportiamo per completezza alcune definizioni che
+saranno utilizzate nel resto del capitolo.
+\\\\
+Un grafo $G$ \`e una coppia $(V, E)$ dove $V$ \`e un insieme di
+vertici ed $E$ \`e un insieme di archi. Pi\`u precisamente $E$ \`e una
+relazione binaria, che possiamo indicare con il simbolo $\rightarrow$,
+tale che $\rightarrow \subset V \times V$. 
+
+Un grafo $G = (V, E)$ si dice \emph{non orientato} se $\rightarrow$
+\`e una relazione simmetrica. Altrimenti, se $\rightarrow$ non \`e
+simmetrica, il grafo si dice \emph{orientato}.
+
+Sia $G = (V, E)$ un grafo. Un cammino da un vertice $v_{i}$ ad un
+vertice $v_{j}$ \`e una sequenza di vertici $\{v_{i}, v_{i+1}, \cdots,
+v_{j-1}, v_{j}\}$ tali che $(v_{i},v_{i+1}) \in \rightarrow \wedge
+(v_{i+1}, \cdots) \in \rightarrow \wedge \cdots \wedge (\cdots,
+v_{j-1}) \in \rightarrow \wedge (v_{j-1}, v_{j}) \in
+\rightarrow$. Tale cammino lo indicheremo con la scrittura $v_{i}
+\rightarrow^{*} v_{j}$. Nel caso di un grafo \emph{non orientato} lo
+stesso cammino lo possiamo scrivere $v_{i} --^{*} v_{j}$
+
+Un cammino $\pi = v_{i} \rightarrow^{*} v_{i}$ \`e chiamato una
+cammino \emph{chiuso}. In particolare, un cammino \emph{chiuso} \`e un
+\emph{ciclo} quando tutti gli archi che lo compongono sono distinti e
+l'unico vertice che appare esattamente due volte in $\pi$ \`e
+$v_{i}$. Due cicli che sono permutazioni l'uno dell'altro si
+considerano indistinguibili e, pertanto, si considerano essere lo
+stesso ciclo.
+
+Un grafo \emph{non orientato} \`e \emph{connesso} se $\forall (v, w)
+\exists \pi: \pi = v --^{*} w$. Un grafo \emph{orientato} \`e
+\emph{connesso} se $\forall (v, w) \exists \pi: \pi = v
+\rightarrow^{*} w$.
+
+Un \emph{grafo orientato} $T$ \`e un albero se valgono le seguenti
+propriet\`a:
+\begin{itemize}
+\item la versione di $T$ \emph{non orientata} \`e connessa
+\item esiste esattamente un vertice $v$ tale che $\not \exists (w, v),
+  \forall w$. Il vertice $v$ viene chiamato \emph{root} di $T$
+\item tutti i vertici distinti dal vertice \emph{root} hanno
+  esattamente un arco entrante, ovvero $\forall w \not = root(T),
+  \exists!r: (r, w) \in \rightarrow$
+\end{itemize}
 
 \subsection{The search concept}
 Sia $G$ il grafo che vogliamo visitare. Inizialmente tutti i vertici
