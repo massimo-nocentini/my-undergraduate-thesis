@@ -1,32 +1,62 @@
-\documentclass[8pt, a4paper]{report}
- 
-%\usepackage{fancyhdr}
-\usepackage{hyperref}
-\usepackage[T1]{fontenc}
-\usepackage{ae,aecompl}
-\usepackage{graphicx}
-% \usepackage[left=2cm, right=2cm, top=2.5cm, bottom=2.5cm]{geometry}
+\documentclass[twoside,openright,titlepage,fleqn,
+	headinclude,11pt,a4paper,BCOR5mm,footinclude
+	]{scrbook}
+%--------------------------------------------------------------
+\newcommand{\myTitle}{Titolo della tesi\xspace}
+% use the right myDegree option
+\newcommand{\myDegree}{Corso di Laurea in Informatica\xspace}
+%\newcommand{\myDegree}{
+	%Corso di Laurea Specialistica in Scienze e Tecnologie 
+	%dell'Informazione\xspace}
+\newcommand{\myName}{Massimo Nocentini\xspace}
+\newcommand{\myProf}{Pierluigi Crescenzi\xspace}
+\newcommand{\myOtherProf}{Nome Cognome\xspace}
+\newcommand{\mySupervisor}{Nome Cognome\xspace}
+\newcommand{\myFaculty}{
+	Facolt\`a di Scienze Matematiche, Fisiche e Naturali\xspace}
+\newcommand{\myDepartment}{
+	Dipartimento di Sistemi e Informatica\xspace}
+\newcommand{\myUni}{\protect{
+	Universit\`a degli Studi di Firenze}\xspace}
+\newcommand{\myLocation}{Firenze\xspace}
+\newcommand{\myTime}{Anno Accademico 2010-2011\xspace}
+\newcommand{\myVersion}{Version 0.1\xspace}
+%--------------------------------------------------------------
+\usepackage[latin1]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage[square,numbers]{natbib} 
+\usepackage[fleqn]{amsmath}  
+%--------------------------------------------------------------
+\usepackage{dia-classicthesis-ldpkg} 
+%--------------------------------------------------------------
+% Options for classicthesis.sty:
+% tocaligned eulerchapternumbers drafting linedheaders 
+% listsseparated subfig nochapters beramono eulermath parts 
+% minionpro pdfspacing
+\usepackage[eulerchapternumbers,subfig,beramono,eulermath,
+	parts]{classicthesis}
+%--------------------------------------------------------------
+\newlength{\abcd} % for ab..z string length calculation
+% how all the floats will be aligned
+\newcommand{\myfloatalign}{\centering} 
+\setlength{\extrarowheight}{3pt} % increase table row height
+\captionsetup{format=hang,font=small}
+%--------------------------------------------------------------
+% Layout setting
+%--------------------------------------------------------------
 \usepackage{geometry}
-\usepackage{latexsym}
-\usepackage{amsmath, amsthm, amssymb}
-\usepackage{rotating}
-\usepackage{boxedminipage}
-\usepackage{multicol}
-\usepackage{epstopdf}
-% \usepackage{charter}  
-
-% Package for including code in the document
+\geometry{
+	a4paper,
+	ignoremp,
+	bindingoffset = 1cm, 
+	textwidth     = 13.5cm,
+	textheight    = 21.5cm,
+	lmargin       = 3.5cm, % left margin
+	tmargin       = 4cm    % top margin 
+}
+%--------------------------------------------------------------
 \usepackage{listings}
-
-% If you want to generate a toc for each chapter (use with book)
-% \usepackage{minitoc}
-
-\begin{titlepage}
-  \title{Undergraduate thesis} 
-  \author{Massimo Nocentini}
-  \date{Revision 0.5}
-\end{titlepage}
-
+\usepackage{hyperref}
 % My Theorem
 \newtheorem{oss}{Observation}[section]
 \newtheorem{exercise}{Exercise}[section]
@@ -45,9 +75,54 @@
 %\newcommand{\vect}[1]{\vec{#1}}
 
 % page settings
-\pagestyle{headings}
-
+% \pagestyle{headings}
+%--------------------------------------------------------------
 \begin{document}
+\frenchspacing
+\raggedbottom
+\pagenumbering{roman}
+\pagestyle{plain}
+%--------------------------------------------------------------
+% Frontmatter
+%--------------------------------------------------------------
+\include{titlePage}
+\pagestyle{scrheadings}
+%--------------------------------------------------------------
+% Mainmatter
+%--------------------------------------------------------------
+\pagenumbering{arabic}
+
+% this end the pasted content.
+
+% \documentclass[8pt, a4paper]{report}
+ 
+% %\usepackage{fancyhdr}
+% \usepackage{hyperref}
+% \usepackage[T1]{fontenc}
+% \usepackage{ae,aecompl}
+% \usepackage{graphicx}
+% % \usepackage[left=2cm, right=2cm, top=2.5cm, bottom=2.5cm]{geometry}
+% \usepackage{geometry}
+% \usepackage{latexsym}
+% \usepackage{amsmath, amsthm, amssymb}
+% \usepackage{rotating}
+% \usepackage{boxedminipage}
+% \usepackage{multicol}
+% \usepackage{epstopdf}
+% % \usepackage{charter}  
+
+% % Package for including code in the document
+% \usepackage{listings}
+
+% % If you want to generate a toc for each chapter (use with book)
+% % \usepackage{minitoc}
+
+% \begin{titlepage}
+%   \title{Undergraduate thesis} 
+%   \author{Massimo Nocentini}
+%   \date{Revision 0.5}
+% \end{titlepage}
+
 
 % settings for the lstlisting environment
 \lstset{
@@ -61,8 +136,6 @@
 	, showspaces=false
 	, showstringspaces=false
 }
-
-\maketitle
 
 \tableofcontents
 
