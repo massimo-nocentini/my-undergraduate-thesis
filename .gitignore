@@ -6,3 +6,6 @@
 *.log
 *~
 *.pdf
+*.dvi
+*.brf
+*.aux
