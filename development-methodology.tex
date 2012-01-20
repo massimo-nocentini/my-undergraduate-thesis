@@ -82,6 +82,24 @@ controllare che il comportamento non sia cambiato. Avendoli invece,
 assicurare che i concetti su cui ci siamo basati non abbiano subito
 modifiche.
 
+Inoltre, scrivendo alcuni \emph{learning tests} abbiamo dedotto le
+seguenti propriet\`a sui modelli SBML. I seguenti test sono stati
+esercitati su una batteria di modelli biologici reali, tutti con esito
+positivo:
+\begin{itemize}
+\item sia $r$ una reazione e siano $reactants(r), products(r)$ gli
+  insiemi di \emph{reagenti} e \emph{prodotti} rispettivamente. Tali
+  insiemi catturano il concetto di insieme matematico, ovvero non
+  contengono oggetti duplicati;
+\item $\exists r,t \in Reactions: products(t) = reactants(r)$. Questa
+  propriet\`a permette di avere continuit\`a tra reazioni, ovvero un
+  insiemi di \emph{prodotti} di una reazione $t$ pu\`o essere
+  l'insieme di \emph{reagenti} di una reazione $r$. Questa
+  propriet\`a permette di costruire dei \emph{cammini metabolici}
+  composti da quante reazioni si voglia;
+\item ogni metabolito deve essere contenuto in un compartimento.
+\end{itemize}
+
 \subsection{Pros}
 Il maggior vantaggio che ho avuto utilizzando questa metodologia \`e
 stato di poter pensare ad una funzionalit\`a vestendo due

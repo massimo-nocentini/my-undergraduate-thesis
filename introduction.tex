@@ -11,7 +11,7 @@ Inoltre attraverso questo processo di astrazione, \`e possibile
 studiare quali relazioni possono intercorrere tra il sistema e il
 contesto che lo ospita. Lo studio di queste relazioni pu\`o portare a
 fare delle stime riguardo la potenzialit\`a del sistema di
-``comunicare" con il contesto.
+``comunicare'' con il contesto.
 
 Le idee che abbiamo espresso sono alla base del concetto di
 \emph{storia} che avremo modo di studiare meglio nel Capitolo
@@ -34,61 +34,55 @@ progetto.
 
 \section{Enzimi, cammini e reti metaboliche}
 
-Prima di definire cosa \`e una \emph{rete metabolica} dobbiamo
+Prima di dare la definizione di \emph{rete metabolica} dobbiamo
 introdurre i seguenti concetti.
 
 Un \emph{cammino metabolico} \`e una sequenza di reazioni chimiche che
 si verificano all'interno di una cellula. Dal punto di vista
-matematico, possiamo vedere una metabolico cammino come una sequenza di
-funzioni $reaction_{i}$ tali che:
-\begin{displaymath}
-reaction_{i} : 2^{Molecules} \rightarrow 2^{Molecules}
-\end{displaymath}
-Ognuna di queste funzioni, avendo in input un insieme di molecole,
-esegue delle trasformazioni su queste e produce come output, il
-risultato delle trasformazioni svolte sotto forma di insieme di
-molecole. Questo output pu\`o essere utilizzato come input per
-$reaction_{i+1}$, concatenando quanto si voglia le trasformazioni.
+matematico, possiamo vedere un cammino metabolico come una sequenza di
+funzioni, dette reazioni, che, avendo in input un insieme di molecole,
+esegue delle trasformazioni su queste e produce come output il
+risultato delle trasformazioni svolte, sotto forma di insieme di
+molecole. Questo output pu\`o essere utilizzato come input per la
+funzione successiva, concatenando quanto si voglia le trasformazioni.
 \\\\
 Ogni reazione chimica \`e regolata da alcuni \emph{enzimi}. Un
 \emph{enzima} \`e una proteina che gestisce la frequenza e la
 velocit\`a di una reazione chimica. Le molecole a cui si applica la
 reazione vengono identificate con il termine \emph{substrato} (o
-\emph{reagenti} usando la terminologia SBML), mentre i prodotti della
-reazione vengono identificati con il termine \emph{prodotti} (anche
-la terminologia SBML usa questo identificatore).
+\emph{reagenti}), mentre le molecole output della reazione vengono
+identificate con il termine \emph{prodotti}.
 
-Durante l'esecuzione di una reazione chimica, ogni \emph{enzima}
+Durante l'esecuzione di una reazione chimica, ogni enzima
 agisce da \emph{catalizzatore}, ovvero non viene consumato nella reazione
 e, quindi, pu\`o partecipare in pi\`u di una reazione.
 
-L'insieme di \emph{enzimi} "guida" e determina l'insieme di
-\emph{cammini metabolici} che possono occorrere nella cellula, in
-quanto una reazione chimica su un substrato pu\`o avvenire se e solo
-se lo strato attivo del substrato \`e il complementare del substrato
-dell'enzima.
+L'insieme di enzimi ``guida'' e determina l'insieme di \emph{cammini
+  metabolici} che possono occorrere nella cellula, in quanto una
+reazione chimica su un substrato pu\`o avvenire se e solo se lo strato
+attivo del substrato \`e complementare allo strato attivo dell'enzima.
 
-Adesso possiamo definire una \emph{metabolico network} come collezione
-di \emph{metabolico cammini metabolici}.
+Adesso possiamo definire una \emph{rete metabolica} come collezione di
+cammini metabolici.
 \\\\
-Nelle prossime sezioni vedremo quali di questi concetti sono necessari
-al mio lavoro, cercando di metterli in relazione con le astrazioni
-definite dal formato \emph{SBML}.
+Nelle prossime sezioni studieremo un linguaggio che permetta di
+codificare le reti metaboliche, descrivendo in particolare i concetti
+necessari al nostro lavoro.
 
-\section{Codificare informazioni in formato \emph{SBML}}
-Il formato \textbf{SBML} (\textbf{S}ystems \textbf{B}iology
-\textbf{M}arkup \textbf{L}anguage) permette di rappresentare
-informazioni seguendo uno schema gerarchico, basato su XML.
+\section{Il linguaggio SBML}
+\textbf{SBML} (\textbf{S}ystems \textbf{B}iology \textbf{M}arkup
+\textbf{L}anguage) \`e un linguaggio che permette di rappresentare
+informazioni classificandole in modo gerarchico, basato sul linguaggio
+XML.
 
-Questo formato \`e orientato alla descrizione di sistemi in cui
-entit\`a biologiche sono oggetto di manipolazioni eseguite da processi
-nel corso del tempo, pertanto facilita la codifica di modelli
-computazionali di processi biologici, ad esempio \emph{metabolico
-  reti, cell-signaling cammini metabolici, regulatory reti} e molti
-altri. In particolare, le \emph{metabolico network} sono oggetto del
-mio elaborato.
+SBML \`e orientato alla descrizione di sistemi in cui entit\`a
+biologiche sono oggetto di manipolazioni eseguite da processi nel
+corso del tempo e, pertanto, facilita la codifica di modelli
+computazionali di processi biologici, come, ad esempio reti
+metaboliche, segnalazioni cellulari e molti altri. In particolare, le
+reti metaboliche sono oggetto di questo elaborato.
 
-\subsection{Model necessary real objects in SBML}
+\subsection{Oggetti fondamentali}
 \label{sec:necessaryRealObjectsModeledInSBML}
 
 Nella precedente sezione abbiamo introdotto alcuni concetti che non
@@ -96,152 +90,102 @@ sono influenti sul nostro studio, per cui trattiamo solo quelli
 inerenti al lavoro che ho sviluppato (molti dei concetti che noi non
 usiamo sono comunque modellabili in SBML).
 
-Adesso che abbiamo alcuni concetti reali possiamo iniziare a mapparli
-sulle nostre astrazioni, la prima delle quali \`e il mezzo di
-comunicazione SBML. 
-% Nel seguente \emph{entity diagram} si riportano le
-% entit\`a di interesse per la nostra trattazione, con le relazioni che
-% intercorrono tra di esse e gli attributi che possiamo associare a
-% questi oggetti: \footnote{draw here an entity model that catch the
-%   fundamental entities.}
-% \begin{figure}
-%   \centering
-  
-%   \caption{Fundamental entities}
-%   \label{fig:FundamentalEntities}
-% \end{figure}
-Le unit\`a atomiche definibili con SBML sono le \emph{metaboliti}. Una
-\emph{metaboliti} rappresenta il concetto di molecola (appartenente ad
-almeno un \emph{substrato}).  Un oggetto di tipo \emph{metaboliti} ha
+L'unit\`a atomica definibile con SBML \`e il \emph{metabolito}, che
+rappresenta il concetto di molecola.  Un oggetto di questo tipo ha
 molti attributi ma, ai nostri fini, tre sono quelli necessari:
-\begin{itemize}
-\item \emph{identificatore}, che permette di assegnare una etichetta univoca
-alla specie all'interno di tutto il modello SBML
-\item \emph{nome}, che permette di codificare delle informazioni di
-  pi\`u alto livello rispetto all'\emph{identificatore}
-\item \emph{compartimento}, che permette di assegnare ad una specie il
-compartimento della cellula dove risiede (in tutti gli esempi che
-abbiamo avuto modo di testare il compartimento \`e sempre il
-citoplasma).
-\end{itemize}
+\begin{description}
+\item[identificatore] rappresentato da un'etichetta, univoca in tutto
+  il modello, permette di distinguerlo dagli altri metaboliti;
+\item[nome] rappresentato da un'etichetta, possibilmente non univoca,
+  permette di associargli delle informazioni di pi\`u alto livello
+  rispetto all'\emph{identificatore};
+\item[compartimento] rappresentato da un'etichetta, univoca in tutto
+  il modello, permette di associargli il compartimento della cellula
+  dove risiede (in tutti gli esempi che abbiamo avuto modo di testare
+  il compartimento \`e sempre il \emph{citoplasma}).
+\end{description}
 
-Un altro concetto fondamentale \`e quello di \emph{chimica reazione},
+Un altro concetto fondamentale \`e quello di \emph{reazione chimica},
 codificato in SBML con:
-\begin{itemize}
-\item \emph{reagenti}, insieme di \emph{metaboliti}, che modellano il
-  \emph{substrato} della reazione.
-\item \emph{prodotti}, insieme di \emph{metaboliti}, che modellano i
-  prodotti della reazione.
-\end{itemize}
-Inoltre \`e necessario modellare il concetto di reazione
-reversibile, il quale viene catturato in SBML dal flag
-\emph{reversibile}.
-\\\\
+\begin{description}
+\item[reagenti], insieme di \emph{metaboliti}, modella il
+  substrato della reazione;
+\item[prodotti], insieme di \emph{metaboliti}, modella i
+  prodotti della reazione;
+\item[reversibile], valore booleano, specifica se la reazione \`e
+  reversibile oppure no.
+\end{description}
+
 Questo \`e quello che ci serve per iniziare ad analizzare il modello
-SBML: ricercheremo l'insieme di reazioni descritte e, per ogni
-reazione, analizzeremo l'insieme dei \emph{reagenti} e dei
-\emph{prodotti} per costruire un nostro modello sul quale implementare
-i nostri algoritmi.
+SBML di un organismo: ricercheremo l'insieme di reazioni descritte e,
+per ogni reazione, analizzeremo l'insieme dei \emph{reagenti} e dei
+\emph{prodotti} per costruire un grafo oggetto dei nostri studi
+descritti nel Capitolo \ref{chapter:study}. Nella prossima sezione
+descriveremo le regole che abbiamo utilizzato per costruire tale
+grafo.
+
+\subsection{Costruire un grafo da un modello SBML}
+
+Non \`e possibile utilizzare direttamente i concetti espressi con il
+linguaggio SBML come input per i nostri algoritmi, dobbiamo prima
+trasportarli in una struttura dati grafo. Questo passaggio ci permette
+di ridurre la complessit\`a e la mole delle informazioni, e riduce il
+problema originale ad un problema su cui \`e possibile applicare
+algoritmi appartenenti alla teoria dei grafi.
 \\\\
-Nella prossima sezione descriveremo le regole che abbiamo utilizzato
-per costruire, dato in input un modello SBML, il nostro modello
-dati.
+In particolare, il grafo che costruiremo \`e un grafo orientato, la
+cui caratteristica \`e quella di partizionare l'insieme dei vertici in
+due partizioni. Identificheremo i vertici a seconda della partizione
+di appartenenza come vertici \emph{neri} o \emph{bianchi} (vedi
+\cite{tellingStories}).
 
-\subsection{Costruire un grafo da un modello \emph{SBML}}
-
-Abbiamo la necessit\`a di modellare i concetti espressi in formato
-SBML con un nostro modello in quanto ci permette di ridurre la
-complessit\`a delle informazioni e ci permette di applicare in modo
-semplice molti algoritmi presi dalla teoria dei grafi.
-
-Senza questo nostro modello la trattazione del problema sarebbe molto
-complicata e non ci permetterebbe di arrivare a dei risultati.
-\\\\
-Il nostro modello \`e essenzialmente un grafo orientato, la cui
-caratteristica \`e quella di catturare l'idea dei nodi \emph{neri} e
-nodi \emph{bianchi} (vedi \cite{tellingStories}), essenziali per
-l'astrazione di \emph{storia}.
-
-Per costruire questo modello usiamo questo insieme di regole:
+Per costruire il grafo usiamo questo insieme di regole:
 \begin{itemize}
 \item due specie sono uguali se hanno uguale identificatore ed uguale
-  compartimento. Questa regola \`e necessaria per evitare una
-  esplosione di nodi del nostro modello in quanto, date due reazioni
-  $r$ e $r'$, se $a \in reactants(r) \wedge a' \in reactants(r')$ con
-  $a = a' \wedge r \not = r'$, si costruirebbero due nodi distinti
-  rispettivamente per $a, a'$, non si avrebbero informazioni
-  significative in quanto il grafo degenererebbe ad un insieme di
-  sotto grafi isolati, ognuno rappresentante una reazione. Quindi una
-  specie non \`e identificata dalle reazioni in cui appare.
-\item data una reazione non-reversibile $r$ tale che:
+  compartimento. Questa regola \`e necessaria per evitare
+  un'esplosione del numero di vertici in quanto, date due reazioni $r,
+  r'$ e due metaboliti $a, a'$ tali che $a \in reagenti(r) \wedge a'
+  \in reagenti(r')$, con $a = a' \wedge r \not = r'$, se si
+  costruissero due nodi distinti rispettivamente per $a$ e $a'$ il
+  grafo non avrebbe informazioni significative, perch\'e degenererebbe
+  ad un insieme di sotto grafi isolati, ognuno rappresentante una
+  reazione. Da questo segue che un metabolito non \`e identificato
+  dalle reazioni in cui appare;
+\item data una reazione non reversibile $r$ tale che:
   \begin{displaymath}
     \begin{split} 
-      reactants(r) &= \{ r_{1}, \ldots, r_{n} \} \\
-      products(r) &= \{ p_{1}, \ldots, p_{m} \}
+      reagenti(r) &= \{ r_{1}, \ldots, r_{n} \} \\
+      prodotti(r) &= \{ p_{1}, \ldots, p_{m} \}
     \end{split}
   \end{displaymath}
-  allora il nostro modello sar\`a uguale al grafo che codifica la
-  relazione $reactants(r) \times products(r)$. Ad esempio, con
-  $reactants(r) = \{ a, b, c, d \}$ e $products(r) = \{a, e, f\}$
-  otteniamo:
-
-\begin{figure}[!htb]
-\centering
-\includegraphics{images/non-reversible-reaction-example.dot.eps}
-\end{figure}
-supponendo che la specie $a$ appartenente ad entrambi gli
-insiemi sia la stessa (ovvero se $\exists a': a = a' \rightarrow id(a) =
-id(a') \wedge compart(a) = compart(a')$).
-
+  allora costruiremo il grafo che codifica la relazione $reagenti(r)
+  \times prodotti(r)$. Ad esempio, con $reagenti(r) = \{ a, b, c, d
+  \}$ e $prodotti(r) = \{a, e, f\}$ otteniamo il grafo riportato in
+  Figura \ref{fig:non-reversible-reaction-mapping};
+  \begin{figure}
+    \centering
+    \includegraphics{images/non-reversible-reaction-example.dot.eps}
+    \caption{Grafo ottenuto da una reazione non reversibile}
+    \label{fig:non-reversible-reaction-mapping}
+  \end{figure}
 \item data una reazione reversibile $r$ tale che:
   \begin{displaymath}
     \begin{split} 
-      reactants(r) &= \{ r_{1}, \ldots, r_{n} \} \\
-      products(r) &= \{ p_{1}, \ldots, p_{m} \}
+      reagenti(r) &= \{ r_{1}, \ldots, r_{n} \} \\
+      prodotti(r) &= \{ p_{1}, \ldots, p_{m} \}
     \end{split}
   \end{displaymath}
-  allora il nostro modello sar\`a uguale al grafo che codifica la
-  relazione $(reactants(r) \times products(r)) \cup (products(r)
-  \times reactants(r))$. Ad esempio, con $reactants(r) = \{ a, b, c, d
-  \}$ e $products(r) = \{a, e, f\}$ otteniamo:
-
-\begin{center}
-\includegraphics{images/reversible-reaction-example.dot.eps}
-\end{center}
-supponendo che la specie $a$ appartenente ad entrambi gli
-insiemi sia la stessa (ovvero se $\exists a': a = a' \rightarrow id(a) =
-id(a') \wedge compart(a) = compart(a')$).
-
-\end{itemize}
-
-Nella prossima sezione descriveremo alcuni dettagli e caratteristiche
-di modelli SBML che non sono esplicitamente documentate sul sito
-ufficiale (vedi \cite{sbmlOfficialDocumentation}), ma che abbiamo
-capito e dedotto utilizzando il concetto di \emph{learning test} (vedi
-\cite[p. 136]{beck2003}) implementato con \emph{JUnit}.
-
-\subsection{Learning SBML tips by tests}
-
-Scrivendo alcuni \emph{learning tests} abbiamo dedotto le seguenti
-propriet\`a sui modelli SBML. I seguenti test sono stati esercitati su
-una batteria di modelli biologici reali, tutti con esito positivo:
-\begin{itemize}
-\item sia $r$ una reazione e siano $reactants(r), products(r)$ gli
-  insiemi di \emph{reactants} e \emph{prodotti}
-  rispettivamente. Questi due insiemi catturano il concetto di insieme
-  matematico, ovvero non contengono oggetti duplicati.
-\item $\exists r,t \in Reactions: products(t) = reactants(r)$. Questa
-  propriet\`a permette di avere continuit\`a tra reazioni, ovvero un
-  insiemi di \emph{prodotti} di una reazione $t$ pu\`o essere
-  l'insieme di \emph{reagenti} di una reazione $r$. Questa
-  propriet\`a permette di costruire delle \emph{metabolico cammini metabolici}
-  composte da quante reazioni si voglia.
-\item ogni metaboliti deve essere contenuta in un compartimento.
-\item l'identificatore discrimina le metaboliti, ovvero se tentiamo di
-  aggiungere al modello due metaboliti con lo stesso identificatore, ma
-  contenute in compartimenti diversi, allora nel modello viene
-  inserita una delle due ma non entrambe, scegliendo in ordine
-  cronologico di inserimento
+  allora costruiremo il grafo che codifica la relazione $(reagenti(r)
+  \times prodotti(r)) \cup (prodotti(r) \times reagenti(r))$. Ad
+  esempio, con $reagenti(r) = \{ a, b, c, d \}$ e $prodotti(r) = \{a,
+  e, f\}$ otteniamo il grafo riportato in Figura
+  \ref{fig:reversible-reaction-mapping}.
+  \begin{figure}
+    \centering
+    \includegraphics{images/reversible-reaction-example.dot.eps}
+    \caption{Grafo ottenuto da una reazione non reversibile}
+    \label{fig:reversible-reaction-mapping}
+  \end{figure}
 \end{itemize}
 
 \section{Informazioni su questo progetto}
@@ -250,79 +194,77 @@ Java che abbiamo sviluppato, daremo una sinopsi della struttura di
 questo documento e riporteremo alcuni dettagli tecnici relativi agli
 strumenti utilizzati per la realizzazione dell'intero lavoro.
 
-\subsection{The Java library}
-Il mio lavoro ha prodotto una libreria Java nella quale vengono
-implementati i concetti esposti nel capitolo
-\ref{chapter:theoretical-background} e si prefigge di essere
-utilizzata non come un programma a se stante, bens\`i \`e molto pi\`u
-orientata ad un utilizzo programmatico. Per questo motivo abbiamo
-ritenuto opportuno riportare nella sezione
+\subsection{Sviluppo di una libreria Java}
+Questo lavoro ha prodotto una libreria Java nella quale vengono
+implementati i concetti esposti nel Capitolo
+\ref{chapter:theoretical-background}. Questa libreria non \`e
+orientata ad essere utilizzata come un programma a se stante, bens\`i
+mira ad un utilizzo programmatico ed estendibile. Per questo motivo
+abbiamo ritenuto opportuno riportare nella Sezione
 \ref{section:packages-descriptions} una descrizione di ogni
-\emph{pacchetto} in modo da favorirne la comprensione e
-l'utilizzo. Nella libreria \`e presente anche una maschera realizzata
-utilizzando il framework \emph{SWING} per la renderizzazione di un
-particolare set di output relativi alla composizione delle strongly
-connected components: questo \`e l'unico oggetto che non \`e possibile
+\emph{pacchetto} in modo da favorirne la comprensione e l'utilizzo.
+
+Nella libreria \`e presente anche una maschera realizzata utilizzando
+il framework \emph{SWING} per la renderizzazione di un particolare
+insieme di risultati, relativi alla composizione delle componenti
+fortemente connesse: questo \`e l'unico oggetto che non \`e possibile
 utilizzare programmaticamente.
 
 \subsection{Sinopsi}
 In questa sezione elenchiamo i capitoli in cui questo documento \`e
-suddiviso e, per ognuno di assi, daremo una breve descrizione del
+suddiviso e, per ognuno di essi, daremo una breve descrizione del
 contenuto.
 
-Il capitolo \ref{chapter:introduction} contiene una introduzione al
+Il Capitolo \ref{chapter:introduction} contiene una introduzione al
 lavoro svolto. Vengono introdotti i concetti chiave del problema in
-questione, il formato di codifica delle informazioni \emph{SBML}, come
-catturare le informazioni in questo formato ed alcuni dettagli tecnici
+questione, il linguaggio di codifica delle informazioni \emph{SBML},
+come usarlo per codificare le informazioni ed alcuni dettagli tecnici
 relativi alla realizzazione del progetto.
 
-Il capitolo \ref{chapter:theoretical-background} modella da un punto
+Il Capitolo \ref{chapter:theoretical-background} modella da un punto
 di vista teorico i concetti e gli algoritmi alla base delle
 implementazioni. Verr\`a precisato il concetto di \emph{storia} e il
 significato dell'insieme $\mathbb{B}$, cosa significa eseguire una
 visita di un grafo, approfondiremo la strategia \emph{Depth First} e
-si studieranno tre algoritmi per la ricerca di \emph{strongly
-  connected components}.
+si studieranno tre algoritmi per la ricerca di componenti fortemente
+connesse.
 
-Il capitolo \ref{chapter:study} formalizza gli obiettivi che vogliamo
-raggiungere con lo sviluppo della libreria Java. Vengono proposti gli
-\emph{use-case} che abbiamo implementato e, per ognuno di essi,
-vengono riportati degli esempi del "prodotto finito" in modo da dare
-un'idea se non si \`e avuto modo di utilizzare la libreria. Inoltre si
+Il Capitolo \ref{chapter:study} formalizza gli obiettivi che vogliamo
+raggiungere con lo sviluppo della libreria Java. Vengono proposti i
+casi d'uso che abbiamo implementato e, per ognuno di essi, vengono
+riportati degli esempi del "prodotto finito" in modo da dare un'idea
+se non si \`e avuto modo di utilizzare la libreria. Inoltre si
 analizza l'architettura che caratterizza l'intera implementazione.
 
-Il capitolo \ref{chapter:implementation} affronta tutte le questioni
+Il Capitolo \ref{chapter:implementation} affronta tutte le questioni
 inerenti alla fase di implementazione. Si affronta la metodologia di
 sviluppo utilizzata, alcuni paradigmi e idiomi usati ripetutamente
 durante la fase di codifica ed una breve descrizione dei
-\emph{pacchetto} che compongono il progetto.
+\emph{pacchetti} che compongono il progetto.
 
-Il capitolo \ref{chapter:conclusions} termina il lavoro esponendo i
+Il Capitolo \ref{chapter:conclusions} termina il lavoro esponendo i
 risultati ottenuti ed elencando una lista di sviluppi futuri del
 progetto.
 
-\subsection{Used tools}
+\subsection{Strumenti utilizzati}
 Per lo sviluppo di questo progetto sono stati utilizzati i seguenti
 strumenti:
 \begin{itemize}
 \item per la stesura di questo documento \`e stato usato il motore di
   formattazione \TeX, utilizzando \emph{Emacs} come editor dei file
-  sorgenti, installando la \emph{mojor mode AucTex}
+  sorgenti, installando la \emph{major mode AucTex};
 \item l'implementazione della libreria Java \`e stata sviluppata
-  completamente con \emph{Eclipse} versione \emph{Indigo}
+  completamente con \emph{Eclipse} versione \emph{Indigo}. La JVM
+  utilizzata per lo sviluppo \`e quella fornita da \emph{openjdk-6
+    (versione 24)};
 \item i sorgenti, sia dell'elaborato testuale sia
   dell'implementazione, sono stati versionati utilizzando il sistema
-  \emph{Git}. Abbiamo utilizzato \emph{Github} come provider del
+  \emph{Git}. Abbiamo utilizzato \emph{Github} come fornitore del
   servizio. I sorgenti di questo documento possono essere scaricati
   dall'URL:\\
   \href{https://github.com/massimo-nocentini/my-undergraduate-thesis}{
     https://github.com/massimo-nocentini/my-undergraduate-thesis}\\
   mentre i sorgenti dell'implementazione Java dall'URL:\\
-  \href{https://github.com/massimo-nocentini/my-undergraduatethesis-Java}{
-    https://github.com/massimo-nocentini/my-undergraduatethesis-Java}
+  \href{https://github.com/massimo-nocentini/my-undergraduatethesis-java}{
+    https://github.com/massimo-nocentini/my-undergraduatethesis-java}
 \end{itemize}
-
-\subsection{Feedback}
-Per riportare consigli, correzioni o domande \`e possibile inviare una
-mail all'indirizzo \\
-\href{massimo.nocentini@gmail.com}{massimo.nocentini@gmail.com}
