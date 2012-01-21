@@ -5,8 +5,8 @@ Questo lavoro ha come obiettivo l'analisi di reti metaboliche:
 cercheremo di astrarre i processi fisici che avvengono all'interno
 delle cellule di organismi, utilizzando la struttura astratta grafo in
 modo da poter ragionare su quest'ultimo utilizzando algoritmi ben noti
-della teoria dei grafi. In particolare, indagheremo la connessione
-(forte) del grafo, ricercando le componenti fortemente connesse.
+della teoria dei grafi. In particolare indagheremo la relazione di
+connessione forte, ricercando le componenti fortemente connesse.
 \\\\
 In questo capitolo si definisce cosa sono le reti metaboliche, il
 motivo per cui vengono studiate, come formulare un modello astratto
@@ -217,10 +217,10 @@ Abbiamo citato questo lavoro in quanto condivide parte del processo di
 astrazione della rete e l'applicazione di algoritmi con il presente
 documento.
 \\\\
-Il presente elaborato invece ha come obiettivo di essere d'ausilio al
-lavoro esposto in \cite{tellingStories}, che studia una variante del
-problema di enumerare tutti i sotto grafi aciclici di un grafo
-orientato, aggiungendo il vincolo che solo un determinato sottoinsieme
+Il nostro lavoro ha come obiettivo di essere d'ausilio al lavoro
+esposto in \cite{tellingStories}, che studia una variante del problema
+di enumerare tutti i sotto grafi aciclici di un grafo orientato,
+aggiungendo il vincolo che solo un determinato sottoinsieme
 $\mathbb{B}$ di vertici possono avere il ruolo di sorgente o di pozzo
 nei \emph{DAG} enumerati. Ogni \emph{DAG} che soddisfa tale condizione
 \`e chiamato \emph{storia} e si vuole ``raccontare'' tutte le
@@ -228,10 +228,10 @@ possibili storie dato un grafo orientato e l'insieme $\mathbb{B}$.
 
 \section{Nostri obiettivi}
 Il concetto catturato dall'insieme $\mathbb{B}$, introdotto nella
-precedente sezione, \`e quello di definire il ``ruolo'' che alcuni
-vertici ``interpreteranno'' nella \emph{storia} (se $v \in \mathbb{B}$
-allora $v$ avr\`a il ruolo di \emph{sorgente} o \emph{pozzo},
-altrimenti il ruolo di \emph{intermedio}).
+precedente sezione, \`e quello di definire il ruolo che alcuni vertici
+``interpreteranno'' nella \emph{storia} (se $v \in \mathbb{B}$ allora
+$v$ avr\`a il ruolo di \emph{sorgente} o \emph{pozzo}, altrimenti il
+ruolo di \emph{intermedio}).
 
 Attualmente l'insieme $\mathbb{B}$, viene costruito in base a delle
 osservazioni e studi \emph{empirici}, costituito dall'insieme di
@@ -319,7 +319,7 @@ libreria. Inoltre si analizza l'architettura che caratterizza l'intera
 implementazione.
 
 Il Capitolo \ref{chapter:implementation} affronta tutte le questioni
-inerenti alla fase di implementazione. Si affronta la metodologia di
+inerenti alla fase di implementazione. Si discute la metodologia di
 sviluppo utilizzata, alcuni paradigmi e idiomi usati ripetutamente
 durante la fase di codifica ed una breve descrizione dei
 \emph{pacchetti} che compongono il progetto.
