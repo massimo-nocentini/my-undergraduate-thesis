@@ -1,36 +1,35 @@
 \chapter{Introduzione}
 \label{chapter:introduction}
 
-Numerosi sistemi biologici possono essere modellati con il concetto
-astratto di grafo. Studiare la struttura e la topologia di
-quest'astrazione non fornisce solo una descrizione dei complessi
-comportamenti del sistema in oggetto ma, pu\`o essere di grande
-utilit\`a per capire le funzionalit\`a del sistema e le sue dinamiche.
-
-Inoltre attraverso questo processo di astrazione, \`e possibile
-studiare quali relazioni possono intercorrere tra il sistema e il
-contesto che lo ospita. Lo studio di queste relazioni pu\`o portare a
-fare delle stime riguardo la potenzialit\`a del sistema di
-``comunicare'' con il contesto.
-
-Le idee che abbiamo espresso sono alla base del concetto di
-\emph{storia} che avremo modo di studiare meglio nel Capitolo
-\ref{chapter:theoretical-background}.  
-% A grandi linee una \emph{story}
-% \`e un modello di un sistema, con la particolarit\`a di assegnare due
-% "ruoli" agli oggetti atomici del sistema. Associeremo uno di questi ad
-% un particolare insieme $\mathbb{B}$, i cui elementi (che nel contesto
-% biologico sono \emph{metaboliti} o \emph{species}) hanno delle
-% caratteristiche di interesse individuate mediante studi
-% \emph{empirici}.  Questo lavoro si propone di verificare se sia
-% possibile costruire l'insieme $\mathbb{B}$ in modo automatico o, in
-% altre parole, se sia possibile attribuire i "ruoli" ai componenti del
-% sistema.
+Questo lavoro ha come obiettivo l'analisi di reti
+metaboliche. Cercheremo di astrarre i processi fisici che avvengono
+all'interno delle cellule di organismi nella struttura astratta grafo
+in modo da poter ragionare su quest ultimo utilizzando algoritmi ben
+noti della teoria dei grafi. In particolare, indagheremo la relazione
+di connessione codificata nel grafo ricercando le componenti
+fortemente connesse.
 \\\\
-In questo capitolo, invece, faremo un breve cenno agli oggetti reali
-oggetto delle nostre astrazioni, e daremo alcune informazioni sui
-metodi e sugli strumenti utilizzati durante lo svolgimento del
-progetto.
+In questo capitolo si definisce cosa sono le reti metaboliche, il
+motivo per cui vengono studiate, come formulare un modello astratto che
+descriva una rete, quali sono i risultati gi\`a noti che condividono
+alcuni aspetti di questo lavoro e quali sono gli obiettivi che
+vogliamo raggiungere.
+
+% Numerosi sistemi biologici possono essere modellati con il concetto
+% astratto di grafo. Studiare la struttura e la topologia di
+% quest'astrazione non fornisce solo una descrizione dei complessi
+% comportamenti del sistema in oggetto ma, pu\`o essere di grande
+% utilit\`a per capire le funzionalit\`a del sistema e le sue dinamiche.
+
+% Inoltre attraverso questo processo di astrazione, \`e possibile
+% studiare quali relazioni possono intercorrere tra il sistema e il
+% contesto che lo ospita. Lo studio di queste relazioni pu\`o portare a
+% fare delle stime riguardo la potenzialit\`a del sistema di
+% ``comunicare'' con il contesto.
+
+% Le idee che abbiamo espresso sono alla base del concetto di
+% \emph{storia} che avremo modo di studiare meglio nel Capitolo
+% \ref{chapter:theoretical-background}.  
 
 \section{Enzimi, cammini e reti metaboliche}
 
@@ -51,19 +50,22 @@ Ogni reazione chimica \`e regolata da alcuni \emph{enzimi}. Un
 velocit\`a di una reazione chimica. Le molecole a cui si applica la
 reazione vengono identificate con il termine \emph{substrato} (o
 \emph{reagenti}), mentre le molecole output della reazione vengono
-identificate con il termine \emph{prodotti}.
-
-Durante l'esecuzione di una reazione chimica, ogni enzima
-agisce da \emph{catalizzatore}, ovvero non viene consumato nella reazione
-e, quindi, pu\`o partecipare in pi\`u di una reazione.
+identificate con il termine \emph{prodotti}.  Durante l'esecuzione di
+una reazione chimica, ogni enzima agisce da \emph{catalizzatore},
+ovvero non viene consumato nella reazione e, quindi, pu\`o partecipare
+in pi\`u di una reazione.
 
 L'insieme di enzimi ``guida'' e determina l'insieme di \emph{cammini
   metabolici} che possono occorrere nella cellula, in quanto una
 reazione chimica su un substrato pu\`o avvenire se e solo se lo strato
 attivo del substrato \`e complementare allo strato attivo dell'enzima.
-
+\\\\
 Adesso possiamo definire una \emph{rete metabolica} come collezione di
-cammini metabolici.
+cammini metabolici. Le reti metaboliche sono ampiamente studiate in
+quanto caratterizzano le propriet\`a fisiologiche e biochimiche delle
+cellule. Analizzare queste reti permette la ricostruzione delle
+reazioni biochimiche che avvengono all'interno di molti organismi, sia
+questi batteri che esseri umani.
 \\\\
 Nelle prossime sezioni studieremo un linguaggio che permetta di
 codificare le reti metaboliche, descrivendo in particolare i concetti
@@ -79,17 +81,21 @@ SBML \`e orientato alla descrizione di sistemi in cui entit\`a
 biologiche sono oggetto di manipolazioni eseguite da processi nel
 corso del tempo e, pertanto, facilita la codifica di modelli
 computazionali di processi biologici, come, ad esempio reti
-metaboliche, segnalazioni cellulari e molti altri. In particolare, le
-reti metaboliche sono oggetto di questo elaborato.
+metaboliche, segnalazioni cellulari e molti altri.
+
+Nel seguito, dopo aver formalizzato un sistema con questo linguaggio,
+faremo riferimento a tale formalizzazione con il termine ``modello
+SBML'' del sistema in questione.
 
 \subsection{Oggetti fondamentali}
 \label{sec:necessaryRealObjectsModeledInSBML}
 
-Nella precedente sezione abbiamo introdotto alcuni concetti che non
-sono influenti sul nostro studio, per cui trattiamo solo quelli
-inerenti al lavoro che ho sviluppato (molti dei concetti che noi non
-usiamo sono comunque modellabili in SBML).
-
+Nella precedente sezione abbiamo introdotto, per inquadrare il
+problema, alcuni concetti che non sono influenti sul nostro studio: in
+questa sezione trattiamo solo quelli inerenti al lavoro che abbiamo
+sviluppato, nonostante molti dei concetti non usati siano modellabili
+con SBML.
+\\\\
 L'unit\`a atomica definibile con SBML \`e il \emph{metabolito}, che
 rappresenta il concetto di molecola.  Un oggetto di questo tipo ha
 molti attributi ma, ai nostri fini, tre sono quelli necessari:
@@ -108,21 +114,19 @@ molti attributi ma, ai nostri fini, tre sono quelli necessari:
 Un altro concetto fondamentale \`e quello di \emph{reazione chimica},
 codificato in SBML con:
 \begin{description}
-\item[reagenti], insieme di \emph{metaboliti}, modella il
+\item[reagenti] insieme di \emph{metaboliti}, modella il
   substrato della reazione;
-\item[prodotti], insieme di \emph{metaboliti}, modella i
+\item[prodotti] insieme di \emph{metaboliti}, modella i
   prodotti della reazione;
-\item[reversibile], valore booleano, specifica se la reazione \`e
+\item[reversibile] valore booleano, specifica se la reazione \`e
   reversibile oppure no.
 \end{description}
-
 Questo \`e quello che ci serve per iniziare ad analizzare il modello
 SBML di un organismo: ricercheremo l'insieme di reazioni descritte e,
 per ogni reazione, analizzeremo l'insieme dei \emph{reagenti} e dei
-\emph{prodotti} per costruire un grafo oggetto dei nostri studi
-descritti nel Capitolo \ref{chapter:study}. Nella prossima sezione
-descriveremo le regole che abbiamo utilizzato per costruire tale
-grafo.
+\emph{prodotti} per costruire un grafo oggetto dei nostri studi. Nella
+prossima sezione descriveremo le regole che abbiamo utilizzato per
+costruirlo.
 
 \subsection{Costruire un grafo da un modello SBML}
 
@@ -132,13 +136,13 @@ trasportarli in una struttura dati grafo. Questo passaggio ci permette
 di ridurre la complessit\`a e la mole delle informazioni, e riduce il
 problema originale ad un problema su cui \`e possibile applicare
 algoritmi appartenenti alla teoria dei grafi.
-\\\\
+
 In particolare, il grafo che costruiremo \`e un grafo orientato, la
 cui caratteristica \`e quella di partizionare l'insieme dei vertici in
 due partizioni. Identificheremo i vertici a seconda della partizione
 di appartenenza come vertici \emph{neri} o \emph{bianchi} (vedi
 \cite{tellingStories}).
-
+\\\\
 Per costruire il grafo usiamo questo insieme di regole:
 \begin{itemize}
 \item due specie sono uguali se hanno uguale identificatore ed uguale
@@ -187,6 +191,19 @@ Per costruire il grafo usiamo questo insieme di regole:
     \label{fig:reversible-reaction-mapping}
   \end{figure}
 \end{itemize}
+Le regole descritte sopra pongono dei limiti sulle informazioni che si
+codificano nel grafo finale. Per esempio tutti gli attributi delle
+reazioni descritti in SBML vengono ignorati. Questo non rende
+insufficiente la nostra rappresentazione in quanto miriamo alla
+relazione di connessione delle reazioni, non a particolari propriet\`a
+di queste.
+
+Dobbiamo essere coscienti che applicando le precedenti facciamo un
+passo di astrazione che comporta della perdita di precisione. Volendo
+essere pi\`u precisi, nel risultante grafo avremo codificato per ogni
+metabolito, l'insieme di metaboliti in cui questo pu\`o essere
+trasformato, a prescindere delle particolari reazioni che permettono
+la trasformazione.
 
 \section{Informazioni su questo progetto}
 In questa sezione riportiamo delle informazioni riguardo alla libreria
