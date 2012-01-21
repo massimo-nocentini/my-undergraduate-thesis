@@ -7,23 +7,7 @@ ha portato alla sua formalizzazione.
 
 \subsection{What's a \emph{story}?}
 \label{subsection:whats-a-story}
-Il problema oggetto dell'articolo \`e quello di studiare una variante
-del problema di enumerare tutti i sottografi di un grafo orientato in
-input: tali sottografi devono essere aciclici (dei \emph{DAG}) e
-massimali.
 
-La caratterizzazione aggiuntiva che si considera \`e che solo un
-determinato sottoinsieme $\mathbb{B}$ di nodi possono avere il ruolo
-di sorgente o di pozzo nei \emph{DAG} che verranno enumerati. 
-
-Questo ulteriore vincolo nasce da dalle questioni biologiche come
-abbiamo analizzato nella sezione \footnote{aggiungere qui riferimento
-  alla sezione che ancora devo scrivere nell'introduzione che spiega
-  il contesto biologico.}. Attualmente l'insieme $\mathbb{B}$ viene
-costruito in base a delle osservazioni e studi \emph{empirici},
-costituito da tutte quelle \emph{species} che hanno una particolare
-frequenza di produzione \footnote{chiedere se \`e corretto
-  interpretare in questo modo} in determinate condizioni.
 
 Siamo interessati ad individuare le reazioni che possono svilupparsi
 da \emph{species} appartenenti all'insieme $\mathbb{B}$, studiando
@@ -37,63 +21,11 @@ quella in cui esso termina, vi appartengano. Un sottografo che cattura
 un insieme di percorsi che soddisfano le queste richieste viene
 definito \emph{story}.
 
-Il problema di fondo trattato dall'articolo \footnote{aggiungere qui
-  riferimento bibliografico sempre al relativo articolo} \`e quello di
-"raccontare" tutte le possibili storie dato un grafo orientato in
-input e il sottoinsieme di vertici $\mathbb{B}$.
 
 \subsection{Who knows about $\mathbb{B}$?}
 Come abbiamo visto nella precedente sezione, l'insieme $\mathbb{B}$
-viene costruito dopo studi \emph{empirici}. Il concetto catturato da
-questo insieme \`e quello di definire il "ruolo" da attribuire ad
-alcuni vertici che dovranno "interpretare" nella \emph{story} (se $v
-\in \mathbb{B}$ allora avr\`a il ruolo di \emph{sorgente} o
-\emph{pozzo}, altrimenti il ruolo di \emph{intermedio}).
+viene costruito dopo studi \emph{empirici}. 
 
-Ci chiediamo se l'identificazione di tale insieme \`e possibile
-effettuarla in modo automatico, utilizzando una macchina. Questo \`e
-lo scopo del presente lavoro.
-\\\\
-Per rispondere a tale domanda vogliamo analizzare la struttura del
-grafo in input dal punto di vista delle sue strongly connected
-components. Questa idea si base sulle seguenti motivazioni:
-\begin{itemize}
-\item \`e difficile cercare di assegnare il ruolo ad ogni vertice
-  studiando l'istanza completa del grafo in input, in quanto oltre ai
-  percorsi a cui siamo interessati nel modello di \emph{story},
-  possono esistere (e con molta frequenza) cicli che portano solo
-  ridondanza e complessit\`a, che quindi possiamo escludere in quanto
-  non portano informazioni aggiuntive. 
-
-  Identificando invece la decompisizione in strongly connected
-  components, \`e possibile astrarre dai cicli e trattare tutte quelle
-  \emph{species} "equivalenti" (vedi prossimo punto) come se fossero
-  una sola.
-\item come vedremo nella sezione \ref{subsection:some-definitions},
-  ogni strongly connected component \`e una classe di
-  equivalenza. Ci\`o significa che due \emph{species} appartenenti
-  alla stessa strongly connected component possono essere ottenute,
-  l'una dall'altra, attraverso almeno una reazione (il caso pi\`u
-  semplice \`e quando questa reazione sia
-  \emph{reversibile}). Possiamo quindi associare a queste
-  \emph{species} lo stesso ruolo che viene associato alla strongly
-  connected component che le contiene.
-\item il "meta-grafo" che ha come vertici le strongly connected
-  components e come archi gli archi che collegano \emph{species}
-  contenute in strongly connected components differenti (evitando
-  duplicazioni) permette di assegnare alle strongly connected
-  components un ruolo, come siamo interessati ad attribuire ai
-  vertici. Se una strongly connected component \`e \emph{sorgente} o
-  \emph{pozzo} nel meta-grafo allora possiamo inserire i vertici che
-  la compongono nell'insieme $\mathbb{B}$.
-\end{itemize}
-Utilizzando quanto detto sopra procederemo ad applicare al grafo in
-input l'algoritmo di Tarjan (in realt\`a utilizzando la variante
-descritta nella sezione \ref{subsection:crescenzi-gambosi-grossi}),
-determineremo il ruolo delle strongly connected components e, di
-conseguenza, sar\`a possibile assegnare un ruolo anche ai vertici del
-grafo in input, rispondendo alla domanda che ci siamo posti nelle
-sezioni precedenti.
 
 \section{DFS search}
 

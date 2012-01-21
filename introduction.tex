@@ -1,19 +1,18 @@
 \chapter{Introduzione}
 \label{chapter:introduction}
 
-Questo lavoro ha come obiettivo l'analisi di reti
-metaboliche. Cercheremo di astrarre i processi fisici che avvengono
-all'interno delle cellule di organismi nella struttura astratta grafo
-in modo da poter ragionare su quest ultimo utilizzando algoritmi ben
-noti della teoria dei grafi. In particolare, indagheremo la relazione
-di connessione codificata nel grafo ricercando le componenti
-fortemente connesse.
+Questo lavoro ha come obiettivo l'analisi di reti metaboliche:
+cercheremo di astrarre i processi fisici che avvengono all'interno
+delle cellule di organismi, utilizzando la struttura astratta grafo in
+modo da poter ragionare su quest'ultimo utilizzando algoritmi ben noti
+della teoria dei grafi. In particolare, indagheremo la connessione
+(forte) del grafo, ricercando le componenti fortemente connesse.
 \\\\
 In questo capitolo si definisce cosa sono le reti metaboliche, il
-motivo per cui vengono studiate, come formulare un modello astratto che
-descriva una rete, quali sono i risultati gi\`a noti che condividono
-alcuni aspetti di questo lavoro e quali sono gli obiettivi che
-vogliamo raggiungere.
+motivo per cui vengono studiate, come formulare un modello astratto
+che descriva una rete, quali sono i risultati gi\`a noti che
+condividono alcuni aspetti di questo lavoro e quali sono gli obiettivi
+che vogliamo raggiungere.
 
 % Numerosi sistemi biologici possono essere modellati con il concetto
 % astratto di grafo. Studiare la struttura e la topologia di
@@ -33,8 +32,9 @@ vogliamo raggiungere.
 
 \section{Enzimi, cammini e reti metaboliche}
 
-Prima di dare la definizione di \emph{rete metabolica} dobbiamo
-introdurre i seguenti concetti.
+Prima di dare la definizione di \emph{rete metabolica} introduciamo i
+concetti di cammino metabolico, enzima e da cosa \`e caratterizzata
+una reazione chimica.
 
 Un \emph{cammino metabolico} \`e una sequenza di reazioni chimiche che
 si verificano all'interno di una cellula. Dal punto di vista
@@ -44,7 +44,7 @@ esegue delle trasformazioni su queste e produce come output il
 risultato delle trasformazioni svolte, sotto forma di insieme di
 molecole. Questo output pu\`o essere utilizzato come input per la
 funzione successiva, concatenando quanto si voglia le trasformazioni.
-\\\\
+
 Ogni reazione chimica \`e regolata da alcuni \emph{enzimi}. Un
 \emph{enzima} \`e una proteina che gestisce la frequenza e la
 velocit\`a di una reazione chimica. Le molecole a cui si applica la
@@ -55,10 +55,10 @@ una reazione chimica, ogni enzima agisce da \emph{catalizzatore},
 ovvero non viene consumato nella reazione e, quindi, pu\`o partecipare
 in pi\`u di una reazione.
 
-L'insieme di enzimi ``guida'' e determina l'insieme di \emph{cammini
-  metabolici} che possono occorrere nella cellula, in quanto una
-reazione chimica su un substrato pu\`o avvenire se e solo se lo strato
-attivo del substrato \`e complementare allo strato attivo dell'enzima.
+L'insieme di enzimi ``guida'' e determina l'insieme di cammini
+metabolici che possono occorrere nella cellula, in quanto una reazione
+chimica su un substrato pu\`o avvenire se e solo se lo strato attivo
+del substrato \`e complementare allo strato attivo dell'enzima.
 \\\\
 Adesso possiamo definire una \emph{rete metabolica} come collezione di
 cammini metabolici. Le reti metaboliche sono ampiamente studiate in
@@ -87,7 +87,7 @@ Nel seguito, dopo aver formalizzato un sistema con questo linguaggio,
 faremo riferimento a tale formalizzazione con il termine ``modello
 SBML'' del sistema in questione.
 
-\subsection{Oggetti fondamentali}
+\subsection{Oggetti e propriet\`a fondamentali}
 \label{sec:necessaryRealObjectsModeledInSBML}
 
 Nella precedente sezione abbiamo introdotto, per inquadrare il
@@ -133,8 +133,8 @@ costruirlo.
 Non \`e possibile utilizzare direttamente i concetti espressi con il
 linguaggio SBML come input per i nostri algoritmi, dobbiamo prima
 trasportarli in una struttura dati grafo. Questo passaggio ci permette
-di ridurre la complessit\`a e la mole delle informazioni, e riduce il
-problema originale ad un problema su cui \`e possibile applicare
+di ridurre la complessit\`a e la mole delle informazioni, riducendo il
+problema originale ad un problema a cui \`e possibile applicare
 algoritmi appartenenti alla teoria dei grafi.
 
 In particolare, il grafo che costruiremo \`e un grafo orientato, la
@@ -187,7 +187,7 @@ Per costruire il grafo usiamo questo insieme di regole:
   \begin{figure}
     \centering
     \includegraphics{images/reversible-reaction-example.dot.eps}
-    \caption{Grafo ottenuto da una reazione non reversibile}
+    \caption{Grafo ottenuto da una reazione reversibile}
     \label{fig:reversible-reaction-mapping}
   \end{figure}
 \end{itemize}
@@ -195,25 +195,91 @@ Le regole descritte sopra pongono dei limiti sulle informazioni che si
 codificano nel grafo finale. Per esempio tutti gli attributi delle
 reazioni descritti in SBML vengono ignorati. Questo non rende
 insufficiente la nostra rappresentazione in quanto miriamo alla
-relazione di connessione delle reazioni, non a particolari propriet\`a
-di queste.
+relazione di connessione estratta delle reazioni e non a loro
+particolari propriet\`a.
 
-Dobbiamo essere coscienti che applicando le precedenti facciamo un
-passo di astrazione che comporta della perdita di precisione. Volendo
-essere pi\`u precisi, nel risultante grafo avremo codificato per ogni
-metabolito, l'insieme di metaboliti in cui questo pu\`o essere
-trasformato, a prescindere delle particolari reazioni che permettono
-la trasformazione.
+Dobbiamo essere coscienti che applicando le precedenti regole facciamo
+un passo di astrazione che comporta della perdita di precisione: nel
+risultante grafo avremo codificato per ogni metabolito l'insieme di
+metaboliti in cui questo pu\`o essere trasformato, a prescindere dalle
+particolari reazioni che definiscono le trasformazioni.
 
-\section{Informazioni su questo progetto}
-In questa sezione riportiamo delle informazioni riguardo alla libreria
-Java che abbiamo sviluppato, daremo una sinopsi della struttura di
-questo documento e riporteremo alcuni dettagli tecnici relativi agli
-strumenti utilizzati per la realizzazione dell'intero lavoro.
+\section{Riferimenti a lavori esistenti}
+Il lavoro esposto in \cite{large-scale-reconstruction} ha come
+obiettivo lo studio di reti metaboliche per identificare quelli che
+vengono chiamati nell'articolo originale \emph{seed sets}: questi
+rappresentano degli insiemi di molecole che sono delle ``interfacce''
+tra la rete metabolica e il contesto che la ospita. Una volta
+identificati questi insiemi, si procede ad analizzarli e trarre
+conclusioni di natura biologica.
 
-\subsection{Sviluppo di una libreria Java}
-Questo lavoro ha prodotto una libreria Java nella quale vengono
-implementati i concetti esposti nel Capitolo
+Abbiamo citato questo lavoro in quanto condivide parte del processo di
+astrazione della rete e l'applicazione di algoritmi con il presente
+documento.
+\\\\
+Il presente elaborato invece ha come obiettivo di essere d'ausilio al
+lavoro esposto in \cite{tellingStories}, che studia una variante del
+problema di enumerare tutti i sotto grafi aciclici di un grafo
+orientato, aggiungendo il vincolo che solo un determinato sottoinsieme
+$\mathbb{B}$ di vertici possono avere il ruolo di sorgente o di pozzo
+nei \emph{DAG} enumerati. Ogni \emph{DAG} che soddisfa tale condizione
+\`e chiamato \emph{storia} e si vuole ``raccontare'' tutte le
+possibili storie dato un grafo orientato e l'insieme $\mathbb{B}$.
+
+\section{Nostri obiettivi}
+Il concetto catturato dall'insieme $\mathbb{B}$, introdotto nella
+precedente sezione, \`e quello di definire il ``ruolo'' che alcuni
+vertici ``interpreteranno'' nella \emph{storia} (se $v \in \mathbb{B}$
+allora $v$ avr\`a il ruolo di \emph{sorgente} o \emph{pozzo},
+altrimenti il ruolo di \emph{intermedio}).
+
+Attualmente l'insieme $\mathbb{B}$, viene costruito in base a delle
+osservazioni e studi \emph{empirici}, costituito dall'insieme di
+metaboliti che hanno particolari propriet\`a in determinate
+condizioni.  Ci chiediamo se \`e possibile identificare l'insieme
+$\mathbb{B}$ in modo automatico per analizzare la rete metabolica
+utilizzando gli algoritmi esposti in \cite{tellingStories}.
+\\\\
+Per rispondere a tale domanda abbiamo l'idea di analizzare la
+connettivit\`a del grafo in input, ricercando le sue componenti
+fortemente connesse. Questa idea si basa sulle seguenti motivazioni:
+\begin{itemize}
+\item \`e difficile cercare di assegnare il ruolo ad ogni vertice
+  studiando l'istanza completa del grafo in input, in quanto astrarre
+  una rete metabolica comporta grafi con molti vertici e numerosi
+  archi ed, inoltre, possono esistere (con molta frequenza) cicli che
+  portano solo ridondanza e complessit\`a, che quindi possiamo
+  escludere in quanto non aggiungono informazioni.
+
+  Identificando invece la decomposizione in componenti fortemente
+  connesse, \`e possibile astrarre dai cicli ed identificare classi di
+  metaboliti equivalenti che possono essere visti come uno solo;
+\item come vedremo nella Sezione \ref{subsection:some-definitions},
+  ogni componente fortemente connessa \`e una classe di equivalenza
+  della relazione di connessione forte. 
+
+  Ci\`o significa che due metaboliti appartenenti alla stessa
+  componente fortemente connessa possono essere ottenuti l'uno
+  dall'altro, attraverso una catena di reazioni nella rete metabolica
+  che stiamo analizzando. Possiamo quindi associare a questi
+  metaboliti lo stesso ruolo che viene associato alla componente che
+  li contiene;
+\item il ``meta grafo'' che ha come vertici le componenti fortemente
+  connesse e come archi gli archi che collegano metaboliti contenuti
+  in componenti diverse (evitando duplicazioni), permette di assegnare
+  alle componenti un ruolo. Se una componente \`e \emph{sorgente} o
+  \emph{pozzo} nel meta grafo allora possiamo inserire i vertici che
+  la compongono nell'insieme $\mathbb{B}$.
+\end{itemize}
+Utilizzando quanto detto sopra procederemo ad applicare al grafo in
+input l'algoritmo di Tarjan (in realt\`a la variante descritta nella
+Sezione \ref{subsection:crescenzi-gambosi-grossi}), determineremo il
+ruolo delle componenti e, di conseguenza, sar\`a possibile assegnare
+un ruolo anche ai vertici.
+\\\\
+Per automatizzare tutte le idee esposte nei paragrafi precedenti
+abbiamo prodotto una libreria Java nella quale vengono implementati i
+concetti esposti nel Capitolo
 \ref{chapter:theoretical-background}. Questa libreria non \`e
 orientata ad essere utilizzata come un programma a se stante, bens\`i
 mira ad un utilizzo programmatico ed estendibile. Per questo motivo
@@ -227,31 +293,30 @@ insieme di risultati, relativi alla composizione delle componenti
 fortemente connesse: questo \`e l'unico oggetto che non \`e possibile
 utilizzare programmaticamente.
 
-\subsection{Sinopsi}
+\section{Sinopsi}
 In questa sezione elenchiamo i capitoli in cui questo documento \`e
 suddiviso e, per ognuno di essi, daremo una breve descrizione del
 contenuto.
 
 Il Capitolo \ref{chapter:introduction} contiene una introduzione al
-lavoro svolto. Vengono introdotti i concetti chiave del problema in
-questione, il linguaggio di codifica delle informazioni \emph{SBML},
-come usarlo per codificare le informazioni ed alcuni dettagli tecnici
-relativi alla realizzazione del progetto.
+lavoro svolto. Vengono introdotti i concetti chiave del problema, il
+linguaggio di codifica delle informazioni \emph{SBML}, come usarlo per
+modellare le reti metaboliche, riferiremo alcuni lavori esistenti e
+descriveremo i nostri obiettivi.
 
 Il Capitolo \ref{chapter:theoretical-background} modella da un punto
 di vista teorico i concetti e gli algoritmi alla base delle
-implementazioni. Verr\`a precisato il concetto di \emph{storia} e il
-significato dell'insieme $\mathbb{B}$, cosa significa eseguire una
-visita di un grafo, approfondiremo la strategia \emph{Depth First} e
-si studieranno tre algoritmi per la ricerca di componenti fortemente
-connesse.
+implementazioni, in particolare cosa significa visitare un grafo,
+approfondiremo la strategia \emph{Depth First} e studieremo tre
+algoritmi per la ricerca delle componenti fortemente connesse.
 
 Il Capitolo \ref{chapter:study} formalizza gli obiettivi che vogliamo
 raggiungere con lo sviluppo della libreria Java. Vengono proposti i
 casi d'uso che abbiamo implementato e, per ognuno di essi, vengono
-riportati degli esempi del "prodotto finito" in modo da dare un'idea
-se non si \`e avuto modo di utilizzare la libreria. Inoltre si
-analizza l'architettura che caratterizza l'intera implementazione.
+riportati degli esempi del ``prodotto finito'' in modo da visualizzare
+i risultati se non si \`e avuto modo di utilizzare la
+libreria. Inoltre si analizza l'architettura che caratterizza l'intera
+implementazione.
 
 Il Capitolo \ref{chapter:implementation} affronta tutte le questioni
 inerenti alla fase di implementazione. Si affronta la metodologia di
@@ -263,7 +328,7 @@ Il Capitolo \ref{chapter:conclusions} termina il lavoro esponendo i
 risultati ottenuti ed elencando una lista di sviluppi futuri del
 progetto.
 
-\subsection{Strumenti utilizzati}
+\section{Strumenti utilizzati}
 Per lo sviluppo di questo progetto sono stati utilizzati i seguenti
 strumenti:
 \begin{itemize}
