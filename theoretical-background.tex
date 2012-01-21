@@ -1,33 +1,12 @@
-\section{"Telling stories" characterization}
-Il concetto di \emph{story} viene introdotto nell'articolo
-\footnote{aggiungere qui riferimento bibliografico all'articolo di
-  Crescenzi-Marino}. Prima di dare la definizione di tale concetto e
-vederne un esempio, procediamo con ordine descrivendo il contesto che
-ha portato alla sua formalizzazione.
+\chapter{Algoritmi}
+\label{chapter:theoretical-background}
 
-\subsection{What's a \emph{story}?}
-\label{subsection:whats-a-story}
+In questo capitolo affronteremo gli algoritmi alla base delle
+implementazioni da un punto di vista teorico. Vedremo la tecnica di
+visita del grafo che abbiamo adottato e una panoramica degli algoritmi
+per il calcolo delle componenti fortemente connesse.
 
-
-Siamo interessati ad individuare le reazioni che possono svilupparsi
-da \emph{species} appartenenti all'insieme $\mathbb{B}$, studiando
-percorsi nel grafo che non comportano cicli (ecco la richiesta che i
-sottografi enumerati devono essere \emph{DAG}) e che allo stesso tempo
-attraversino il maggior numero di \emph{species} (la richiesta di
-massimalit\`a). Questi percorsi (o reazioni che dir si voglia) possono
-attraversare \emph{species} che non appartengono all'insieme
-$\mathbb{B}$, basta che la \emph{species} in cui inizia il percorso e
-quella in cui esso termina, vi appartengano. Un sottografo che cattura
-un insieme di percorsi che soddisfano le queste richieste viene
-definito \emph{story}.
-
-
-\subsection{Who knows about $\mathbb{B}$?}
-Come abbiamo visto nella precedente sezione, l'insieme $\mathbb{B}$
-viene costruito dopo studi \emph{empirici}. 
-
-
-\section{DFS search}
+\section{Visitare un grafo}
 
 La ricerca (o visita) di un grafo \`e una procedura che rivela molte
 informazioni sulla sua struttura e molte implementazioni richiedono
@@ -37,7 +16,7 @@ Prima di descrivere in particolare la ricerca oggetto di questa
 sezione, diamo alcune definizioni utili nel seguito e descrizione del
 problema pi\`u generico, ovvero di cosa significa visitare un grafo.
 
-\subsection{Some definitions}
+\subsection{Alcune definizioni}
 \label{subsection:some-definitions}
 In questa sezione riportiamo per completezza alcune definizioni che
 saranno utilizzate nel resto del capitolo.
@@ -84,7 +63,7 @@ propriet\`a:
   \exists!r: (r, w) \in \rightarrow$
 \end{itemize}
 
-\subsection{The search concept}
+\subsection{Il concetto di visita}
 Sia $G$ il grafo che vogliamo visitare. Inizialmente tutti i vertici
 che compongono il grafo sono sconosciuti, nessuno di essi \`e stato
 \emph{esplorato}. Iniziamo da un vertice e seguiamo uno dei suoi
@@ -101,19 +80,19 @@ Come si capisce dal paragrafo precedente, la visita mira ad
 identificare un insieme di vertici del grafo a partire da un vertice
 dato in cui la visita ha inizio.
 
-\subsection{\emph{Depth First} strategy as maze solver}
+\subsection{Visita in profondit\`a}
 Nella precedente sezione abbiamo dato l'idea alla base di una
 visita. Vi sono molte strategie che differenziano una visita
 dall'altra, ognuna caratterizzata dalla modalit\`a con cui si sceglie
 il prossimo arco da percorrere.
 
-La ricerca \emph{Depth First Search} \`e caratterizzata dalla seguente
-strategia: \emph{nella selezione del prossimo arco da percorrere,
-  scegliere un arco uscente non ancora percorso dal vertice pi\`u
-  recentemente esplorato}.
+La ricerca \emph{visita in profondit\`a} \`e caratterizzata dalla
+seguente strategia: \emph{nella selezione del prossimo arco da
+  percorrere, scegliere un arco uscente non ancora percorso dal
+  vertice pi\`u recentemente esplorato}.
 
 L'insieme dei vertici \emph{pi\`u recentemente esplorati} pu\`o essere
-mantenuto in uno \emph{stack}.
+mantenuto in uno \emph{pila}.
 
 Per capire meglio il pattern di questa tecnica supponiamo di iniziare
 la visita dal vertice $v$. Prima $v$ viene visitato, poi il suo primo
@@ -136,7 +115,7 @@ oppure che tale vicinato sia vuoto.
   Papadimitriou, in \footnote{aggiungere qui riferimento bibliografico
     a Algorithms, pag 83}, vede questa ricerca come un algoritmo per
   risolvere un labirinto, identificandone le idee principali che
-  abbbiamo espresso in forma diversa nei precedenti paragrafi:
+  abbiamo espresso in forma diversa nei precedenti paragrafi:
 \begin{quotation}
   [...] the reachability problem is rather like exploring a
   labyrinth[...], a careless choice of passage might lead you around
@@ -152,8 +131,8 @@ vertici \emph{pi\`u recentemente esplorati} corrisponde a \emph{ball
   of string}.
 \end{paragraph}
 
-\subsection{Pseudocode and complexity}
-Formalizziamo la visita \emph{Depth First Search} nel seguente pseudo
+\subsection{Pseudocodice e complessit\`a}
+Formalizziamo la visita \emph{visita in profondit\`a} nel seguente pseudo
 codice:
 \begin{lstlisting}
     procedure DFS(G = (V, E))
@@ -161,22 +140,22 @@ codice:
         visited(v) = false
 
       for all v in V:
-        if not visited(v):explore(v, E)
+        if not visitato(v):explore(v, E)
 
     procedure explore(v, E):
-      visited(v) = true
-      previsit(v)
-      for each edge (v, u) in E:
-        if not visited(u): explore(u)
-      postvisit(v)
+      visitato(v) = vero
+      previsita(v)
+      for each arco (v, u) in E:
+        se non visitato(u): explore(u)
+      postvisita(v)
 \end{lstlisting}
 
 Facciamo una breve analisi della complessit\`a. La prima osservazione
 da fare \`e che ogni vertice viene esaminato una e una sola volta
-grazie all'array \emph{visited}. Durante l'esplorazione di un vertice
+grazie al vettore \emph{visitato}. Durante l'esplorazione di un vertice
 si spende una quantit\`a costante per settare il vertice come visitato
-e per le due invocazioni delle funzioni \emph{previsit,
-  postvisit}. Per quanto riguarda invece la scansione del vicinato,
+e per le due invocazioni delle funzioni \emph{previsita,
+  postvisita}. Per quanto riguarda invece la scansione del vicinato,
 abbiamo per ogni vertice un tempo impiegato diverso, per questo motivo
 consideriamo l'intero insieme di archi in una sola volta. Ogni arco
 verr\`a visitato una e una sola nel caso in cui il grafo in input sia
@@ -185,16 +164,16 @@ non orientato. Segue che il tempo impiegato dalla visita \`e $O(|V| +
 |E|)$, lineare nella lunghezza dell'input.
 
 \subsection{Introducing hot-spots for extendibility}
-\`E possibile "templetizzare" lo schema classico della ricerca
-\emph{Depth First Search} in modo da inserire degli \emph{hot-spots}
+\`E possibile "personalizzare" lo schema classico della ricerca
+\emph{visita in profondit\`a} in modo da inserire degli \emph{hot-spots}
 che permettano di eseguire del comportamento dedicato all'avvenire di
 eventi salienti durante la visita. Nello schema che abbiamo riportato
-ne abbiamo inseriti due: le funzioni \emph{previsit} e
-\emph{postvisit}. Vediamo alcuni usi.
+ne abbiamo inseriti due: le funzioni \emph{previsita} e
+\emph{postvisita}. Vediamo alcuni usi.
 
 Se il grafo in input $G$ \`e un albero allora se utilizziamo solo
-$previsit$ il risultato \`e equivalente ad una visita \emph{prefissa}
-dell'albero, mentre se utilizziamo solo \emph{postvisit} otteniamo una
+$previsita$ il risultato \`e equivalente ad una visita \emph{prefissa}
+dell'albero, mentre se utilizziamo solo \emph{postvisita} otteniamo una
 visita \emph{postfissa} dell'albero.
 
 Come vedremo nella sezione \ref{subsection:kosaraju-algorithm}, un
@@ -202,18 +181,12 @@ altro utilizzo \`e quello di associare ad ogni vertice una coppia di
 istanti che indicano l'intervallo di tempo che il vertice rimane nella
 pila, mentre si esplorano i vertici da questo raggiungibili.
 
-TODO\footnote{aggiungere qui un paragrafetto sulla possibilit\`a di
-  risolvere il problema delle otto regine, prendere questa parte dal
-  libro che ho scaricato l'altro giorno sui grafi, dovrebbe essere il
-  primo della cartella.}
-
-\section{Finding strongly connected components: a survey of
-  algorithms}
+\section{Algoritmi per la ricerca di componenti fortemente connesse}
 
 In questa sezione faremo una panoramica sugli algoritmi pi\`u
-conosciuti in letteratura per la ricerca di strongly connected
-components di un grafo orientato. Ognuno dei seguenti algoritmi sono
-in realt\`a delle varianti della \emph{Depth First Search},
+conosciuti in letteratura per la ricerca di componenti fortemente
+connesse di un grafo orientato. Ognuno dei seguenti algoritmi sono in
+realt\`a delle varianti della \emph{visita in profondit\`a},
 introducendo delle personalizzazioni allo schema visto nella sezione
 precedente \footnote{per ognuno dei seguenti algoritmi riportare i
   riferimenti bibliografici.}
@@ -232,10 +205,10 @@ esplorati.
 
 Da questo possiamo iniziare a ragionare in questo modo:
 \begin{quotation}
-  Supponiamo di conoscere la decomposizione in strongly connected
-  components di un grafo: sia $C_{i}$ una di queste tale che sia pozzo
+  Supponiamo di conoscere la decomposizione in componenti fortemente
+  connesse di un grafo: sia $C_{i}$ una di queste tale che sia pozzo
   (ovvero che non ha archi uscenti nel \emph{meta grafo} che ha come
-  nodi le strongly connected components di cui stiamo ipotizzando
+  nodi le componenti fortemente connesse di cui stiamo ipotizzando
   l'esistenza) e sia $v$ un vertice tale che $v \in C_{i}$. Allora
   $C_{i} = explore(v)$ (per brevit\`a supponiamo che \emph{explore}
   ritorni l'insieme di nodi raggiungibili da $v$).\footnote{aggiungere
@@ -244,11 +217,11 @@ Da questo possiamo iniziare a ragionare in questo modo:
 \end{quotation}
 
 Con la precedente osservazione abbiamo un metodo per trovare una
-strongly connected components, dobbiamo per\`o avere un modo per
+componenti fortemente connesse, dobbiamo per\`o avere un modo per
 trovare il vertice $v$ e cosa fare per trovare le altre componenti.
 
-Prima di continuare, implementiamo le due funzioni \emph{previsit,
-  postvisit} in modo da associare ad ogni vertice il momento in cui
+Prima di continuare, implementiamo le due funzioni \emph{previsita,
+  postvisita} in modo da associare ad ogni vertice il momento in cui
 viene esplorato e il momento in cui il suo vicinato viene
 completamente esplorato, chiamiamo questo secondo istante \emph{post}
 \footnote{aggiungere qui collegamento alle mia implementazione del dfs
@@ -258,54 +231,54 @@ Adesso che abbiamo definito la coppia di istanti possiamo osservare
 che: 
 \begin{quotation}
   il vertice tale che ha il pi\`u grande \emph{post} calcolato
-  dall'invocazione di un \emph{Depth First Search}, appartiene ad un
-  strongly connected component sorgente.
+  dall'invocazione di un \emph{visita in profondit\`a}, appartiene ad un
+  componente fortemente connessa sorgente.
 \end{quotation}
 
 \`E facile individuare tali vertici, in quanto sono i nodi per i quali
 la procedura \emph{DFS} invoca la procedura \emph{explore}. Per\`o
 questo non \`e sufficiente per usare la precedente osservazione, in
 quanto quello che si richiede \`e un vertice che appartenga ad una
-strongly connected component pozzo.
+componente fortemente connessa pozzo.
 
 Per risolvere questo problema possiamo calcolare $G^{R}$
-(\emph{reverse the graph!}). Notiamo che le strongly connected
-components non cambiano la loro composizione in $G^{R}$ in quanto
-consideriamo il sottografo di $G$ composto da una di queste: per
-definizione di strongly connected component, per ogni coppia di
+(\emph{reverse the graph!}). Notiamo che le componenti fortemente
+connesse non cambiano la loro composizione in $G^{R}$ in quanto
+consideriamo il sotto grafo di $G$ composto da una di queste: per
+definizione di componente fortemente connessa, per ogni coppia di
 vertici $(v_{1}, v_{2})$ esiste un cammino $c_{1} =
 v_{1}\rightarrow^{*} v_{2}$ ed un camino $c_{2} = v_{2}\rightarrow^{*}
 v_{1}$. Invertendo la direzione degli archi, i due cammini continuano
-ad esistere (ovvero $c_{1}$ gioca il ruolo di $c_{2}$ e viceverca) e
+ad esistere (ovvero $c_{1}$ gioca il ruolo di $c_{2}$ e viceversa) e
 quindi la relazione di connessione forte \`e chiusa rispetto alla
 operazione $\cdot ^{R}$.
 
-Il vantaggio di passare a $G^{R}$ \`e che le strongly connected
-components sorgenti in $G$ diventano pozzi in $G^{R}$. Adesso possiamo
-eseguire una \emph{Depth First Search} su $G^{R}$ e, per la seconda
-osservazione in quota, il vertice con associato il massimo \emph{post}
-appartiene ad una strongly connected component sorgente in $G^{R}$ e,
-di conseguenza, ad una strongly connected component pozzo in $G$, che
-\`e quello che volevamo.
+Il vantaggio di passare a $G^{R}$ \`e che le componenti fortemente
+connesse sorgenti in $G$ diventano pozzi in $G^{R}$. Adesso possiamo
+eseguire una \emph{visita in profondit\`a} su $G^{R}$ e, per la
+seconda osservazione in quota, il vertice con associato il massimo
+\emph{post} appartiene ad una componente fortemente connessa sorgente in
+$G^{R}$ e, di conseguenza, ad una componente fortemente connessa pozzo
+in $G$, che \`e quello che volevamo.
 
 Quello che adesso rimane da fare \`e lanciare una \emph{Depth First
   Search} sul grafo di input $G$, scansionando i vertici in ordine
-decrescente di \emph{post}. In questo modo tutte le strongly connected
-components verranno identificate una alla volta per la prima
+decrescente di \emph{post}. In questo modo tutte le componenti
+fortemente connesse verranno identificate una alla volta per la prima
 osservazione in quota. I vertici esplorati durante ogni invocazione
 della procedura \emph{explore} eseguita dalla procedura \emph{DFS} \`e
-una strongly connected component del grafo $G$.
+una componente fortemente connessa del grafo $G$.
 
 Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
-del tempo richiesto dallo schema \emph{Depth First Search} classico.
+del tempo richiesto dallo schema \emph{visita in profondit\`a} classico.
 
 \subsection{Tarjan: numbering and \emph{LOWLINK}}
 \label{subsection:tarjan-algorithm}
 Questo algoritmo \`e stato il primo algoritmo per la ricerca delle
-strongly connected components ad operare in tempo lineare.
+componenti fortemente connesse ad operare in tempo lineare.
 
 La caratteristica di questo algoritmo \`e quella di modificare lo
-schema di una \emph{Depth First Search} classica, implementando i due
+schema di una \emph{visita in profondit\`a} classica, implementando i due
 \emph{hot-spots} definiti nello pseudo codice ed aggiungere della
 logica sia dopo aver terminato l'invocazione ricorsiva su ogni vertice
 del vicinato non ancora esplorati, sia nel caso si incontrino vertici
@@ -313,19 +286,19 @@ gi\`a conosciuti.
 
 I mattoncini utilizzati da questa variante sono:
 \begin{description}
-\item[number function] associa ad ogni vertice un intero che
+\item[numero funzione] associa ad ogni vertice un intero che
   rappresenta il momento in cui viene esplorato
-\item[lowlink function] associa ad vertice un intero che rappresenta
-  il vertice antenato $v$ con minor \emph{number(v)}
-\item[a stack] che contiene tutti i vertici che sono stati esplorati
+\item[lowlink funzione] associa ad vertice un intero che rappresenta
+  il vertice antenato $v$ con minor \emph{numero(v)}
+\item[a pila] che contiene tutti i vertici che sono stati esplorati
   durante l'algoritmo ma che ancora non sono stati associati ad una
   componente fortemente connessa.
 \end{description}
 
 Inoltre Tarjan classifica gli archi del grafo in input dopo aver
-applicato una \emph{Depth First Search} in questo modo: 
+applicato una \emph{visita in profondit\`a} in questo modo: 
 \begin{description}
-\item[tree edges] sono tutti queli archi che hanno portato
+\item[tree edges] sono tutti quelli archi che hanno portato
   l'esplorazione di un nuovo vertice e sono presenti negli alberi
   \emph{DFS}. Questi archi sono indicati con $\rightarrow$
 \item[forward edges] sono tutti quegli archi che non appartengono a
@@ -343,95 +316,94 @@ applicato una \emph{Depth First Search} in questo modo:
 
 Una osservazione da fare riguardo ai \emph{cross edge} \`e la
 seguente. Sia $(v, w) \in E$ \`e un \emph{cross edge} allora
-$number(w) < number(v)$ ovvero, graficamente parlando, i \emph{cross
+$numero(w) < numero(v)$ ovvero, graficamente parlando, i \emph{cross
   edge} hanno una unica direzione: da destra verso sinistra. Motivare
 questo non \`e difficile in quanto se uno di tali archi avesse
 direzione opposta, allora o verrebbe inserito nell'albero \emph{DFS}
-(e quindi sarebbe un \emph{tree edge}, una contraddizione) oppure
+(e quindi sarebbe un \emph{tree arco}, una contraddizione) oppure
 raggiungerebbe un vertice gi\`a visitato (e quindi sarebbe un
-\emph{forward edge}, un'altra contraddizione).
+\emph{in avanti arco}, un'altra contraddizione).
 
 Vediamo adesso le idee principali alla base dell'algoritmo. La prima
 di queste \`e la seguente:
 \begin{quotation}
-  Sia $C$ una strongly connected component e due vertici $v, w \in
+  Sia $C$ una componente fortemente connessa e due vertici $v, w \in
   C$. Sia $F$ l'insieme di alberi \emph{DFS} generati dall'esecuzione
-  di una \emph{Depth First Search}. Allora $v, w$ hanno un antenato
+  di una \emph{visita in profondit\`a}. Allora $v, w$ hanno un antenato
   comune nella foresta $F$ e, se identifichiamo con $u$ l' antenato
-  tale che $number(u)$ sia massimo tra tutti gli altri antenati comuni
+  tale che $numero(u)$ sia massimo tra tutti gli altri antenati comuni
   (ovvero quello pi\`u vicino ai due vertici), allora $u \in C$
 \end{quotation}
 Per far vedere la precedente osservazione supponiamo che durante una
-\emph{Depth First Search} il vertice $v$ sia visitato prima di $w$ (e
-quindi $number(v) < number(w)$) e, dato che $v,w$ appartengono alla
-stessa strongly connected component, esiste un cammino $\pi$ tale che
+\emph{visita in profondit\`a} il vertice $v$ sia visitato prima di $w$ (e
+quindi $numero(v) < numero(w)$) e, dato che $v,w$ appartengono alla
+stessa componente fortemente connessa, esiste un cammino $\pi$ tale che
 $v \rightarrow^{*} w$ (e anche un cammino $w \rightarrow^{*} v$ per la
 connettivit\`a forte). Chiamiamo $T_{u}$ il pi\`u piccolo albero che
 ha come radice $u$ e che contiene tutti i vertici attraversati dal
-cammino $\pi$. Il sottoalbero $T_{u}$ esiste in quanto il cammino
+cammino $\pi$. Il sotto albero $T_{u}$ esiste in quanto il cammino
 $\pi$ pu\`o attraversare alberi della foresta $F$ i cui vertici hanno
-associato un \emph{number} minore (percorrendo \emph{cross edges}),
+associato un \emph{numero} minore (percorrendo \emph{cross archi}),
 mentre non attraverser\`a alberi con numerazioni maggiori. Osserviamo
 per\`o che se il cammino $\pi$ attraversasse pi\`u di un albero non
 potr\`a arrivare in $w$ (ricordiamo che $\pi$ inizia in $v$)
-contraddicendo l'ipotesi iniziale che $number(v) < number(w)$. Quindi
-il sottoalbero $T_{u}$ esiste e $v,w$ hanno un comune antenato, ma
+contraddicendo l'ipotesi iniziale che $numero(v) < numero(w)$. Quindi
+il sotto albero $T_{u}$ esiste e $v,w$ hanno un comune antenato, ma
 dato che $T_{u}$ contiene tutti i vertici attraversati da $\pi$, anche
 $u$ viene attraversato e quindi appartiene alla stessa componente
 fortemente connessa.
 \\\\
 Adesso possiamo affrontare la seconda idea che ci dar\`a un modo per
-identificare le strongly connected components:
+identificare le componenti fortemente connesse:
 \begin{quotation}
-  Sia $C$ una strongly connected component. Allora i vertici $v_{i}
-  \in C$ appartengono ad uno stesso sottoalbero nella foresta
-  \emph{DFS}. Inoltre la radice del sottoalbero viene chiamata la
-  \emph{root} della strongly connected component $C$
+  Sia $C$ una componente fortemente connessa. Allora i vertici $v_{i}
+  \in C$ appartengono ad uno stesso sotto albero nella foresta
+  \emph{DFS}. Inoltre la radice del sotto albero viene chiamata la
+  \emph{root} della componente fortemente connessa $C$
 \end{quotation}
-la precedente idea fa si che il problema di individuare le strongly
-connected components si riduce ad identificare i vertici \emph{root} di
-sottoalberi della foresta. Tarjan propone il seguente criterio per
+la precedente idea fa si che il problema di individuare le componenti
+fortemente connesse si riduce ad identificare i vertici \emph{root} di
+sotto alberi della foresta. Tarjan propone il seguente criterio per
 individuare tali vertici:
 \begin{quotation}
-  un vertice $v$ \`e \emph{root} di una strongly connected component
-  se e solo se $number(v) = LOWLINK(v)$ 
+  un vertice $v$ \`e \emph{root} di una componente fortemente connessa
+  se e solo se $numero(v) = LOWLINK(v)$ 
 \end{quotation}
 quanto detto in quota ha bisogno di alcune spiegazioni. La prima cosa
 che dobbiamo definire \`e come calcolare $LOWLINK(v)$:
 \begin{displaymath}
   \begin{split}
-    LOWLINK(v) &= \min\{\{number(v)\}, \\
-    & \{number(w): (\exists r \in V: v \rightarrow r \cdot\rightarrow w) \\
+    LOWLINK(v) &= \min\{\{numero(v)\}, \\
+    & \{numero(w): (\exists r \in V: v \rightarrow r \cdot\rightarrow w) \\
     & \wedge (\exists u \in V: u \rightarrow^{*} v \wedge u
     \rightarrow^{*} w \wedge \\
-    & u,w \in C, \text{ for some strongly connected component C}) \}\}
+    & u,w \in C, \text{ for some componente fortemente connessa C}) \}\}
   \end{split}
 \end{displaymath}
 Pu\`o sembrare un po criptico ma non cattura un concetto difficile. Il
 valore che la funzione $LOWLINK$ associa ad un vertice $v$ \`e il
 minimo valore associato ad un vertice $v'$ appartenente alla stessa
-strongly connected component di $v$, attraversando un numero qualsiasi
-di \emph{tree edges} seguito da un \emph{back edge}.
+componente fortemente connessa di $v$, attraversando un numero qualsiasi
+di \emph{tree archi} seguito da un \emph{all'indietro arco}.
 
-Pertanto un vertice \`e la \emph{root} di una strongly connected
-component solo quando il valore associato dalla funzione $LOWLINK$ \`e
-$number(v)$ stesso, ovvero da $v$ non \`e possibile ne arrivare in
+Pertanto un vertice \`e la \emph{root} di una componente fortemente connessa solo quando il valore associato dalla funzione $LOWLINK$ \`e
+$numero(v)$ stesso, ovvero da $v$ non \`e possibile ne arrivare in
 sottoalberi a sinistra (in quanto per questi sono gi\`a state
-computate le strongly connected components), ne raggiungere un
+computate le componenti fortemente connesse), ne raggiungere un
 antenato (altrimenti non sarebbe la \emph{root} della strongly
 connected component).
 \\\\
 Questo algoritmo lavora in tempo polinomiale in quanto il tempo per
 calcolare la funzione $LOWLINK$ \`e costante ed ogni vertice viene
-inserito nello stack dei vertici da assegnare ad una strongly
+inserito nello pila dei vertici da assegnare ad una strongly
 connected component una e una sola volta. Inoltre, per verificare se
-un vertice \`e contenuto nello stack possiamo utilizzare un vettore di
+un vertice \`e contenuto nello pila possiamo utilizzare un vettore di
 valori booleani, che rende questa operazione lineare.
 
 \subsection{Crescenzi-Gambosi-Grossi variant: use two stacks}
 \label{subsection:crescenzi-gambosi-grossi}
 Anche questa variante personalizza lo schema classico di una
-\emph{Depth First Search}, utilizzando gli stessi \emph{hot-spot}
+\emph{visita in profondit\`a}, utilizzando gli stessi \emph{hot-spot}
 della versione di Tarjan descritta in
 \ref{subsection:tarjan-algorithm}. 
 
@@ -443,34 +415,34 @@ versione di Tarjan, in quanto possiamo dire che queste due varianti si
 Questa variante classifica i vertici in due insiemi:
 \begin{description}
 \item[completi] quelli che sono stati completamente esplorati \emph{e}
-  assegnati ad una strongly connected component
+  assegnati ad una componente fortemente connessa
 \item[parziali] sono tutti quei vertici che appartengono ad un cammino
   relativo ad una esecuzione della visita, di cui alcuni possono
   essere completamente esplorati, ma che ancora non sono stati
-  associati a nessuna strongly connected component
+  associati a nessuna componente fortemente connessa
 \end{description}
 In base a questa classificazione, possiamo indurne una anche sulle
-strongly connected components, avendo rispettivamente delle componenti
-\emph{complete}, \emph{parziali} oppure \emph{ignote}.
+componenti fortemente connesse, avendo rispettivamente delle
+componenti \emph{complete}, \emph{parziali} oppure \emph{ignote}.
 
 Questa classificazione dei vertici viene mantenuta in modo esplicito
 (usando un funzione che associa ad ogni vertice un valore booleano),
 mentre lo stesso concetto esiste, sotto mentite spoglie, nella
 versione di Tarjan, calcolandolo come segue: se $LOWLINK(v) <
-number(v)$ e $v$ \`e nello stack allora $v$ \`e parziale, altrimenti
+numero(v)$ e $v$ \`e nello pila allora $v$ \`e parziale, altrimenti
 \`e completo.
 \\\\
 Un altro concetto in comune con la variante di Tarjan \`e quello di
-\emph{rappresentante} di una strongly connected component. Un vertice
-$v$ si dice \emph{rappresentante} della propria strongly connected
-component se \`e il primo vertice della strongly connected component
-ad esser stato visitato. Il lettore noter\`a subito che \`e possibile
-mappare questo concetto al \emph{root} di una strongly connected
-component utilizzato nella variante di Tarjan.
+\emph{rappresentante} di una componente fortemente connessa. Un
+vertice $v$ si dice \emph{rappresentante} della propria componente
+fortemente connessa se \`e il primo vertice della componente
+fortemente connessa ad esser stato visitato. Il lettore noter\`a
+subito che \`e possibile mappare questo concetto al \emph{root} di una
+componente fortemente connessa utilizzato nella variante di Tarjan.
 
 Una osservazione \`e necessaria riguardo ai rappresentanti:
 \begin{quotation}
-  quando una strongly connected component diviene \emph{completa},
+  quando una componente fortemente connessa diviene \emph{completa},
   tutti i vertici in essa contenuti sono a loro volta \emph{completi}
   e i vertici che sono dei \emph{rappresentanti} perdono tale ruolo.
 \end{quotation}
@@ -478,38 +450,38 @@ questo implica che se un vertice ha il ruolo di \emph{rappresentante}
 allora appartiene ad una componente parziale. 
 
 Inoltre i vertici \emph{rappresentanti} permettono di distinguere
-l'inizio di una strongly connected component dalla successiva e, come
+l'inizio di una componente fortemente connessa dalla successiva e, come
 vedremo, vengono numerati in ordine crescente rispetto al momento in
 cui vengono esplorati (anche questo concetto lo si ritrova nella
-variante di Tarjan dove si utilizza la funzione $number$).
+variante di Tarjan dove si utilizza la funzione $numero$).
 \\\\
-La variante di Crescenzi-Gambosi-Grossi, a regime, mantiene due stack,
+La variante di Crescenzi-Gambosi-Grossi, a regime, mantiene due pila,
 uno per mantenere l'insieme dei vertici \emph{parziali}, l'altro per
 mantenere l'insieme dei vertici \emph{rappresentanti}. Tutti i vertici
-che appartengo alla stessa strongly connected component occupano
-posizioni contigue nel relativo stack mentre il primo di essi sar\`a
-inserito anche nello stack dei \emph{rappresentanti} finch\`e la
-strongly connected component non viene chiusa.
+che appartengo alla stessa componente fortemente connessa occupano
+posizioni contigue nel relativo pila mentre il primo di essi sar\`a
+inserito anche nello pila dei \emph{rappresentanti} finch\`e la
+componente fortemente connessa non viene chiusa.
 
 L'algoritmo che implementa questa variante procede seguendo la
 seguente idea:
 \begin{quotation}
   ogni volta che un nuovo vertice viene esplorato, inseriamolo nei due
-  stack ed esploriamo il suo vicinato. Per i vertici non esplorati
+  pila ed esploriamo il suo vicinato. Per i vertici non esplorati
   invochiamo ricorsivamente la visita, per quelli gi\`a incontrati
-  chiediamo: se non sono completi allora si estrae dallo stack dei
+  chiediamo: se non sono completi allora si estrae dallo pila dei
   \emph{rappresentanti}
 \end{quotation}
 queste semplici regole necessitano di qualche
 spiegazione. 
 
 Inizialmente ogni nuovo vertice che viene esplorato viene
-inserito in entrambi gli stack in quanto potrebbe iniziare una nuova
-strongly connected component, di cui il vertice sarebbe il
+inserito in entrambi gli pila in quanto potrebbe iniziare una nuova
+componente fortemente connessa, di cui il vertice sarebbe il
 \emph{rappresentante}. 
 
 L'altro punto da chiarire \`e quando si debbono estrarre i vertici
-dallo stack dei \emph{rappresentanti}. Se, scandendo il vicinato,
+dallo pila dei \emph{rappresentanti}. Se, scandendo il vicinato,
 esiste un vertice gi\`a esplorato e questo non \`e \emph{completo}
 significa che l'arco che porta in questo vertice porta un ciclo e
 quindi, non pu\`o essere un \emph{rappresentante}. Se invece tale
@@ -517,19 +489,23 @@ vertice fosse \emph{completo} allora gi\`a appartiene ad una strongly
 connected component, e l'arco che porta a questo \`e quello che nella
 variante di Tarjan viene classificato come \emph{cross link}.
 
-Nello stack dei rappresentanti saranno presenti solo i vertici che non
-hanno \emph{back edges} e, come nella variante di Tarjan, si
-costruisce una strongly connected component quando un vertice, dopo
-aver esplorato tutto il suo vicinato, si trova in testa allo stack dei
-\emph{rappresentanti}. La nuova strongly connected component sar\`a
-composta da tutti i vertici contenuti nello stack dei \emph{parziali}
-contenuti tra la cima dello stack e la posizione del rappresentante
+Nello pila dei rappresentanti saranno presenti solo i vertici che non
+hanno \emph{all'indietro archi} e, come nella variante di Tarjan, si
+costruisce una componente fortemente connessa quando un vertice, dopo
+aver esplorato tutto il suo vicinato, si trova in testa allo pila dei
+\emph{rappresentanti}. La nuova componente fortemente connessa sar\`a
+composta da tutti i vertici contenuti nello pila dei \emph{parziali}
+contenuti tra la cima dello pila e la posizione del rappresentante
 compresa. Ognuno di loro viene marcato come \emph{completo} e si
 continua l'eventuale computazione.
 \\\\
 Anche per questa variante il tempo richiesto \`e lineare: ogni vertice
 viene inserito ed estratto al pi\`u una volta in ogni pila (il caso
 degenere \`e un grafo i cui vertici sono tutti isolati, per cui ogni
-vertice corrisponde ad una strongly connected component), non
+vertice corrisponde ad una componente fortemente connessa), non
 aggiungendo asintoticamente niente al tempo richiesto dalla
-\emph{Depth First Search}.
+\emph{visita in profondit\`a}.
+
+
+
+
