@@ -107,7 +107,7 @@ percorrere.
 Quella che differenzia la \emph{visita in profondit\`a} \`e la
 seguente: \emph{nella selezione del prossimo arco da percorrere, si
   sceglie un arco uscente non ancora percorso dal vertice pi\`u
-  recentemente esplorato}.  Possiamo mantere l'insieme dei vertici
+  recentemente raggiunto}.  Possiamo mantere l'insieme dei vertici
 \emph{pi\`u recentemente raggiunti} in una \emph{pila}.
 
 Per capire meglio il pattern di questa tecnica supponiamo di iniziare
@@ -115,10 +115,9 @@ la visita dal vertice $v$. Prima $v$ viene visitato, poi il suo primo
 vicino $v_{1}$ viene scelto e si percorre l'arco $(v, v_{1})$. Adesso
 $v_{1}$ viene visitato e si riapplica lo stesso metodo al vicinato di
 $v_{1}$. Solo quando tutti i vertici nel vicinato di $v_{1}$ sono
-visitati \`e possibile continuare ad esplorare il secondo vicino
-$v_{2}$ di $v$ (\`e possibile che $v_{2}$ venga visitato durante
-l'esplorazione di $v_{1}$, in questo caso non \`e necessaria nessuna
-operazione su $v_{2}$).
+visitati \`e possibile visitare il secondo vicino $v_{2}$ di $v$ (\`e
+possibile che $v_{2}$ venga visitato durante la visita di $v_{1}$, in
+questo caso non \`e necessaria nessuna operazione su $v_{2}$).
 
 Il complemento \emph{in profondit\`a} cattura l'idea che la visita
 procede allontanandosi sempre pi\`u dal punto di partenza, spostandosi
@@ -167,16 +166,18 @@ codice:
 Facciamo una breve analisi della complessit\`a. La prima osservazione
 da fare \`e che ogni vertice viene esaminato una e una sola volta
 grazie al vettore \emph{visitato}. Durante l'esplorazione di un
-vertice si spende una quantit\`a costante per settare il vertice come
-visitato e per le due invocazioni delle funzioni \emph{previsita,
-  postvisita}. Per quanto riguarda invece la scansione del vicinato,
-abbiamo per ogni vertice impiego di tempo diverso, per questo motivo
-consideriamo l'intero insieme di archi in una sola volta. Ogni arco
-verr\`a visitato una e una sola volta nel caso in cui il grafo in
-input sia orientato, altrimenti due volte nel caso in cui il grafo in
-input sia non orientato. Segue che il tempo impiegato dalla visita \`e
-$O(|V| + |E|)$, lineare nella lunghezza dell'input e quindi
-polinomiale come avevamo richiesto ad inizio capitolo.
+vertice si spende una quantit\`a costante di tempo sia per settare il
+vertice come visitato sia per le invocazioni delle funzioni
+\emph{previsita} e \emph{postvisita}. 
+
+Per quanto riguarda la scansione del vicinato, abbiamo per ogni
+vertice un impiego di tempo diverso: per questo motivo ci conviene
+considerare gli archi in modo indipendente dall'appartenenza alle
+liste di adiacenza. Ogni arco verr\`a visitato una e una sola volta in
+caso di un grafo orientato, altrimenti due volte in caso di un grafo
+non orientato. Segue che il tempo impiegato dalla visita \`e $O(|V| +
+|E|)$, lineare nella lunghezza dell'input e quindi polinomiale come
+avevamo richiesto ad inizio capitolo.
 
 \subsection{Punti di estensione}
 \`E possibile ``personalizzare'' lo schema classico della visita in
@@ -186,66 +187,61 @@ eventi salienti durante la computazione. Nello pseudo codice che
 abbiamo riportato ne abbiamo inseriti due, rappresentati dalle
 funzioni \emph{previsita} e \emph{postvisita}.
 
-Se il grafo in input $G$ \`e un albero allora se utilizziamo solo
-$previsita$ il risultato \`e equivalente ad una visita \emph{prefissa}
-dell'albero, mentre se utilizziamo solo \emph{postvisita} otteniamo una
-visita \emph{postfissa} dell'albero.
+Se il grafo in input $G$ \`e un albero, se utilizziamo solo la
+funzione $previsita$ il risultato \`e equivalente ad una visita
+\emph{prefissa} di un albero, mentre se utilizziamo solo la funzione
+\emph{postvisita} otteniamo una visita \emph{postfissa}.
 
 Come vedremo nella Sezione \ref{subsection:kosaraju-algorithm}, un
-altro utilizzo \`e quello di associare ad ogni vertice una coppia di
-interi che indicano l'intervallo di tempo che il vertice rimane nella
-pila mentre si esplorano i vertici da questo raggiungibili.
+altro utilizzo \`e quello di associare ad ogni vertice $v$ una coppia
+di interi che indicano l'intervallo di tempo durante il quale $v$
+rimane nella pila dei vertici raggiunti.
 
 \section{Ricerca delle componenti fortemente connesse}
 
-In questa sezione faremo una panoramica sugli algoritmi pi\`u
+In questa sezione faremo una panoramica degli algoritmi pi\`u
 conosciuti in letteratura per la ricerca di componenti fortemente
-connesse di un grafo orientato. Ognuno dei seguenti algoritmi sono in
-realt\`a delle varianti della visita in profondit\`a, introducendo
-delle personalizzazioni come indicato nella sezione precedente.
+connesse di un grafo orientato. Ognuno dei seguenti algoritmi \`e in
+realt\`a una variante della visita in profondit\`a: attraverso piccole
+modifiche e l'utilizzo dei punti di estensione cattura una idea che lo
+caratterizza.
 
-\subsection{Kosaraju: focus on sink components and reverse the input
-  graph}
+\subsection{Kosaraju: componenti pozzo e inversione del grafo}
 \label{subsection:kosaraju-algorithm}
 Questa idea non introduce nessuna modifica allo schema che abbiamo
-visto, bens\`i utilizza la procedura due volte (\emph{two phases}) su
-grafi di input differenti.
+visto, bens\`i utilizza la procedura \emph{DFS} due volte su grafi in
+input differenti.
 
-Una osservazione che possiamo fare sullo schema classico \`e che
-l'invocazione della procedura \emph{esplora} invocata con input il
-vertice $u$ termina quando tutti i vertici raggiungibili da $u$ sono
-stati esplorati.
-
-Da questo possiamo iniziare a ragionare in questo modo:
+Un'osservazione che possiamo fare sulla procedura \emph{esplora},
+invocata sul vertice $u$, \`e che questa termina quando tutti i
+vertici raggiungibili da $u$ sono stati esplorati. Questo ci permette
+di ragionare come segue:
 \begin{quotation}
   Supponiamo di conoscere la decomposizione in componenti fortemente
-  connesse di un grafo: sia $C_{i}$ una di queste tale che sia pozzo
-  (ovvero che non ha archi uscenti nel \emph{meta grafo} che ha come
-  vertici le componenti fortemente connesse di cui stiamo ipotizzando
-  l'esistenza) e sia $v$ un vertice tale che $v \in C_{i}$. Allora
-  $C_{i} = esplora(v)$ (per brevit\`a supponiamo che \emph{esplora}
-  ritorni l'insieme di vertici raggiungibili da $v$).\footnote{aggiungere
-    la definizione di meta grafo nella parte di introduzione di questo
-    capitolo dove si introduce un po di terminologia}
+  connesse di un grafo. Sia $C_{i}$ una di queste, tale che sia un
+  pozzo (ovvero che non abbia archi uscenti nel \emph{meta grafo} che
+  ha come vertici le componenti fortemente connesse di cui stiamo
+  ipotizzando l'esistenza). Se $v \in C_{i}$ allora $C_{i} =
+  esplora(v)$ (per comodit\`a supponiamo che \emph{esplora} ritorni
+  l'insieme di vertici raggiungibili da $v$).
 \end{quotation}
 
 Con la precedente osservazione abbiamo un metodo per trovare una
-componenti fortemente connesse, dobbiamo per\`o avere un modo per
-trovare il vertice $v$ e cosa fare per trovare le altre componenti.
+componente fortemente connessa, non sappiamo per\`o come trovare ne il
+vertice $v$ ne le altre componenti.
 
-Prima di continuare, implementiamo le due funzioni \emph{previsita,
-  postvisita} in modo da associare ad ogni vertice il momento in cui
-viene esplorato e il momento in cui il suo vicinato viene
-completamente esplorato, chiamiamo questo secondo istante \emph{post}
-\footnote{aggiungere qui collegamento alle mia implementazione del dfs
-  tree builder listener}.
+Prima di continuare implementiamo le due funzioni \emph{previsita} e
+\emph{postvisita} in modo da associare ad ogni vertice il momento in
+cui viene raggiunto e il momento in cui il suo vicinato viene
+completamente visitato. Di questi due istanti siamo interessati al
+secondo che chiamiamo \emph{post}.
 
 Adesso che abbiamo definito la coppia di istanti possiamo osservare
 che: 
 \begin{quotation}
-  il vertice tale che ha il pi\`u grande \emph{post} calcolato
-  dall'invocazione di un \emph{visita in profondit\`a}, appartiene ad un
-  componente fortemente connessa sorgente.
+  il vertice con associato il pi\`u grande valore \emph{post}
+  % calcolato dall'invocazione di un \emph{visita in profondit\`a},
+  appartiene ad una componente fortemente connessa sorgente.
 \end{quotation}
 
 \`E facile individuare tali vertici, in quanto sono i vertici per i
@@ -254,104 +250,106 @@ quali la procedura \emph{DFS} invoca la procedura
 precedente osservazione, in quanto quello che si richiede \`e un
 vertice che appartenga ad una componente fortemente connessa pozzo.
 
-Per risolvere questo problema possiamo calcolare $G^{R}$
-(\emph{reverse the graph!}). Notiamo che le componenti fortemente
-connesse non cambiano la loro composizione in $G^{R}$ in quanto
-consideriamo il sotto grafo di $G$ composto da una di queste: per
-definizione di componente fortemente connessa, per ogni coppia di
-vertici $(v_{1}, v_{2})$ esiste un cammino $c_{1} =
-v_{1}\rightarrow^{*} v_{2}$ ed un camino $c_{2} = v_{2}\rightarrow^{*}
-v_{1}$. Invertendo la direzione degli archi, i due cammini continuano
-ad esistere (ovvero $c_{1}$ gioca il ruolo di $c_{2}$ e viceversa) e
-quindi la relazione di connessione forte \`e chiusa rispetto alla
-operazione $\cdot ^{R}$.
+Per risolvere questo problema possiamo invertire il grafo in input
+calcolando $G^{R} = (V, E^{-1})$, con $E^{-1} = \{(w, v): (v, w) \in
+E\}$.
 
-Il vantaggio di passare a $G^{R}$ \`e che le componenti fortemente
-connesse sorgenti in $G$ diventano pozzi in $G^{R}$. Adesso possiamo
-eseguire una \emph{visita in profondit\`a} su $G^{R}$ e, per la
-seconda osservazione in quota, il vertice con associato il massimo
-\emph{post} appartiene ad una componente fortemente connessa sorgente in
-$G^{R}$ e, di conseguenza, ad una componente fortemente connessa pozzo
-in $G$, che \`e quello che volevamo.
+Notiamo che le componenti fortemente connesse non cambiano la loro
+composizione in $G^{R}$. Sia $C_{i}$ una di queste: per definizione di
+componente fortemente connessa, per ogni coppia di vertici $(v_{1},
+v_{2})$ esiste un cammino $c_{1} = v_{1}\rightarrow^{*} v_{2}$ ed un
+camino $c_{2} = v_{2}\rightarrow^{*} v_{1}$. Invertendo la direzione
+degli archi, i due cammini continuano ad esistere ($c_{1}$ gioca il
+ruolo di $c_{2}$ e viceversa) e quindi la relazione di connessione
+forte \`e chiusa rispetto alla operazione $\cdot ^{R}$. Il vantaggio
+di passare a $G^{R}$ \`e che le componenti sorgenti di $G$ diventano
+componenti pozzi di $G^{R}$.
 
-Quello che adesso rimane da fare \`e lanciare una \emph{Depth First
-  Search} sul grafo di input $G$, scansionando i vertici in ordine
-decrescente di \emph{post}. In questo modo tutte le componenti
-fortemente connesse verranno identificate una alla volta per la prima
-osservazione in quota. I vertici esplorati durante ogni invocazione
-della procedura \emph{esplora} eseguita dalla procedura \emph{DFS} \`e
-una componente fortemente connessa del grafo $G$.
+Adesso possiamo eseguire una visita in profondit\`a su $G^{R}$
+e, per la seconda osservazione in quota, il vertice con associato il
+massimo \emph{post} appartiene ad una componente fortemente connessa
+sorgente in $G^{R}$ e, di conseguenza, ad una componente fortemente
+connessa pozzo in $G$, che \`e quello che volevamo.
+
+Quello che adesso rimane da fare \`e invocare una visita in
+profondit\`a sul grafo di input $G$, scansionando i vertici in ordine
+decrescente di \emph{post}. Cos\`i facendo, per la prima osservazione
+in quota, identificheremo le componenti fortemente connesse.
+%  I vertici esplorati durante ogni invocazione della
+% procedura \emph{esplora} eseguita dalla procedura \emph{DFS} \`e una
+% componente fortemente connessa del grafo $G$.
 
 Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
-del tempo richiesto dallo schema \emph{visita in profondit\`a} classico.
+del tempo richiesto dalla visita in profondit\`a.
 
 \subsection{Tarjan: numbering and \emph{LOWLINK}}
 \label{subsection:tarjan-algorithm}
-Questo algoritmo \`e stato il primo algoritmo per la ricerca delle
-componenti fortemente connesse ad operare in tempo lineare.
-
 La caratteristica di questo algoritmo \`e quella di modificare lo
-schema di una \emph{visita in profondit\`a} classica, implementando i due
-\emph{hot-spots} definiti nello pseudo codice ed aggiungere della
-logica sia dopo aver terminato l'invocazione ricorsiva su ogni vertice
-del vicinato non ancora esplorati, sia nel caso si incontrino vertici
-gi\`a conosciuti.
+schema di una visita in profondit\`a, implementando i due punti di
+estensione ed aggiungendo della logica sia dopo aver terminato
+l'invocazione ricorsiva su ogni vertice del vicinato non ancora
+raggiunto, sia nel caso si incontrino vertici gi\`a visitati.
 
-I mattoncini utilizzati da questa variante sono:
+Gli strumenti utilizzati da questa variante sono:
 \begin{description}
-\item[numero funzione] associa ad ogni vertice un intero che
-  rappresenta il momento in cui viene esplorato
-\item[lowlink funzione] associa ad vertice un intero che rappresenta
-  il vertice antenato $v$ con minor \emph{numero(v)}
-\item[a pila] che contiene tutti i vertici che sono stati esplorati
+\item[funzione numero] associa ad ogni vertice $v$ un intero che
+  rappresenta l'istante in cui $v$ viene esplorato oppure, da un altro
+  punto di vista, quanti vertici sono gi\`a stati visitati prima di
+  $v$;
+\item[funzione lowlink] associa ad ogni vertice $w$ un vertice $v$ suo
+  antenato, tale che
+  \begin{displaymath}
+    numero(v) = \min_{a \in antenati(w)}\{numero(a)\}
+\end{displaymath}
+\item[una pila] che contiene tutti i vertici che sono stati visitati
   durante l'algoritmo ma che ancora non sono stati associati ad una
   componente fortemente connessa.
 \end{description}
 
 Inoltre Tarjan classifica gli archi del grafo in input dopo aver
-applicato una \emph{visita in profondit\`a} in questo modo: 
+applicato una visita in profondit\`a in questo modo:
 \begin{description}
-\item[tree edges] sono tutti quelli archi che hanno portato
-  l'esplorazione di un nuovo vertice e sono presenti negli alberi
-  \emph{DFS}. Questi archi sono indicati con $\rightarrow$
-\item[forward edges] sono tutti quegli archi che non appartengono a
-  nessun albero \emph{DFS}, che collegano un antenato ad un suo
-  discendente
-\item[back edges] sono tutti quegli archi che non appartengono a
-  nessun albero \emph{DFS}, che collegano un discendente ad un suo
-  antenato. Questi archi sono indicati con $\cdot\rightarrow$
-\item[cross edges] sono tutti quegli archi che non appartengono a
-  nessun albero \emph{DFS}, che collegano due vertici appartenenti a
-  sottoalberi differenti (questi sotto alberi posso appartenere sia
-  allo stesso albero \emph{DFS}, sia a due alberi \emph{DFS}
-  disgiunti. Questi archi sono indicati con $\cdot\rightarrow$
+\item[archi dell'albero DFS] sono tutti quelli archi che hanno
+  permesso di raggiungere un vertice non ancora visitato. Questi archi
+  sono indicati con $\rightarrow$;
+\item[archi in avanti] questi archi non appartengono a nessun albero
+  \emph{DFS} e collegano un antenato ad un suo discendente;
+\item[archi all'indietro] questi archi non appartengono a nessun
+  albero \emph{DFS} e collegano un discendente ad un suo
+  antenato. Questi archi sono indicati con $\cdot\rightarrow$;
+\item[archi trasversali] questi archi non appartengono a nessun albero
+  \emph{DFS} e collegano due vertici appartenenti a sottoalberi
+  differenti (questi sotto alberi posso appartenere sia allo stesso
+  albero \emph{DFS}, sia a due alberi \emph{DFS} disgiunti). Questi
+  archi sono indicati con $\cdot\rightarrow$.
 \end{description}
 
-Una osservazione da fare riguardo ai \emph{cross edge} \`e la
-seguente. Sia $(v, w) \in E$ \`e un \emph{cross edge} allora
-$numero(w) < numero(v)$ ovvero, graficamente parlando, i \emph{cross
-  edge} hanno una unica direzione: da destra verso sinistra. Motivare
-questo non \`e difficile in quanto se uno di tali archi avesse
-direzione opposta, allora o verrebbe inserito nell'albero \emph{DFS}
-(e quindi sarebbe un \emph{tree arco}, una contraddizione) oppure
-raggiungerebbe un vertice gi\`a visitato (e quindi sarebbe un
-\emph{in avanti arco}, un'altra contraddizione).
+Una osservazione da fare riguardo agli archi trasversali \`e la
+seguente. Se $e = (v, w) \in E$ \`e un arco trasversale allora
+$numero(w) < numero(v)$. Graficamente parlando $e$ ha un'unica
+direzione: da destra verso sinistra. Motivare questo non \`e
+difficile: supponiamo per assurdo che $e$ abbia direzione opposta,
+allora, durante una visita, o verrebbe inserito in un albero
+\emph{DFS} (e quindi sarebbe un arco del primo tipo, una
+contraddizione) oppure raggiungerebbe un vertice gi\`a visitato (e
+quindi sarebbe un arco in avanti o all'indietro, un'altra
+contraddizione).
 
 Vediamo adesso le idee principali alla base dell'algoritmo. La prima
 di queste \`e la seguente:
 \begin{quotation}
-  Sia $C$ una componente fortemente connessa e due vertici $v, w \in
-  C$. Sia $F$ l'insieme di alberi \emph{DFS} generati dall'esecuzione
-  di una \emph{visita in profondit\`a}. Allora $v, w$ hanno un antenato
-  comune nella foresta $F$ e, se identifichiamo con $u$ l' antenato
-  tale che $numero(u)$ sia massimo tra tutti gli altri antenati comuni
-  (ovvero quello pi\`u vicino ai due vertici), allora $u \in C$
+  Sia $C$ una componente fortemente connessa e siano $v, w$ due
+  vertici tali che $v, w \in C$. Sia $F$ l'insieme di alberi
+  \emph{DFS} generati dall'esecuzione di una visita in
+  profondit\`a. Allora $v, w$ hanno un antenato comune nella foresta
+  $F$. Inoltre, sia $u$ l'antenato comune tale che $numero$ sia minimo
+  tra tutti gli altri antenati comuni, allora $u \in C$.
 \end{quotation}
 Per far vedere la precedente osservazione supponiamo che durante una
-\emph{visita in profondit\`a} il vertice $v$ sia visitato prima di $w$ (e
-quindi $numero(v) < numero(w)$) e, dato che $v,w$ appartengono alla
-stessa componente fortemente connessa, esiste un cammino $\pi$ tale che
-$v \rightarrow^{*} w$ (e anche un cammino $w \rightarrow^{*} v$ per la
+visita in profondit\`a il vertice $v$ sia visitato prima di $w$
+($numero(v) < numero(w)$) e, dato che $v,w$ appartengono alla stessa
+componente fortemente connessa, esiste un cammino $\pi$ tale che $v
+\rightarrow^{*} w$ (e anche un cammino $w \rightarrow^{*} v$ per la
 connettivit\`a forte). Chiamiamo $T_{u}$ il pi\`u piccolo albero che
 ha come radice $u$ e che contiene tutti i vertici attraversati dal
 cammino $\pi$. Il sotto albero $T_{u}$ esiste in quanto il cammino
