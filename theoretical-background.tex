@@ -2,20 +2,11 @@
 \label{chapter:theoretical-background}
 In questo capitolo affronteremo gli algoritmi alla base delle
 implementazioni da un punto di vista teorico. Vedremo la tecnica di
-visita del grafo che abbiamo adottato e una panoramica degli algoritmi
-per il calcolo delle componenti fortemente connesse.
+visita del grafo che abbiamo adottato ed un palco di algoritmi per il
+calcolo delle componenti fortemente connesse; prima per\`o riportiamo
+alcune definizioni.
 
-\section{Visitare un grafo}
-
-La ricerca (o visita) di un grafo \`e una procedura che rivela molte
-informazioni sulla sua struttura e molte implementazioni richiedono
-tempo lineare.
-
-Prima di descrivere in particolare la ricerca oggetto di questa
-sezione, diamo alcune definizioni utili nel seguito e descrizione del
-problema pi\`u generico, ovvero di cosa significa visitare un grafo.
-
-\subsection{Alcune definizioni}
+\section{Alcune definizioni}
 \label{subsection:some-definitions}
 In questa sezione riportiamo per completezza alcune definizioni che
 saranno utilizzate nel resto del capitolo.
@@ -23,44 +14,68 @@ saranno utilizzate nel resto del capitolo.
 Un grafo $G$ \`e una coppia $(V, E)$ dove $V$ \`e un insieme di
 vertici ed $E$ \`e un insieme di archi. Pi\`u precisamente $E$ \`e una
 relazione binaria, che possiamo indicare con il simbolo $\rightarrow$,
-tale che $\rightarrow \subset V \times V$. 
+tale che $\rightarrow \subseteq V \times V$.
 
-Un grafo $G = (V, E)$ si dice \emph{non orientato} se $\rightarrow$
-\`e una relazione simmetrica. Altrimenti, se $\rightarrow$ non \`e
-simmetrica, il grafo si dice \emph{orientato}.
-
-Sia $G = (V, E)$ un grafo. Un cammino da un vertice $v_{i}$ ad un
-vertice $v_{j}$ \`e una sequenza di vertici $\{v_{i}, v_{i+1}, \cdots,
-v_{j-1}, v_{j}\}$ tali che $(v_{i},v_{i+1}) \in \rightarrow \wedge
-(v_{i+1}, \cdots) \in \rightarrow \wedge \cdots \wedge (\cdots,
-v_{j-1}) \in \rightarrow \wedge (v_{j-1}, v_{j}) \in
+Un grafo $G$ si dice non orientato se $\rightarrow$ \`e una relazione
+simmetrica, altrimenti si dice \emph{orientato}. Sia $G$ un grafo
+orientato, un cammino da un vertice $v_{i}$ ad un vertice $v_{j}$ \`e
+una sequenza di vertici $(v_{i}, v_{i+1}, \cdots, v_{j-1}, v_{j})$
+tali che $\forall k \in [i, j-1]$ si ha $(v_{k},v_{k+1}) \in
 \rightarrow$. Tale cammino lo indicheremo con la scrittura $v_{i}
-\rightarrow^{*} v_{j}$. Nel caso di un grafo \emph{non orientato} lo
-stesso cammino lo possiamo scrivere $v_{i} --^{*} v_{j}$
+\rightarrow^{*} v_{j}$. Nel caso di un grafo non orientato indichiamo
+un cammino con la scrittura $v_{i} -^{*} v_{j}$.
 
 Un cammino $\pi = v_{i} \rightarrow^{*} v_{i}$ \`e chiamato una
-cammino \emph{chiuso}. In particolare, un cammino \emph{chiuso} \`e un
+cammino \emph{chiuso}. In particolare, un cammino chiuso \`e un
 \emph{ciclo} quando tutti gli archi che lo compongono sono distinti e
-l'unico vertice che appare esattamente due volte in $\pi$ \`e
-$v_{i}$. Due cicli che sono permutazioni l'uno dell'altro si
-considerano indistinguibili e, pertanto, si considerano essere lo
-stesso ciclo.
+$v_{i}$ \`e l'unico vertice che appare esattamente due volte in
+$\pi$. Due cicli che sono permutazioni l'uno dell'altro sono
+indistinguibili e, pertanto, si considerano essere lo stesso ciclo.
 
-Un grafo \emph{non orientato} \`e \emph{connesso} se $\forall (v, w)
-\exists \pi: \pi = v --^{*} w$. Un grafo \emph{orientato} \`e
-\emph{connesso} se $\forall (v, w) \exists \pi: \pi = v
-\rightarrow^{*} w$.
+Un grafo non orientato \`e \emph{connesso} se $\forall (v, w) \exists
+\pi: \pi = v -^{*} w$. Un grafo orientato \`e (fortemente) connesso se
+$\forall (v, w)$ vertici, $\exists \pi_{1}, \pi_{2}$ cammini tali che
+$\pi_{1} = v \rightarrow^{*} w \wedge \pi_{2} = w \rightarrow^{*} v$.
 
-Un \emph{grafo orientato} $T$ \`e un albero se valgono le seguenti
+Un grafo orientato $T$ \`e un \emph{albero} se valgono le seguenti
 propriet\`a:
 \begin{itemize}
-\item la versione di $T$ \emph{non orientata} \`e connessa
-\item esiste esattamente un vertice $v$ tale che $\not \exists (w, v),
-  \forall w$. Il vertice $v$ viene chiamato \emph{root} di $T$
+\item la versione \emph{non orientata} di $T$ \`e connessa;
+\item esiste esattamente un vertice $v$ tale che $\forall w \in V: (w,
+  v) \not \in \rightarrow$. Il vertice $v$ viene chiamato \emph{root}
+  di $T$;
 \item tutti i vertici distinti dal vertice \emph{root} hanno
   esattamente un arco entrante, ovvero $\forall w \not = root(T),
-  \exists!r: (r, w) \in \rightarrow$
+  \exists!r: (r, w) \in \rightarrow$.
 \end{itemize}
+
+Sia $G$ un grafo orientato. Possiamo definire una relazione
+d'equivalenza sull'insieme di vertici come segue: due vertici $v$ e
+$w$ sono equivalenti se esiste un cammino chiuso $\pi = v
+\rightarrow^{*} v$ che contiene $w$. Chiamiamo $V_{i}$ le classi
+d'equivalenza di questa relazione e sia $G_{i}$ un sotto grafo di $G$
+tale che $G_{i} = (V_{i}, E_{i})$, con $E_{i} = \{(r,s) \in
+\rightarrow: r,s \in V_{i} \}$. Allora:
+\begin{itemize}
+\item ogni $G_{i}$ \`e fortemente connesso;
+\item nessun $G_{i}$ \`e un sotto grafo proprio di un sotto grafo
+  connesso di $G$.
+\end{itemize}
+I sotto grafi $G_{i}$ sono chiamati \emph{componenti fortemente
+  connesse} di $G$.
+
+
+\section{Visitare un grafo}
+
+La visita di un grafo \`e una procedura fondamentale che permette di
+estrarre informazioni sulla struttura del grafo che si vuole
+analizzare. Per questo motivo \`e importante avere implementazioni che
+richiedono tempo lineare per terminare la computazione.
+
+Prima di descrivere in particolare la visita utilizzata nel nostro
+lavoro, diamo alcune definizioni e una descrizione del problema pi\`u
+generico, ovvero che cosa significa visitare un grafo.
+
 
 \subsection{Il concetto di visita}
 Sia $G$ il grafo che vogliamo visitare. Inizialmente tutti i vertici
