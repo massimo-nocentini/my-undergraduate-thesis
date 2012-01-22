@@ -13,17 +13,16 @@ saranno utilizzate nel resto del capitolo.
 \\\\
 Un grafo $G$ \`e una coppia $(V, E)$ dove $V$ \`e un insieme di
 vertici ed $E$ \`e un insieme di archi. Pi\`u precisamente $E$ \`e una
-relazione binaria, che possiamo indicare con il simbolo $\rightarrow$,
-tale che $\rightarrow \subseteq V \times V$.
+relazione binaria tale che $E \subseteq V \times V$.
 
-Un grafo $G$ si dice non orientato se $\rightarrow$ \`e una relazione
+Un grafo $G$ si dice non orientato se $E$ \`e una relazione
 simmetrica, altrimenti si dice \emph{orientato}. Sia $G$ un grafo
 orientato, un cammino da un vertice $v_{i}$ ad un vertice $v_{j}$ \`e
 una sequenza di vertici $(v_{i}, v_{i+1}, \cdots, v_{j-1}, v_{j})$
-tali che $\forall k \in [i, j-1]$ si ha $(v_{k},v_{k+1}) \in
-\rightarrow$. Tale cammino lo indicheremo con la scrittura $v_{i}
-\rightarrow^{*} v_{j}$. Nel caso di un grafo non orientato indichiamo
-un cammino con la scrittura $v_{i} -^{*} v_{j}$.
+tale che $\forall k \in [i, j-1]$ si ha $(v_{k},v_{k+1}) \in E$. Tale
+cammino lo indicheremo con la scrittura $v_{i} \rightarrow^{*}
+v_{j}$. Nel caso di un grafo non orientato indichiamo un cammino con
+la scrittura $v_{i} -^{*} v_{j}$.
 
 Un cammino $\pi = v_{i} \rightarrow^{*} v_{i}$ \`e chiamato una
 cammino \emph{chiuso}. In particolare, un cammino chiuso \`e un
@@ -33,20 +32,19 @@ $\pi$. Due cicli che sono permutazioni l'uno dell'altro sono
 indistinguibili e, pertanto, si considerano essere lo stesso ciclo.
 
 Un grafo non orientato \`e \emph{connesso} se $\forall (v, w) \exists
-\pi: \pi = v -^{*} w$. Un grafo orientato \`e (fortemente) connesso se
+\pi: \pi = v -^{*} w$. Un grafo orientato \`e fortemente connesso se
 $\forall (v, w)$ vertici, $\exists \pi_{1}, \pi_{2}$ cammini tali che
 $\pi_{1} = v \rightarrow^{*} w \wedge \pi_{2} = w \rightarrow^{*} v$.
 
 Un grafo orientato $T$ \`e un \emph{albero} se valgono le seguenti
 propriet\`a:
 \begin{itemize}
-\item la versione \emph{non orientata} di $T$ \`e connessa;
+\item la versione non orientata di $T$ \`e connessa;
 \item esiste esattamente un vertice $v$ tale che $\forall w \in V: (w,
-  v) \not \in \rightarrow$. Il vertice $v$ viene chiamato \emph{root}
-  di $T$;
+  v) \not \in E$. Il vertice $v$ viene chiamato \emph{root} di $T$;
 \item tutti i vertici distinti dal vertice \emph{root} hanno
   esattamente un arco entrante, ovvero $\forall w \not = root(T),
-  \exists!r: (r, w) \in \rightarrow$.
+  \exists!r: (r, w) \in E$.
 \end{itemize}
 
 Sia $G$ un grafo orientato. Possiamo definire una relazione
@@ -54,8 +52,8 @@ d'equivalenza sull'insieme di vertici come segue: due vertici $v$ e
 $w$ sono equivalenti se esiste un cammino chiuso $\pi = v
 \rightarrow^{*} v$ che contiene $w$. Chiamiamo $V_{i}$ le classi
 d'equivalenza di questa relazione e sia $G_{i}$ un sotto grafo di $G$
-tale che $G_{i} = (V_{i}, E_{i})$, con $E_{i} = \{(r,s) \in
-\rightarrow: r,s \in V_{i} \}$. Allora:
+tale che $G_{i} = (V_{i}, E_{i})$, con $E_{i} = \{(r,s) \in E: r,s \in
+V_{i} \}$. Allora:
 \begin{itemize}
 \item ogni $G_{i}$ \`e fortemente connesso;
 \item nessun $G_{i}$ \`e un sotto grafo proprio di un sotto grafo
