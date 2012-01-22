@@ -68,43 +68,47 @@ I sotto grafi $G_{i}$ sono chiamati \emph{componenti fortemente
 La visita di un grafo \`e una procedura fondamentale che permette di
 estrarre informazioni sulla struttura del grafo che si vuole
 analizzare. Per questo motivo \`e importante avere implementazioni che
-richiedono tempo lineare per terminare la computazione.
-
-Prima di descrivere in particolare la visita utilizzata nel nostro
-lavoro, diamo alcune definizioni e una descrizione del problema pi\`u
-generico, ovvero che cosa significa visitare un grafo.
-
+richiedono tempo polinomiale per terminare la computazione.
 
 \subsection{Il concetto di visita}
-Sia $G$ il grafo che vogliamo visitare. Inizialmente tutti i vertici
-che compongono il grafo sono sconosciuti, nessuno di essi \`e stato
-\emph{esplorato}. Iniziamo da un vertice e seguiamo uno dei suoi
-archi, che porter\`a ad un nuovo vertice. Continuiamo ad applicare
-questa tecnica: quando arriviamo ad un vertice selezioniamo un arco
-non ancora percorso, uscente da vertici gi\`a conosciuti. Percorrendo
-l'arco che volta volta viene selezionato, si arriva in un vertice che
-possiamo aver gi\`a visitato oppure no. Quando non \`e possibile
-selezionare nessun arco non ancora percorso uscente da vertici gi\`a
-visitati, allora si seleziona un vertice non ancora selezionato e si
-riapplica la tecnica descritta precedentemente.
+Supponiamo che siano dati un grafo $G = (V, E)$ e due vertici $v,w \in
+V$. Per capire il concetto di visita poniamoci la seguente domanda:
+come possiamo determinare se esiste un cammino $v \rightarrow^{*} w$?
 
-Come si capisce dal paragrafo precedente, la visita mira ad
-identificare un insieme di vertici del grafo a partire da un vertice
-dato in cui la visita ha inizio.
+Una risposta \`e quella di costruire un insieme $W$ di vertici
+raggiungibili da $v$ utilizzando una sequenza di archi in $E$, e
+rispondere si se e solo se $w \in W$. Chiameremo \emph{visitati} i
+vertici $s \in W$. 
+
+Osserviamo che \`e possibile visitare i vertici usando una strategia
+pi\`u semplice, ovvero quella che itera sull'insieme dei vertici
+$V$. Ci sono due differenze tra questi due metodi:
+\begin{itemize}
+\item iterando sull'insieme $V$ si raggiunge esattamente ogni vertice
+  per definizione, mentre la visita fatta nel primo metodo raggiunge
+  un sotto insieme $V' \subseteq V$;
+\item l'ordine seguito iterando sull'insieme $V$ non \`e dipendente
+  dalla relazione $E$ del grafo, bens\`i pu\`o essere stabilito a
+  priori. Invece il primo metodo viene utilizzato in quanto siamo
+  interessati all'ordine con cui vengono visitati i vertici.
+\end{itemize}
+
+Riassumendo quanto detto in sopra, visitando un grafo $G$ si vuole
+ottenere una permutazione $\pi$ di vertici $v_{\pi_{1}}, \ldots,
+v_{\pi_{s}}$ raggiunti, di cui ci interessa l'ordine con cui sono
+stati visitati.
 
 \subsection{Visita in profondit\`a}
 Nella precedente sezione abbiamo dato l'idea alla base di una
-visita. Vi sono molte strategie che differenziano una visita
-dall'altra, ognuna caratterizzata dalla modalit\`a con cui si sceglie
-il prossimo arco da percorrere.
+visita. Vi sono molte strategie che differenziano due visite, ognuna
+caratterizzata dalla modalit\`a con cui si sceglie il prossimo arco da
+percorrere.
 
-La ricerca \emph{visita in profondit\`a} \`e caratterizzata dalla
-seguente strategia: \emph{nella selezione del prossimo arco da
-  percorrere, scegliere un arco uscente non ancora percorso dal
-  vertice pi\`u recentemente esplorato}.
-
-L'insieme dei vertici \emph{pi\`u recentemente esplorati} pu\`o essere
-mantenuto in uno \emph{pila}.
+Quella che differenzia la \emph{visita in profondit\`a} \`e la
+seguente: \emph{nella selezione del prossimo arco da percorrere, si
+  sceglie un arco uscente non ancora percorso dal vertice pi\`u
+  recentemente esplorato}.  Possiamo mantere l'insieme dei vertici
+\emph{pi\`u recentemente raggiunti} in una \emph{pila}.
 
 Per capire meglio il pattern di questa tecnica supponiamo di iniziare
 la visita dal vertice $v$. Prima $v$ viene visitato, poi il suo primo
@@ -116,18 +120,16 @@ $v_{2}$ di $v$ (\`e possibile che $v_{2}$ venga visitato durante
 l'esplorazione di $v_{1}$, in questo caso non \`e necessaria nessuna
 operazione su $v_{2}$).
 
-L'aggettivo \emph{Depth First} cattura l'idea che la ricerca procede
-in profondit\`a, allontanandosi sempre pi\`u dal punto di partenza,
-spostandosi da un vertice al un vicino di tale vertice, al vicino del
-vicino di tale vertice e cos\`i via, tornando indietro solo quando si
-raggiunge un vertice il cui vicinato \`e completamente esplorato,
-oppure che tale vicinato sia vuoto.
+Il complemento \emph{in profondit\`a} cattura l'idea che la visita
+procede allontanandosi sempre pi\`u dal punto di partenza, spostandosi
+da un vertice ad un vicino di tale vertice, ad un vicino del vicino di
+tale vertice e cos\`i via, tornando indietro solo quando si raggiunge
+un vertice il cui vicinato \`e completamente esplorato oppure vuoto.
+\\\\
+Papadimitriou, in \cite{Algorithms} pagina 83, vede questa visita come
+un algoritmo per risolvere un labirinto, identificandone le idee
+principali che abbiamo espresso in forma diversa:
 
-\begin{paragraph}{maze problem solver}
-  Papadimitriou, in \footnote{aggiungere qui riferimento bibliografico
-    a Algorithms, pag 83}, vede questa ricerca come un algoritmo per
-  risolvere un labirinto, identificandone le idee principali che
-  abbiamo espresso in forma diversa nei precedenti paragrafi:
 \begin{quotation}
   [...] the reachability problem is rather like exploring a
   labyrinth[...], a careless choice of passage might lead you around
@@ -138,70 +140,69 @@ oppure che tale vicinato sia vuoto.
   back...
 \end{quotation}
 Riportando questa idea su quanto detto sopra, il concetto di vertice
-\emph{esplorato} corrisponde al \emph{chalk}, mentre l'insieme di
-vertici \emph{pi\`u recentemente esplorati} corrisponde a \emph{ball
-  of string}.
-\end{paragraph}
+visitato corrisponde al \emph{chalk}, mentre la pila contenente i
+vertici pi\`u recentemente raggiunti corrisponde alla \emph{ball of
+  string}.
 
 \subsection{Pseudocodice e complessit\`a}
-Formalizziamo la visita \emph{visita in profondit\`a} nel seguente pseudo
+Formalizziamo la visita visita in profondit\`a col seguente pseudo
 codice:
 \begin{lstlisting}
-    procedure DFS(G = (V, E))
-      for all v in V:
-        visited(v) = false
+    procedura DFS(G = (V, E))
+      per ogni v in V:
+        visitato(v) = false
 
-      for all v in V:
-        if not visitato(v):explore(v, E)
+      per ogni v in V:
+        if non visitato(v):
+          esplora(v, E)
 
-    procedure explore(v, E):
+    procedura esplora(v, E):
       visitato(v) = vero
       previsita(v)
       for each arco (v, u) in E:
-        se non visitato(u): explore(u)
+        se non visitato(u): esplora(u)
       postvisita(v)
 \end{lstlisting}
 
 Facciamo una breve analisi della complessit\`a. La prima osservazione
 da fare \`e che ogni vertice viene esaminato una e una sola volta
-grazie al vettore \emph{visitato}. Durante l'esplorazione di un vertice
-si spende una quantit\`a costante per settare il vertice come visitato
-e per le due invocazioni delle funzioni \emph{previsita,
+grazie al vettore \emph{visitato}. Durante l'esplorazione di un
+vertice si spende una quantit\`a costante per settare il vertice come
+visitato e per le due invocazioni delle funzioni \emph{previsita,
   postvisita}. Per quanto riguarda invece la scansione del vicinato,
-abbiamo per ogni vertice un tempo impiegato diverso, per questo motivo
+abbiamo per ogni vertice impiego di tempo diverso, per questo motivo
 consideriamo l'intero insieme di archi in una sola volta. Ogni arco
-verr\`a visitato una e una sola nel caso in cui il grafo in input sia
-orientato, altrimenti due volte nel caso in cui il grafo in input sia
-non orientato. Segue che il tempo impiegato dalla visita \`e $O(|V| +
-|E|)$, lineare nella lunghezza dell'input.
+verr\`a visitato una e una sola volta nel caso in cui il grafo in
+input sia orientato, altrimenti due volte nel caso in cui il grafo in
+input sia non orientato. Segue che il tempo impiegato dalla visita \`e
+$O(|V| + |E|)$, lineare nella lunghezza dell'input e quindi
+polinomiale come avevamo richiesto ad inizio capitolo.
 
-\subsection{Introducing hot-spots for extendibility}
-\`E possibile "personalizzare" lo schema classico della ricerca
-\emph{visita in profondit\`a} in modo da inserire degli \emph{hot-spots}
-che permettano di eseguire del comportamento dedicato all'avvenire di
-eventi salienti durante la visita. Nello schema che abbiamo riportato
-ne abbiamo inseriti due: le funzioni \emph{previsita} e
-\emph{postvisita}. Vediamo alcuni usi.
+\subsection{Punti di estensione}
+\`E possibile ``personalizzare'' lo schema classico della visita in
+profondit\`a in modo da inserire dei ``punti di estensione'' che
+permettano di eseguire del comportamento dedicato all'avvenire di
+eventi salienti durante la computazione. Nello pseudo codice che
+abbiamo riportato ne abbiamo inseriti due, rappresentati dalle
+funzioni \emph{previsita} e \emph{postvisita}.
 
 Se il grafo in input $G$ \`e un albero allora se utilizziamo solo
 $previsita$ il risultato \`e equivalente ad una visita \emph{prefissa}
 dell'albero, mentre se utilizziamo solo \emph{postvisita} otteniamo una
 visita \emph{postfissa} dell'albero.
 
-Come vedremo nella sezione \ref{subsection:kosaraju-algorithm}, un
+Come vedremo nella Sezione \ref{subsection:kosaraju-algorithm}, un
 altro utilizzo \`e quello di associare ad ogni vertice una coppia di
-istanti che indicano l'intervallo di tempo che il vertice rimane nella
-pila, mentre si esplorano i vertici da questo raggiungibili.
+interi che indicano l'intervallo di tempo che il vertice rimane nella
+pila mentre si esplorano i vertici da questo raggiungibili.
 
-\section{Algoritmi per la ricerca di componenti fortemente connesse}
+\section{Ricerca delle componenti fortemente connesse}
 
 In questa sezione faremo una panoramica sugli algoritmi pi\`u
 conosciuti in letteratura per la ricerca di componenti fortemente
 connesse di un grafo orientato. Ognuno dei seguenti algoritmi sono in
-realt\`a delle varianti della \emph{visita in profondit\`a},
-introducendo delle personalizzazioni allo schema visto nella sezione
-precedente \footnote{per ognuno dei seguenti algoritmi riportare i
-  riferimenti bibliografici.}
+realt\`a delle varianti della visita in profondit\`a, introducendo
+delle personalizzazioni come indicato nella sezione precedente.
 
 \subsection{Kosaraju: focus on sink components and reverse the input
   graph}
@@ -211,19 +212,19 @@ visto, bens\`i utilizza la procedura due volte (\emph{two phases}) su
 grafi di input differenti.
 
 Una osservazione che possiamo fare sullo schema classico \`e che
-l'invocazione della procedura \emph{explore} invocata con input il
-nodo $u$ termina quando tutti i nodi raggiungibili da $u$ sono stati
-esplorati.
+l'invocazione della procedura \emph{esplora} invocata con input il
+vertice $u$ termina quando tutti i vertici raggiungibili da $u$ sono
+stati esplorati.
 
 Da questo possiamo iniziare a ragionare in questo modo:
 \begin{quotation}
   Supponiamo di conoscere la decomposizione in componenti fortemente
   connesse di un grafo: sia $C_{i}$ una di queste tale che sia pozzo
   (ovvero che non ha archi uscenti nel \emph{meta grafo} che ha come
-  nodi le componenti fortemente connesse di cui stiamo ipotizzando
+  vertici le componenti fortemente connesse di cui stiamo ipotizzando
   l'esistenza) e sia $v$ un vertice tale che $v \in C_{i}$. Allora
-  $C_{i} = explore(v)$ (per brevit\`a supponiamo che \emph{explore}
-  ritorni l'insieme di nodi raggiungibili da $v$).\footnote{aggiungere
+  $C_{i} = esplora(v)$ (per brevit\`a supponiamo che \emph{esplora}
+  ritorni l'insieme di vertici raggiungibili da $v$).\footnote{aggiungere
     la definizione di meta grafo nella parte di introduzione di questo
     capitolo dove si introduce un po di terminologia}
 \end{quotation}
@@ -247,11 +248,11 @@ che:
   componente fortemente connessa sorgente.
 \end{quotation}
 
-\`E facile individuare tali vertici, in quanto sono i nodi per i quali
-la procedura \emph{DFS} invoca la procedura \emph{explore}. Per\`o
-questo non \`e sufficiente per usare la precedente osservazione, in
-quanto quello che si richiede \`e un vertice che appartenga ad una
-componente fortemente connessa pozzo.
+\`E facile individuare tali vertici, in quanto sono i vertici per i
+quali la procedura \emph{DFS} invoca la procedura
+\emph{esplora}. Per\`o questo non \`e sufficiente per usare la
+precedente osservazione, in quanto quello che si richiede \`e un
+vertice che appartenga ad una componente fortemente connessa pozzo.
 
 Per risolvere questo problema possiamo calcolare $G^{R}$
 (\emph{reverse the graph!}). Notiamo che le componenti fortemente
@@ -278,7 +279,7 @@ Quello che adesso rimane da fare \`e lanciare una \emph{Depth First
 decrescente di \emph{post}. In questo modo tutte le componenti
 fortemente connesse verranno identificate una alla volta per la prima
 osservazione in quota. I vertici esplorati durante ogni invocazione
-della procedura \emph{explore} eseguita dalla procedura \emph{DFS} \`e
+della procedura \emph{esplora} eseguita dalla procedura \emph{DFS} \`e
 una componente fortemente connessa del grafo $G$.
 
 Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
