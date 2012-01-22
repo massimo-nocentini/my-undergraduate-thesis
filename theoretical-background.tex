@@ -41,9 +41,9 @@ propriet\`a:
 \begin{itemize}
 \item la versione non orientata di $T$ \`e connessa;
 \item esiste esattamente un vertice $v$ tale che $\forall w \in V: (w,
-  v) \not \in E$. Il vertice $v$ viene chiamato \emph{root} di $T$;
-\item tutti i vertici distinti dal vertice \emph{root} hanno
-  esattamente un arco entrante, ovvero $\forall w \not = root(T),
+  v) \not \in E$. Il vertice $v$ viene chiamato \emph{radice} di $T$;
+\item tutti i vertici distinti dal vertice \emph{radice} hanno
+  esattamente un arco entrante, ovvero $\forall w \not = radice(T),
   \exists!r: (r, w) \in E$.
 \end{itemize}
 
@@ -282,7 +282,7 @@ in quota, identificheremo le componenti fortemente connesse.
 Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
 del tempo richiesto dalla visita in profondit\`a.
 
-\subsection{Tarjan: numbering and \emph{LOWLINK}}
+\subsection{Tarjan: una pila e la funzione \emph{lowlink}}
 \label{subsection:tarjan-algorithm}
 La caratteristica di questo algoritmo \`e quella di modificare lo
 schema di una visita in profondit\`a, implementando i due punti di
@@ -297,7 +297,7 @@ Gli strumenti utilizzati da questa variante sono:
   punto di vista, quanti vertici sono gi\`a stati visitati prima di
   $v$;
 \item[funzione lowlink] associa ad ogni vertice $w$ un vertice $v$ suo
-  antenato, tale che
+  antenato, tale che:
   \begin{displaymath}
     numero(v) = \min_{a \in antenati(w)}\{numero(a)\}
 \end{displaymath}
@@ -342,74 +342,86 @@ di queste \`e la seguente:
   vertici tali che $v, w \in C$. Sia $F$ l'insieme di alberi
   \emph{DFS} generati dall'esecuzione di una visita in
   profondit\`a. Allora $v, w$ hanno un antenato comune nella foresta
-  $F$. Inoltre, sia $u$ l'antenato comune tale che $numero$ sia minimo
-  tra tutti gli altri antenati comuni, allora $u \in C$.
+  $F$. Inoltre, sia $u$ un antenato comune di $v, w$ tale che:
+  \begin{displaymath}
+    numero(u) = \min_{a \in (antenati(v)\cap antenati(w))}{numero(a)}
+  \end{displaymath}
+  allora $u \in C$.
 \end{quotation}
 Per far vedere la precedente osservazione supponiamo che durante una
 visita in profondit\`a il vertice $v$ sia visitato prima di $w$
 ($numero(v) < numero(w)$) e, dato che $v,w$ appartengono alla stessa
-componente fortemente connessa, esiste un cammino $\pi$ tale che $v
-\rightarrow^{*} w$ (e anche un cammino $w \rightarrow^{*} v$ per la
-connettivit\`a forte). Chiamiamo $T_{u}$ il pi\`u piccolo albero che
-ha come radice $u$ e che contiene tutti i vertici attraversati dal
-cammino $\pi$. Il sotto albero $T_{u}$ esiste in quanto il cammino
-$\pi$ pu\`o attraversare alberi della foresta $F$ i cui vertici hanno
-associato un \emph{numero} minore (percorrendo \emph{cross archi}),
-mentre non attraverser\`a alberi con numerazioni maggiori. Osserviamo
-per\`o che se il cammino $\pi$ attraversasse pi\`u di un albero non
-potr\`a arrivare in $w$ (ricordiamo che $\pi$ inizia in $v$)
-contraddicendo l'ipotesi iniziale che $numero(v) < numero(w)$. Quindi
-il sotto albero $T_{u}$ esiste e $v,w$ hanno un comune antenato, ma
-dato che $T_{u}$ contiene tutti i vertici attraversati da $\pi$, anche
-$u$ viene attraversato e quindi appartiene alla stessa componente
-fortemente connessa.
+componente fortemente connessa, esiste un cammino chiuso $\pi = v
+\rightarrow^{*} v$ che contiene $w$. 
+
+Chiamiamo $T_{u}$ il pi\`u piccolo albero che ha come radice $u$ e che
+contiene tutti i vertici attraversati dal cammino $\pi$. Il sotto
+albero $T_{u}$ esiste in quanto il cammino $\pi$ pu\`o attraversare
+due alberi $T_{m}, T_{M}$ della foresta $F$ se:
+\begin{displaymath}
+  \max_{r \in T_{m}}\{numero(r)\} < \min_{s \in T_{M}}\{numero(s)\}
+\end{displaymath}
+percorrendo \emph{archi trasversali}, mentre non arriver\`a in alberi
+con numerazioni maggiori rispetto all'albero di provenienza.
+
+Osserviamo per\`o che se il cammino $\pi$, partendo da $v$,
+attraversasse pi\`u di un albero, non sarebbe in grado di tornare
+nella componente connessa che contiene $w$ perch\`e gli archi
+trasversali non possono orientarsi a destra. Questo prova l'esistenza
+di $T_{u}$ e $v,w$ hanno un comune antenato, ma dato che $T_{u}$
+contiene tutti i vertici attraversati da $\pi$, $u$ essendo in $T_{u}$
+(\`e la sua radice) viene attraversato a sua volta da $\pi$ e, di
+conseguenza, appartiene alla stessa componente fortemente connessa che
+contiene $v, w$.
 \\\\
-Adesso possiamo affrontare la seconda idea che ci dar\`a un modo per
+Adesso possiamo affrontare la seconda idea che ci dar\`a un metodo per
 identificare le componenti fortemente connesse:
 \begin{quotation}
   Sia $C$ una componente fortemente connessa. Allora i vertici $v_{i}
   \in C$ appartengono ad uno stesso sotto albero nella foresta
-  \emph{DFS}. Inoltre la radice del sotto albero viene chiamata la
-  \emph{root} della componente fortemente connessa $C$
+  \emph{DFS}. Inoltre la radice del sotto albero viene chiamata
+  \emph{testa} della componente fortemente connessa $C$.
 \end{quotation}
-la precedente idea fa si che il problema di individuare le componenti
-fortemente connesse si riduce ad identificare i vertici \emph{root} di
-sotto alberi della foresta. Tarjan propone il seguente criterio per
-individuare tali vertici:
+la precedente idea riduce il problema di individuare le componenti
+fortemente connesse al problema di identificare i vertici
+\emph{radice} di sotto alberi della foresta. Tarjan propone il
+seguente criterio per individuare tali vertici:
 \begin{quotation}
-  un vertice $v$ \`e \emph{root} di una componente fortemente connessa
-  se e solo se $numero(v) = LOWLINK(v)$ 
+  un vertice $v$ \`e \emph{testa} di una componente fortemente
+  connessa se e solo se $numero(v) = lowlink(v)$
 \end{quotation}
 quanto detto in quota ha bisogno di alcune spiegazioni. La prima cosa
-che dobbiamo definire \`e come calcolare $LOWLINK(v)$:
+che dobbiamo definire \`e come calcolare $lowlink(v)$:
 \begin{displaymath}
   \begin{split}
-    LOWLINK(v) &= \min\{\{numero(v)\}, \\
-    & \{numero(w): (\exists r \in V: v \rightarrow r \cdot\rightarrow w) \\
-    & \wedge (\exists u \in V: u \rightarrow^{*} v \wedge u
-    \rightarrow^{*} w \wedge \\
-    & u,w \in C, \text{ for some componente fortemente connessa C}) \}\}
+    lowlink(v) &= \min \{ \{numero(v)\} \cup \\
+      & \{numero(w): (\exists r \in V: v \rightarrow^{*} r
+      \cdot\rightarrow w) \\
+      & \wedge (\exists u \in V: u \rightarrow^{*} v \wedge u
+      \rightarrow^{*} w \wedge \\
+      & u,w \in C, \text{ per qualche componente fortemente connessa
+        C}) \}\}
   \end{split}
 \end{displaymath}
 Pu\`o sembrare un po criptico ma non cattura un concetto difficile. Il
-valore che la funzione $LOWLINK$ associa ad un vertice $v$ \`e il
-minimo valore associato ad un vertice $v'$ appartenente alla stessa
-componente fortemente connessa di $v$, attraversando un numero qualsiasi
-di \emph{tree archi} seguito da un \emph{all'indietro arco}.
+valore che la funzione $lowlink$ associa ad un vertice $v$ \`e il
+minimo valore associato ad un vertice $w$ appartenente alla stessa
+componente fortemente connessa di $v$, attraversando un numero
+qualsiasi di archi seguito da un arco all'indietro.
 
-Pertanto un vertice \`e la \emph{root} di una componente fortemente connessa solo quando il valore associato dalla funzione $LOWLINK$ \`e
-$numero(v)$ stesso, ovvero da $v$ non \`e possibile ne arrivare in
-sottoalberi a sinistra (in quanto per questi sono gi\`a state
-computate le componenti fortemente connesse), ne raggiungere un
-antenato (altrimenti non sarebbe la \emph{root} della strongly
-connected component).
+Pertanto un vertice $v$ \`e la \emph{testa} di una componente
+fortemente connessa solo quando da $v$ non \`e possibile ne arrivare
+in sotto alberi con numerazioni minori (in quanto i vertici in questi
+contenuti sono gi\`a stati assegnati ad alcune componenti fortemente
+connesse), ne raggiungere un antenato (altrimenti non sarebbe la
+\emph{testa} della componente fortemente connessa). Quanto detto \`e
+quello che esprime $numero(v) = lowlink(v)$.
 \\\\
 Questo algoritmo lavora in tempo polinomiale in quanto il tempo per
-calcolare la funzione $LOWLINK$ \`e costante ed ogni vertice viene
-inserito nello pila dei vertici da assegnare ad una strongly
-connected component una e una sola volta. Inoltre, per verificare se
-un vertice \`e contenuto nello pila possiamo utilizzare un vettore di
-valori booleani, che rende questa operazione lineare.
+calcolare la funzione $lowlink$ \`e costante ed ogni vertice viene
+inserito nello pila una e una sola volta. Inoltre, per verificare se
+un vertice \`e contenuto nello pila, possiamo utilizzare un vettore di
+valori booleani, che rende il costo di questa operazione lineare.
 
 \subsection{Crescenzi-Gambosi-Grossi variant: use two stacks}
 \label{subsection:crescenzi-gambosi-grossi}
@@ -439,7 +451,7 @@ componenti \emph{complete}, \emph{parziali} oppure \emph{ignote}.
 Questa classificazione dei vertici viene mantenuta in modo esplicito
 (usando un funzione che associa ad ogni vertice un valore booleano),
 mentre lo stesso concetto esiste, sotto mentite spoglie, nella
-versione di Tarjan, calcolandolo come segue: se $LOWLINK(v) <
+versione di Tarjan, calcolandolo come segue: se $lowlink(v) <
 numero(v)$ e $v$ \`e nello pila allora $v$ \`e parziale, altrimenti
 \`e completo.
 \\\\
@@ -448,8 +460,9 @@ Un altro concetto in comune con la variante di Tarjan \`e quello di
 vertice $v$ si dice \emph{rappresentante} della propria componente
 fortemente connessa se \`e il primo vertice della componente
 fortemente connessa ad esser stato visitato. Il lettore noter\`a
-subito che \`e possibile mappare questo concetto al \emph{root} di una
-componente fortemente connessa utilizzato nella variante di Tarjan.
+subito che \`e possibile mappare questo concetto al \emph{radice} di
+una componente fortemente connessa utilizzato nella variante di
+Tarjan.
 
 Una osservazione \`e necessaria riguardo ai rappresentanti:
 \begin{quotation}
