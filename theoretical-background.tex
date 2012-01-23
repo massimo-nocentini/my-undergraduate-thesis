@@ -417,112 +417,106 @@ inserito nella pila una e una sola volta. Inoltre, per verificare se
 un vertice \`e contenuto nella pila, possiamo utilizzare un vettore di
 valori booleani, che rende il costo di questa operazione lineare.
 
-\subsection{Crescenzi-Gambosi-Grossi variant: use two stacks}
+\subsection{Crescenzi-Gambosi-Grossi: utilizzo di due pile}
 \label{subsection:crescenzi-gambosi-grossi}
-Anche questa variante personalizza lo schema classico di una
-\emph{visita in profondit\`a}, utilizzando gli stessi \emph{hot-spot}
-della versione di Tarjan descritta in
-\ref{subsection:tarjan-algorithm}. 
-
-Desriveremo questa variante in questa sezione facendo spesso paragoni
-sui punti che possono avvicinare queste idee con quelle usate nella
-versione di Tarjan, in quanto possiamo dire che queste due varianti si
-"mimano" a vicenda.
+Anche questa variante personalizza lo schema classico della visita in
+profondit\`a, utilizzando gli stessi punti di estensione della
+versione descritta nella Sezione \ref{subsection:tarjan-algorithm}.
 \\\\
-Questa variante classifica i vertici in due insiemi:
+Il metodo che descriviamo in questa sezione classifica i vertici in
+due insiemi:
 \begin{description}
-\item[completi] quelli che sono stati completamente esplorati \emph{e}
-  assegnati ad una componente fortemente connessa
-\item[parziali] sono tutti quei vertici che appartengono ad un cammino
+\item[completi] sono tutti i vertici completamente esplorati ed
+  assegnati ad una componente fortemente connessa;
+\item[parziali] sono tutti i vertici appartenenti ad un cammino
   relativo ad una esecuzione della visita, di cui alcuni possono
   essere completamente esplorati, ma che ancora non sono stati
-  associati a nessuna componente fortemente connessa
+  associati a nessuna componente fortemente connessa.
 \end{description}
 In base a questa classificazione, possiamo indurne una anche sulle
 componenti fortemente connesse, avendo rispettivamente delle
-componenti \emph{complete}, \emph{parziali} oppure \emph{ignote}.
+componenti \emph{complete}, \emph{parziali} oppure
+\emph{ignote}. Questa classificazione viene mantenuta in modo
+esplicito usando un vettore che associa ad ogni vertice un valore
+booleano. 
 
-Questa classificazione dei vertici viene mantenuta in modo esplicito
-(usando un funzione che associa ad ogni vertice un valore booleano),
-mentre lo stesso concetto esiste, sotto mentite spoglie, nella
-versione di Tarjan, calcolandolo come segue: se $lowlink(v) <
-numero(v)$ e $v$ \`e nello pila allora $v$ \`e parziale, altrimenti
-\`e completo.
+Lo stesso concetto esiste nella versione di Tarjan, codificato come
+segue: se $lowlink(v) < numero(v) \wedge v \in Pila$ allora $v$ \`e
+parziale, altrimenti \`e completo.
 \\\\
 Un altro concetto in comune con la variante di Tarjan \`e quello di
 \emph{rappresentante} di una componente fortemente connessa. Un
 vertice $v$ si dice \emph{rappresentante} della propria componente
 fortemente connessa se \`e il primo vertice della componente
 fortemente connessa ad esser stato visitato. Il lettore noter\`a
-subito che \`e possibile mappare questo concetto al \emph{radice} di
-una componente fortemente connessa utilizzato nella variante di
-Tarjan.
+subito che \`e possibile mappare questo concetto al concetto di
+\emph{testa} di una componente fortemente connessa utilizzato nella
+variante di Tarjan.
 
-Una osservazione \`e necessaria riguardo ai rappresentanti:
+Un'osservazione \`e necessaria sul concetto di rappresentante:
 \begin{quotation}
   quando una componente fortemente connessa diviene \emph{completa},
   tutti i vertici in essa contenuti sono a loro volta \emph{completi}
   e i vertici che sono dei \emph{rappresentanti} perdono tale ruolo.
 \end{quotation}
-questo implica che se un vertice ha il ruolo di \emph{rappresentante}
-allora appartiene ad una componente parziale. 
+Questo implica che se un vertice ha il ruolo di rappresentante allora
+appartiene ad una componente parziale.
 
-Inoltre i vertici \emph{rappresentanti} permettono di distinguere
-l'inizio di una componente fortemente connessa dalla successiva e, come
-vedremo, vengono numerati in ordine crescente rispetto al momento in
-cui vengono esplorati (anche questo concetto lo si ritrova nella
-variante di Tarjan dove si utilizza la funzione $numero$).
+Inoltre i vertici rappresentanti permettono di distinguere l'inizio di
+una componente fortemente connessa dalla successiva e, come vedremo,
+vengono numerati in ordine crescente rispetto al momento in cui
+vengono visitati (anche questo concetto lo si ritrova nella variante
+di Tarjan dove si utilizza la funzione $numero$).
 \\\\
-La variante di Crescenzi-Gambosi-Grossi, a regime, mantiene due pila,
-uno per mantenere l'insieme dei vertici \emph{parziali}, l'altro per
-mantenere l'insieme dei vertici \emph{rappresentanti}. Tutti i vertici
-che appartengo alla stessa componente fortemente connessa occupano
-posizioni contigue nel relativo pila mentre il primo di essi sar\`a
-inserito anche nello pila dei \emph{rappresentanti} finch\`e la
-componente fortemente connessa non viene chiusa.
+La variante di Crescenzi-Gambosi-Grossi, a regime, mantiene due pile:
+una per mantenere l'insieme dei vertici parziali, una per mantenere
+l'insieme dei vertici rappresentanti. Tutti i vertici che appartengo
+alla stessa componente fortemente connessa occupano posizioni contigue
+nella relativa pila dei parziali, mentre il primo di essi sar\`a
+inserito anche nella pila dei rappresentanti finch\`e la componente
+fortemente connessa non viene creata.
 
 L'algoritmo che implementa questa variante procede seguendo la
 seguente idea:
 \begin{quotation}
-  ogni volta che un nuovo vertice viene esplorato, inseriamolo nei due
-  pila ed esploriamo il suo vicinato. Per i vertici non esplorati
-  invochiamo ricorsivamente la visita, per quelli gi\`a incontrati
-  chiediamo: se non sono completi allora si estrae dallo pila dei
-  \emph{rappresentanti}
+  ogni volta che un nuovo vertice $v$ viene raggiunto, si inserisce
+  $v$ nelle due pile ed invochiamo ricorsivamente la procedura per
+  ogni vertice vicino di $v$. Se invece $v$ \`e gi\`a stato visitato,
+  si estrae dalla pila dei rappresentati finch\`e in testa non appare
+  un vertice $w$ tale che $numero(w) \leq numero(v)$.
 \end{quotation}
-queste semplici regole necessitano di qualche
-spiegazione. 
+Inizialmente ogni nuovo vertice che viene esplorato viene inserito in
+entrambe le pile in quanto potrebbe essere il rappresentante di una
+nuova componente fortemente connessa.
 
-Inizialmente ogni nuovo vertice che viene esplorato viene
-inserito in entrambi gli pila in quanto potrebbe iniziare una nuova
-componente fortemente connessa, di cui il vertice sarebbe il
-\emph{rappresentante}. 
+Commentiamo brevemente quando si debbono estrarre i vertici dalla pila
+dei rappresentanti. Se, scandendo il vicinato, esiste un vertice $w$
+gi\`a visitato ma non \`e completo, significa che l'arco attraversato
+comporta un ciclo e, quindi, si possono rimuovere dalla pila dei
+rappresentanti tutti i vertici che sono sopra $w$ nella stessa pila in
+quanto non possono essere dei rappresentanti. Se invece $w$ fosse
+completo allora appartiene gi\`a ad una componente fortemente
+connessa, e l'arco attraversato \`e un arco trasversale, come chiamato
+nella variante di Tarjan.
 
-L'altro punto da chiarire \`e quando si debbono estrarre i vertici
-dallo pila dei \emph{rappresentanti}. Se, scandendo il vicinato,
-esiste un vertice gi\`a esplorato e questo non \`e \emph{completo}
-significa che l'arco che porta in questo vertice porta un ciclo e
-quindi, non pu\`o essere un \emph{rappresentante}. Se invece tale
-vertice fosse \emph{completo} allora gi\`a appartiene ad una strongly
-connected component, e l'arco che porta a questo \`e quello che nella
-variante di Tarjan viene classificato come \emph{cross link}.
+Affinch\`e un vertice $v$ rimanga nella pila dei rappresentanti
+finch\`e non viene creata la componente fortemente connessa che lo
+conterr\`a, $v$ non deve avere archi all'indietro o archi trasversali.
 
-Nello pila dei rappresentanti saranno presenti solo i vertici che non
-hanno \emph{all'indietro archi} e, come nella variante di Tarjan, si
-costruisce una componente fortemente connessa quando un vertice, dopo
-aver esplorato tutto il suo vicinato, si trova in testa allo pila dei
-\emph{rappresentanti}. La nuova componente fortemente connessa sar\`a
-composta da tutti i vertici contenuti nello pila dei \emph{parziali}
-contenuti tra la cima dello pila e la posizione del rappresentante
-compresa. Ognuno di loro viene marcato come \emph{completo} e si
-continua l'eventuale computazione.
+Infine, come nella variante di Tarjan, si costruisce una componente
+fortemente connessa quando un vertice, dopo aver completato la visita
+del suo vicinato, si trova in testa nella pila dei rappresentanti. La
+nuova componente fortemente connessa sar\`a composta da tutti i
+vertici contenuti nello pila dei parziali, contenuti tra la cima della
+pila e la posizione del rappresentante compresa. Ognuno di loro viene
+marcato come completo e si continua l'eventuale computazione.
 \\\\
 Anche per questa variante il tempo richiesto \`e lineare: ogni vertice
 viene inserito ed estratto al pi\`u una volta in ogni pila (il caso
 degenere \`e un grafo i cui vertici sono tutti isolati, per cui ogni
 vertice corrisponde ad una componente fortemente connessa), non
-aggiungendo asintoticamente niente al tempo richiesto dalla
-\emph{visita in profondit\`a}.
+aggiungendo asintoticamente niente al tempo richiesto dalla visita in
+profondit\`a.
 
 
 
