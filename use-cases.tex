@@ -70,7 +70,7 @@ partenza, preso da \cite{Algorithms}:
   \caption{Grafo che si vuole visitare}
   \label{fig:before-applying-dfs-search}
 \end{figure}
-visitandolo in profondit\`a otteniamo la foresta di alberi \emph{DFS},
+visitandolo in profondit\`a otteniamo la foresta di alberi \emph{DFS}
 riportata in Figura \ref{fig:dfs-forest}.
 \begin{figure}
   \centering
@@ -123,7 +123,7 @@ Il \emph{side-effect} prodotto \`e collezionare le informazioni
 richieste visitando il grafo e scriverle in un file dedicato.
 
 Inoltre, per comodit\`a, vogliamo comporre pi\`u di una funzionalit\`a
-ed avere le informazioni relative alle computazioni intermedie
+ed avere le informazioni relative alle computazioni di ognuna,
 presenti nello stesso documento.
 
 Vediamo i risultati di una sua esecuzione, allegando un documento
@@ -182,10 +182,7 @@ informazioni sul grafo minimizzato (riportate sotto l'etichetta
 \emph{phase-PlainTextStatsPipeFilter-level-2}).
 
 Come si nota i formati delle rappresentazioni tabulari sono vicini ma
-non identici.
-
-Le informazioni raccolte dopo il primo passo hanno la seguente
-semantica; sia:
+non identici. Dato il seguente blocco relativo al primo passo:
 \begin{lstlisting}
 phase-identifier
 	NOfVertices:	v
