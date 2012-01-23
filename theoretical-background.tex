@@ -3,14 +3,10 @@
 In questo capitolo affronteremo gli algoritmi alla base delle
 implementazioni da un punto di vista teorico. Vedremo la tecnica di
 visita del grafo che abbiamo adottato ed un palco di algoritmi per il
-calcolo delle componenti fortemente connesse; prima per\`o riportiamo
-alcune definizioni.
+calcolo delle componenti fortemente connesse.
 
 \section{Alcune definizioni}
 \label{subsection:some-definitions}
-In questa sezione riportiamo per completezza alcune definizioni che
-saranno utilizzate nel resto del capitolo.
-\\\\
 Un grafo $G$ \`e una coppia $(V, E)$ dove $V$ \`e un insieme di
 vertici ed $E$ \`e un insieme di archi. Pi\`u precisamente $E$ \`e una
 relazione binaria tale che $E \subseteq V \times V$.
@@ -24,12 +20,12 @@ cammino lo indicheremo con la scrittura $v_{i} \rightarrow^{*}
 v_{j}$. Nel caso di un grafo non orientato indichiamo un cammino con
 la scrittura $v_{i} -^{*} v_{j}$.
 
-Un cammino $\pi = v_{i} \rightarrow^{*} v_{i}$ \`e chiamato una
-cammino \emph{chiuso}. In particolare, un cammino chiuso \`e un
-\emph{ciclo} quando tutti gli archi che lo compongono sono distinti e
-$v_{i}$ \`e l'unico vertice che appare esattamente due volte in
-$\pi$. Due cicli che sono permutazioni l'uno dell'altro sono
-indistinguibili e, pertanto, si considerano essere lo stesso ciclo.
+Un cammino $\pi = v_{i} \rightarrow^{*} v_{i}$ \`e chiamato un cammino
+\emph{chiuso}. In particolare, un cammino chiuso \`e un \emph{ciclo}
+quando tutti gli archi che lo compongono sono distinti e $v_{i}$ \`e
+l'unico vertice che appare esattamente due volte in $\pi$. Due cicli
+che sono permutazioni l'uno dell'altro sono indistinguibili e,
+pertanto, si considerano essere lo stesso ciclo.
 
 Un grafo non orientato \`e \emph{connesso} se $\forall (v, w) \exists
 \pi: \pi = v -^{*} w$. Un grafo orientato \`e fortemente connesso se
@@ -144,12 +140,11 @@ vertici pi\`u recentemente raggiunti corrisponde alla \emph{ball of
   string}.
 
 \subsection{Pseudocodice e complessit\`a}
-Formalizziamo la visita visita in profondit\`a col seguente pseudo
-codice:
+Formalizziamo la visita in profondit\`a col seguente pseudo codice:
 \begin{lstlisting}
     procedura DFS(G = (V, E))
       per ogni v in V:
-        visitato(v) = false
+        visitato(v) = falso
 
       per ogni v in V:
         if non visitato(v):
@@ -162,7 +157,6 @@ codice:
         se non visitato(u): esplora(u)
       postvisita(v)
 \end{lstlisting}
-
 Facciamo una breve analisi della complessit\`a. La prima osservazione
 da fare \`e che ogni vertice viene esaminato una e una sola volta
 grazie al vettore \emph{visitato}. Durante l'esplorazione di un
@@ -172,10 +166,11 @@ vertice come visitato sia per le invocazioni delle funzioni
 
 Per quanto riguarda la scansione del vicinato, abbiamo per ogni
 vertice un impiego di tempo diverso: per questo motivo ci conviene
-considerare gli archi in modo indipendente dall'appartenenza alle
-liste di adiacenza. Ogni arco verr\`a visitato una e una sola volta in
-caso di un grafo orientato, altrimenti due volte in caso di un grafo
-non orientato. Segue che il tempo impiegato dalla visita \`e $O(|V| +
+considerare gli archi in modo indipendente dal modo in cui vengono
+rappresentati in macchina. Se codifichiamo la relazione $E$ con liste
+di adiacenza, ogni arco verr\`a visitato una e una sola volta in caso
+di un grafo orientato, altrimenti due volte in caso di un grafo non
+orientato. Segue che il tempo impiegato dalla visita \`e $O(|V| +
 |E|)$, lineare nella lunghezza dell'input e quindi polinomiale come
 avevamo richiesto ad inizio capitolo.
 
@@ -227,8 +222,8 @@ di ragionare come segue:
 \end{quotation}
 
 Con la precedente osservazione abbiamo un metodo per trovare una
-componente fortemente connessa, non sappiamo per\`o come trovare ne il
-vertice $v$ ne le altre componenti.
+componente fortemente connessa, non sappiamo per\`o come trovare n\'e il
+vertice $v$ n\'e le altre componenti.
 
 Prima di continuare implementiamo le due funzioni \emph{previsita} e
 \emph{postvisita} in modo da associare ad ogni vertice il momento in
@@ -271,10 +266,10 @@ massimo \emph{post} appartiene ad una componente fortemente connessa
 sorgente in $G^{R}$ e, di conseguenza, ad una componente fortemente
 connessa pozzo in $G$, che \`e quello che volevamo.
 
-Quello che adesso rimane da fare \`e invocare una visita in
-profondit\`a sul grafo di input $G$, scansionando i vertici in ordine
-decrescente di \emph{post}. Cos\`i facendo, per la prima osservazione
-in quota, identificheremo le componenti fortemente connesse.
+Possiamo quindi invocare una visita in profondit\`a sul grafo di input
+$G$, scansionando i vertici in ordine decrescente di
+\emph{post}. Cos\`i facendo, per la prima osservazione in quota,
+identificheremo le componenti fortemente connesse.
 %  I vertici esplorati durante ogni invocazione della
 % procedura \emph{esplora} eseguita dalla procedura \emph{DFS} \`e una
 % componente fortemente connessa del grafo $G$.
@@ -309,24 +304,23 @@ Gli strumenti utilizzati da questa variante sono:
 Inoltre Tarjan classifica gli archi del grafo in input dopo aver
 applicato una visita in profondit\`a in questo modo:
 \begin{description}
-\item[archi dell'albero DFS] sono tutti quelli archi che hanno
-  permesso di raggiungere un vertice non ancora visitato. Questi archi
-  sono indicati con $\rightarrow$;
+\item[archi dell'albero DFS] sono tutti gli archi che hanno permesso
+  di raggiungere un vertice non ancora visitato e vengono indicati con
+  $\rightarrow$;
 \item[archi in avanti] questi archi non appartengono a nessun albero
   \emph{DFS} e collegano un antenato ad un suo discendente;
 \item[archi all'indietro] questi archi non appartengono a nessun
-  albero \emph{DFS} e collegano un discendente ad un suo
-  antenato. Questi archi sono indicati con $\cdot\rightarrow$;
+  albero \emph{DFS} e collegano un discendente ad un suo antenato.
+  Vengono indicati con $\cdot\rightarrow$;
 \item[archi trasversali] questi archi non appartengono a nessun albero
-  \emph{DFS} e collegano due vertici appartenenti a sottoalberi
+  \emph{DFS} e collegano due vertici appartenenti a sotto alberi
   differenti (questi sotto alberi posso appartenere sia allo stesso
   albero \emph{DFS}, sia a due alberi \emph{DFS} disgiunti). Questi
   archi sono indicati con $\cdot\rightarrow$.
 \end{description}
-
-Una osservazione da fare riguardo agli archi trasversali \`e la
-seguente. Se $e = (v, w) \in E$ \`e un arco trasversale allora
-$numero(w) < numero(v)$. Graficamente parlando $e$ ha un'unica
+Un'osservazione da fare riguardo agli archi trasversali \`e la
+seguente: se $e = (v, w) \in E$ \`e un arco trasversale allora
+$numero(w) < numero(v)$. Graficamente parlando, $e$ ha un'unica
 direzione: da destra verso sinistra. Motivare questo non \`e
 difficile: supponiamo per assurdo che $e$ abbia direzione opposta,
 allora, durante una visita, o verrebbe inserito in un albero
@@ -403,24 +397,24 @@ che dobbiamo definire \`e come calcolare $lowlink(v)$:
         C}) \}\}
   \end{split}
 \end{displaymath}
-Pu\`o sembrare un po criptico ma non cattura un concetto difficile. Il
+Pu\`o sembrare criptico ma non cattura un concetto difficile. Il
 valore che la funzione $lowlink$ associa ad un vertice $v$ \`e il
 minimo valore associato ad un vertice $w$ appartenente alla stessa
 componente fortemente connessa di $v$, attraversando un numero
 qualsiasi di archi seguito da un arco all'indietro.
 
 Pertanto un vertice $v$ \`e la \emph{testa} di una componente
-fortemente connessa solo quando da $v$ non \`e possibile ne arrivare
+fortemente connessa solo quando da $v$ non \`e possibile n\'e arrivare
 in sotto alberi con numerazioni minori (in quanto i vertici in questi
 contenuti sono gi\`a stati assegnati ad alcune componenti fortemente
-connesse), ne raggiungere un antenato (altrimenti non sarebbe la
+connesse), n\'e raggiungere un antenato (altrimenti non sarebbe la
 \emph{testa} della componente fortemente connessa). Quanto detto \`e
 quello che esprime $numero(v) = lowlink(v)$.
 \\\\
 Questo algoritmo lavora in tempo polinomiale in quanto il tempo per
 calcolare la funzione $lowlink$ \`e costante ed ogni vertice viene
-inserito nello pila una e una sola volta. Inoltre, per verificare se
-un vertice \`e contenuto nello pila, possiamo utilizzare un vettore di
+inserito nella pila una e una sola volta. Inoltre, per verificare se
+un vertice \`e contenuto nella pila, possiamo utilizzare un vettore di
 valori booleani, che rende il costo di questa operazione lineare.
 
 \subsection{Crescenzi-Gambosi-Grossi variant: use two stacks}
