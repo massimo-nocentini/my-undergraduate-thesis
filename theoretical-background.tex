@@ -11,7 +11,7 @@ Un grafo $G$ \`e una coppia $(V, E)$ dove $V$ \`e un insieme di
 vertici ed $E$ \`e un insieme di archi. Pi\`u precisamente $E$ \`e una
 relazione binaria tale che $E \subseteq V \times V$.
 
-Un grafo $G$ si dice non orientato se $E$ \`e una relazione
+Un grafo $G$ si dice \emph{non orientato} se $E$ \`e una relazione
 simmetrica, altrimenti si dice \emph{orientato}. Sia $G$ un grafo
 orientato, un cammino da un vertice $v_{i}$ ad un vertice $v_{j}$ \`e
 una sequenza di vertici $(v_{i}, v_{i+1}, \cdots, v_{j-1}, v_{j})$
@@ -27,10 +27,11 @@ l'unico vertice che appare esattamente due volte in $\pi$. Due cicli
 che sono permutazioni l'uno dell'altro sono indistinguibili e,
 pertanto, si considerano essere lo stesso ciclo.
 
-Un grafo non orientato \`e \emph{connesso} se $\forall (v, w) \exists
-\pi: \pi = v -^{*} w$. Un grafo orientato \`e fortemente connesso se
-$\forall (v, w)$ vertici, $\exists \pi_{1}, \pi_{2}$ cammini tali che
-$\pi_{1} = v \rightarrow^{*} w \wedge \pi_{2} = w \rightarrow^{*} v$.
+Un grafo non orientato \`e \emph{connesso} se $\forall v, w \in V$
+esiste un cammino $\pi$ tale che $\pi = v -^{*} w$. Un grafo orientato
+\`e \emph{fortemente connesso} se $\forall v, w \in V$ esistono due
+cammini $\pi_{1}, \pi_{2}$ tali che $\pi_{1} = v \rightarrow^{*} w
+\wedge \pi_{2} = w \rightarrow^{*} v$.
 
 Un grafo orientato $T$ \`e un \emph{albero} se valgono le seguenti
 propriet\`a:
@@ -42,6 +43,7 @@ propriet\`a:
   esattamente un arco entrante, ovvero $\forall w \not = radice(T),
   \exists!r: (r, w) \in E$.
 \end{itemize}
+Un insieme di alberi viene definito \emph{foresta}.  
 
 Sia $G$ un grafo orientato. Possiamo definire una relazione
 d'equivalenza sull'insieme di vertici come segue: due vertici $v$ e
@@ -73,57 +75,59 @@ come possiamo determinare se esiste un cammino $v \rightarrow^{*} w$?
 
 Una risposta \`e quella di costruire un insieme $W$ di vertici
 raggiungibili da $v$ utilizzando una sequenza di archi in $E$, e
-rispondere si se e solo se $w \in W$. Chiameremo \emph{visitati} i
-vertici $s \in W$. 
+rispondere si se e solo se $w \in W$.  Il processo di costruzione
+dell'insieme $W$ viene definito \emph{visita} del grafo a partire dal
+vertice $v$ e diremo \emph{visitato} ogni vertice $s \in W$.
 
-Osserviamo che \`e possibile visitare i vertici usando una strategia
-pi\`u semplice, ovvero quella che itera sull'insieme dei vertici
-$V$. Ci sono due differenze tra questi due metodi:
+Osserviamo che la visita di un grafo \`e un'operazione ben diversa
+dall'iterare sui suoi vertici, in quanto:
 \begin{itemize}
 \item iterando sull'insieme $V$ si raggiunge esattamente ogni vertice
-  per definizione, mentre la visita fatta nel primo metodo raggiunge
-  un sotto insieme $V' \subseteq V$;
+  per definizione, mentre visitando il grafo si raggiunge un sotto
+  insieme $V' \subseteq V$;
 \item l'ordine seguito iterando sull'insieme $V$ non \`e dipendente
   dalla relazione $E$ del grafo, bens\`i pu\`o essere stabilito a
-  priori. Invece il primo metodo viene utilizzato in quanto siamo
-  interessati all'ordine con cui vengono visitati i vertici.
+  priori. Invece l'ordine con cui vengono raggiunti i vertici in una
+  visita \`e un fattore che caratterizza una visita da un'altra.
 \end{itemize}
 
-Riassumendo quanto detto in sopra, visitando un grafo $G$ si vuole
-ottenere una permutazione $\pi$ di vertici $v_{\pi_{1}}, \ldots,
-v_{\pi_{s}}$ raggiunti, di cui ci interessa l'ordine con cui sono
-stati visitati.
+Riassumendo quanto detto in sopra, la visita di un grafo $G$ a partire
+da un vertice $v$ produce una permutazione $\pi$ di vertici
+$(v_{\pi_{1}}, \ldots, v_{\pi_{s}})$, ognuno di essi raggiungibile da
+$v$, di cui \`e interessante l'ordine codificato nella permutazione,
+ovvero l'ordine con cui i vertici sono stati visitati.
 
 \subsection{Visita in profondit\`a}
-Nella precedente sezione abbiamo dato l'idea alla base di una
-visita. Vi sono molte strategie che differenziano due visite, ognuna
-caratterizzata dalla modalit\`a con cui si sceglie il prossimo arco da
-percorrere.
+Nella precedente sezione abbiamo dato l'idea fondamentale di cosa
+significa visitare un grafo. Vi sono molte strategie che differenziano
+due visite, caratterizzate dalla modalit\`a con cui si sceglie il
+prossimo arco da percorrere.
 
 Quella che differenzia la \emph{visita in profondit\`a} \`e la
 seguente: \emph{nella selezione del prossimo arco da percorrere, si
   sceglie un arco uscente non ancora percorso dal vertice pi\`u
-  recentemente raggiunto}.  Possiamo mantere l'insieme dei vertici
+  recentemente raggiunto}.  Possiamo mantenere l'insieme dei vertici
 \emph{pi\`u recentemente raggiunti} in una \emph{pila}.
 
 Per capire meglio il pattern di questa tecnica supponiamo di iniziare
-la visita dal vertice $v$. Prima $v$ viene visitato, poi il suo primo
-vicino $v_{1}$ viene scelto e si percorre l'arco $(v, v_{1})$. Adesso
-$v_{1}$ viene visitato e si riapplica lo stesso metodo al vicinato di
-$v_{1}$. Solo quando tutti i vertici nel vicinato di $v_{1}$ sono
-visitati \`e possibile visitare il secondo vicino $v_{2}$ di $v$ (\`e
-possibile che $v_{2}$ venga visitato durante la visita di $v_{1}$, in
-questo caso non \`e necessaria nessuna operazione su $v_{2}$).
+la visita dal vertice $v$. Prima $v$ viene visitato, poi si sceglie un
+arco non ancora percorso $(v, v_{1}) \in E$, raggiungendo il vertice
+$v_{1}$. Adesso $v_{1}$ viene visitato e si applica al vicinato di
+$v_{1}$ quanto fatto al vicinato di $v$. Solo quando tutti i vertici
+nel vicinato di $v_{1}$ vengono visitati \`e possibile visitare il
+secondo vicino $v_{2}$ di $v$ (\`e possibile che $v_{2}$ venga
+visitato durante la visita di $v_{1}$, in questo caso non \`e
+necessaria nessuna operazione su $v_{2}$).
 
 Il complemento \emph{in profondit\`a} cattura l'idea che la visita
 procede allontanandosi sempre pi\`u dal punto di partenza, spostandosi
 da un vertice ad un vicino di tale vertice, ad un vicino del vicino di
 tale vertice e cos\`i via, tornando indietro solo quando si raggiunge
-un vertice il cui vicinato \`e completamente esplorato oppure vuoto.
+un vertice il cui vicinato \`e completamente visitato oppure vuoto.
 \\\\
 Papadimitriou, in \cite{Algorithms} pagina 83, vede questa visita come
 un algoritmo per risolvere un labirinto, identificandone le idee
-principali che abbiamo espresso in forma diversa:
+principali in forma diversa rispetto a come le abbiamo esposte sopra:
 
 \begin{quotation}
   [...] the reachability problem is rather like exploring a
@@ -134,27 +138,27 @@ principali che abbiamo espresso in forma diversa:
   of chalk. The chalk prevents looping, the string always takes you
   back...
 \end{quotation}
-Riportando questa idea su quanto detto sopra, il concetto di vertice
-visitato corrisponde al \emph{chalk}, mentre la pila contenente i
-vertici pi\`u recentemente raggiunti corrisponde alla \emph{ball of
-  string}.
+Riportando questa citazione su quanto detto sopra, il concetto di
+vertice visitato corrisponde al \emph{chalk}, mentre la pila
+contenente i vertici pi\`u recentemente raggiunti corrisponde alla
+\emph{ball of string}.
 
-\subsection{Pseudocodice e complessit\`a}
+\subsection{Pseudo codice e complessit\`a}
 Formalizziamo la visita in profondit\`a col seguente pseudo codice:
 \begin{lstlisting}
     procedura DFS(G = (V, E))
       per ogni v in V:
-        visitato(v) = falso
+        visitato[v] = falso
 
       per ogni v in V:
-        if non visitato(v):
+        se non visitato[v]:
           esplora(v, E)
 
     procedura esplora(v, E):
-      visitato(v) = vero
+      visitato[v] = vero
       previsita(v)
-      for each arco (v, u) in E:
-        se non visitato(u): esplora(u)
+      per ogni arco (v, u) in E:
+        se non visitato[u]: esplora(u, E)
       postvisita(v)
 \end{lstlisting}
 Facciamo una breve analisi della complessit\`a. La prima osservazione
