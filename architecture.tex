@@ -10,7 +10,7 @@ possiamo ``metterle a punto'' nel nostro progetto.
 
 \subsection{Cenni teorici}
 Quest'architettura \`e molto usata nella pratica e vi \`e molta
-letturatura da cui poter attingere, pensiamo per\`o che tornare alle
+letteratura da cui poter attingere, pensiamo per\`o che tornare alle
 sorgenti che per prime hanno permesso la sua diffusione sia di
 notevole importanza prima di analizzare le varianti e gli studi
 successivi.
@@ -18,7 +18,7 @@ successivi.
 I volumi da cui ho studiato sono quello del Buschmann \cite{POSA} e
 dalla miscellanea di Coplien e Schmidt \cite{PLOPD}.
 
-\subsubsection{Basic schema}
+\subsubsection{Schema classico}
 Nella testata che descrive il pattern in \cite{POSA}, pagina 53,
 compare:
 \begin{quotation}
@@ -33,7 +33,7 @@ L'idea alla base di questo pattern \`e il principio \emph{separation
 responsabilit\`a del sistema in sotto problemi, ognuno dei quali pu\`o
 essere implementato con una componente software tale che \emph{non
   abbia dipendenze} comportamentali dalle altre componenti (non \`e
-client di nessun altra, non vi \`e delega di comportamento) e che
+client di nessun'altra, non vi \`e delega di comportamento) e che
 \emph{coopera} con le altre componenti usando l'output di una
 componente come input per un'altra.
 
@@ -95,7 +95,7 @@ dell'input per coppie diverse di filtri, responsabilit\`a di oggetti
 \subsection{Implementazione in questo progetto}
 L'implementazione dell'architettura \emph{pipes and filters} in questo
 progetto ha cercato di prendere spunto da quanto detto nella sezione
-precedente ma allo stesso tempo ha delle carattaristiche che la
+precedente ma allo stesso tempo ha delle caratteristiche che la
 distinguono dalla linea introdotta.
 
 Abbiamo introdotto la classe \emph{PipeFilter} per modellare il
@@ -119,7 +119,7 @@ La precedente osservazione potrebbe indurre il lettore a pensare alla
 nostra architettura non tanto come una pipeline, quanto come un
 sistema di decoratori (vedi pattern \emph{Decorator} in
 \cite{SmalltalkCompanion98}). Questa interpretazione non \`e errata,
-anzi crediamo che indebolire il requisito di stabilire un'ordinamento
+anzi crediamo che indebolire il requisito di stabilire un ordinamento
 rigido dei filtri presente nel pattern \emph{pipeline} originale, a
 favore di maggior dinamicit\`a e trasparenza sul formato di
 input/output, porti ad una soluzione che sarebbe stato sufficiente
