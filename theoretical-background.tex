@@ -201,6 +201,21 @@ altro utilizzo \`e quello di associare ad ogni vertice $v$ una coppia
 di interi che indicano l'intervallo di tempo durante il quale $v$
 rimane nella pila dei vertici raggiunti.
 
+\subsection{Costruzione dell'albero DFS}
+Un risultato della visita in profondit\`a di un grafo non orientato $G
+= (V, E)$, parallelo alla verifica dell'esistenza di un cammino tra
+due vertici, \`e la costruzione di un albero ricoprente di $G$. Per
+\emph{albero ricoprente}, o \emph{albero DFS}, si intende un
+sotto grafo $T$ di $G$ tale che $T = (V, E')$, con $E' \subseteq E$, e
+che $T$ sia un albero.
+
+\`E possibile costruire l'insieme $E'$ aggiungendo gli archi $(v, w)
+\in E$ tali che $visitato[w] = falso$ quando la visita \`e a regime.
+
+Vedremo nel Capitolo \ref{chapter:study} come la costruzione di tali
+alberi verr\`a raggiunta da una specifica funzionalit\`a del nostro
+progetto.
+
 \section{Ricerca delle componenti fortemente connesse}
 
 In questa sezione faremo una panoramica degli algoritmi pi\`u
@@ -212,11 +227,11 @@ caratterizza.
 
 \subsection{Kosaraju: componenti pozzo e inversione del grafo}
 \label{subsection:kosaraju-algorithm}
-Questa idea non introduce nessuna modifica allo schema che abbiamo
+Quest'idea non introduce nessuna modifica allo schema che abbiamo
 visto, bens\`i utilizza la procedura \emph{DFS} due volte su grafi in
 input differenti.
 
-Un'osservazione che possiamo fare sulla procedura \emph{visita},
+Un'osservazione che possiamo fare sulla procedura $visita$,
 invocata sul vertice $u$, \`e che questa termina quando tutti i
 vertici raggiungibili da $u$ sono stati esplorati. Questo ci permette
 di ragionare come segue:
@@ -226,7 +241,7 @@ di ragionare come segue:
   pozzo (ovvero che non abbia archi uscenti nel \emph{meta grafo} che
   ha come vertici le componenti fortemente connesse di cui stiamo
   ipotizzando l'esistenza). Se $v \in C_{i}$ allora $C_{i} =
-  visita(v)$ (per comodit\`a supponiamo che \emph{visita} ritorni
+  visita(v)$ (per comodit\`a supponiamo che $visita$ ritorni
   l'insieme di vertici raggiungibili da $v$).
 \end{quotation}
 
@@ -235,13 +250,13 @@ componente fortemente connessa, non sappiamo per\`o come trovare n\'e il
 vertice $v$ n\'e le altre componenti.
 
 Prima di continuare implementiamo le due funzioni $previsita$ e
-$postvisita$ in modo da associare ad ogni vertice il momento in
-cui viene raggiunto e il momento in cui il suo vicinato viene
-completamente visitato. Di questi due istanti siamo interessati al
-secondo che chiamiamo \emph{post}.
+$postvisita$ in modo da associare ad ogni vertice, rispettivamente il
+momento in cui viene raggiunto e il momento in cui il suo vicinato
+viene completamente visitato. Di questi due momenti siamo interessati
+al secondo che chiamiamo \emph{post}.
 
-Adesso che abbiamo definito la coppia di istanti possiamo osservare
-che: 
+Adesso che abbiamo definito la coppia di momenti possiamo osservare
+che:
 \begin{quotation}
   il vertice con associato il pi\`u grande valore \emph{post}
   % calcolato dall'invocazione di un \emph{visita in profondit\`a},
@@ -250,7 +265,7 @@ che:
 
 \`E facile individuare tali vertici, in quanto sono i vertici per i
 quali la procedura \emph{DFS} invoca la procedura
-\emph{visita}. Per\`o questo non \`e sufficiente per usare la
+$visita$. Per\`o questo non \`e sufficiente per usare la
 precedente osservazione, in quanto quello che si richiede \`e un
 vertice che appartenga ad una componente fortemente connessa pozzo.
 
@@ -260,9 +275,9 @@ E\}$.
 
 Notiamo che le componenti fortemente connesse non cambiano la loro
 composizione in $G^{R}$. Sia $C_{i}$ una di queste: per definizione di
-componente fortemente connessa, per ogni coppia di vertici $(v_{1},
-v_{2})$ esiste un cammino $c_{1} = v_{1}\rightarrow^{*} v_{2}$ ed un
-camino $c_{2} = v_{2}\rightarrow^{*} v_{1}$. Invertendo la direzione
+componente fortemente connessa, per ogni coppia di vertici $v_{1},
+v_{2}$ esiste un cammino $c_{1} = v_{1}\rightarrow^{*} v_{2}$ ed un
+cammino $c_{2} = v_{2}\rightarrow^{*} v_{1}$. Invertendo la direzione
 degli archi, i due cammini continuano ad esistere ($c_{1}$ gioca il
 ruolo di $c_{2}$ e viceversa) e quindi la relazione di connessione
 forte \`e chiusa rispetto alla operazione $\cdot ^{R}$. Il vantaggio
@@ -280,28 +295,28 @@ $G$, scansionando i vertici in ordine decrescente di
 \emph{post}. Cos\`i facendo, per la prima osservazione in quota,
 identificheremo le componenti fortemente connesse.
 %  I vertici visitati durante ogni invocazione della
-% procedura \emph{visita} eseguita dalla procedura \emph{DFS} \`e una
+% procedura $visita$ eseguita dalla procedura \emph{DFS} \`e una
 % componente fortemente connessa del grafo $G$.
 
 Questo algoritmo lavora in tempo lineare, richiedendo circa il doppio
 del tempo richiesto dalla visita in profondit\`a.
 
-\subsection{Tarjan: una pila e la funzione \emph{lowlink}}
+\subsection{Tarjan: una pila e la funzione $lowlink$}
 \label{subsection:tarjan-algorithm}
 La caratteristica di questo algoritmo \`e quella di modificare lo
 schema di una visita in profondit\`a, implementando i due punti di
 estensione ed aggiungendo della logica sia dopo aver terminato
-l'invocazione ricorsiva su ogni vertice del vicinato non ancora
-raggiunto, sia nel caso si incontrino vertici gi\`a visitati.
+l'invocazione ricorsiva su ogni vertice non ancora raggiunto del
+vicinato, sia nel caso si incontrino vertici gi\`a visitati.
 
 Gli strumenti utilizzati da questa variante sono:
 \begin{description}
-\item[funzione numero] associa ad ogni vertice $v$ un intero che
-  rappresenta l'istante in cui $v$ viene esplorato oppure, da un altro
+\item[funzione $numero$] ad ogni vertice $v$ associa un intero che
+  rappresenta il momento in cui $v$ viene visitato oppure, da un altro
   punto di vista, quanti vertici sono gi\`a stati visitati prima di
   $v$;
-\item[funzione lowlink] associa ad ogni vertice $w$ un vertice $v$ suo
-  antenato, tale che:
+\item[funzione $lowlink$] ad ogni vertice $w$ associa un vertice $v$
+  antenato di $w$, tale che:
   \begin{displaymath}
     numero(v) = \min_{a \in antenati(w)}\{numero(a)\}
 \end{displaymath}
@@ -310,8 +325,8 @@ Gli strumenti utilizzati da questa variante sono:
   componente fortemente connessa.
 \end{description}
 
-Inoltre Tarjan classifica gli archi del grafo in input dopo aver
-applicato una visita in profondit\`a in questo modo:
+Inoltre Tarjan classifica gli archi dopo aver applicato una visita in
+profondit\`a in questo modo:
 \begin{description}
 \item[archi dell'albero DFS] sono tutti gli archi che hanno permesso
   di raggiungere un vertice non ancora visitato e vengono indicati con
@@ -329,38 +344,37 @@ applicato una visita in profondit\`a in questo modo:
 \end{description}
 Un'osservazione da fare riguardo agli archi trasversali \`e la
 seguente: se $e = (v, w) \in E$ \`e un arco trasversale allora
-$numero(w) < numero(v)$. Graficamente parlando, $e$ ha un'unica
-direzione: da destra verso sinistra. Motivare questo non \`e
-difficile: supponiamo per assurdo che $e$ abbia direzione opposta,
-allora, durante una visita, o verrebbe inserito in un albero
-\emph{DFS} (e quindi sarebbe un arco del primo tipo, una
-contraddizione) oppure raggiungerebbe un vertice gi\`a visitato (e
-quindi sarebbe un arco in avanti o all'indietro, un'altra
-contraddizione).
+$numero(w) < numero(v)$ ovvero, graficamente parlando, $e$ \`e
+orientato da destra verso sinistra. Motivare questo non \`e difficile:
+supponiamo per assurdo che $e$ non abbia questa direzione, allora
+durante una visita, o verrebbe inserito in un albero \emph{DFS} (e
+quindi sarebbe un arco del primo tipo, una contraddizione) oppure
+raggiungerebbe un vertice gi\`a visitato (e quindi sarebbe un arco in
+avanti o all'indietro, un'altra contraddizione).
 
 Vediamo adesso le idee principali alla base dell'algoritmo. La prima
 di queste \`e la seguente:
 \begin{quotation}
   Sia $C$ una componente fortemente connessa e siano $v, w$ due
-  vertici tali che $v, w \in C$. Sia $F$ l'insieme di alberi
+  vertici tali che $v, w \in C$. Sia $F$ la foresta di alberi
   \emph{DFS} generati dall'esecuzione di una visita in
   profondit\`a. Allora $v, w$ hanno un antenato comune nella foresta
   $F$. Inoltre, sia $u$ un antenato comune di $v, w$ tale che:
   \begin{displaymath}
-    numero(u) = \min_{a \in (antenati(v)\cap antenati(w))}{numero(a)}
+    numero(u) = \min_{a \in (antenati(v)\cap antenati(w))}\lbrace numero(a)\rbrace
   \end{displaymath}
   allora $u \in C$.
 \end{quotation}
 Per far vedere la precedente osservazione supponiamo che durante una
 visita in profondit\`a il vertice $v$ sia visitato prima di $w$
 ($numero(v) < numero(w)$) e, dato che $v,w$ appartengono alla stessa
-componente fortemente connessa, esiste un cammino chiuso $\pi = v
-\rightarrow^{*} v$ che contiene $w$. 
+componente fortemente connessa, esista un cammino chiuso $\pi = v
+\rightarrow^{*} v$ che contiene $w$.
 
 Chiamiamo $T_{u}$ il pi\`u piccolo albero che ha come radice $u$ e che
 contiene tutti i vertici attraversati dal cammino $\pi$. Il sotto
-albero $T_{u}$ esiste in quanto il cammino $\pi$ pu\`o attraversare
-due alberi $T_{m}, T_{M}$ della foresta $F$ se:
+albero $T_{u}$ esiste in quanto il cammino $\pi$ pu\`o passare da un
+albero $T_{M}$ ad un albero $T_{m}$ della foresta $F$ se:
 \begin{displaymath}
   \max_{r \in T_{m}}\{numero(r)\} < \min_{s \in T_{M}}\{numero(s)\}
 \end{displaymath}
@@ -385,15 +399,15 @@ identificare le componenti fortemente connesse:
   \emph{DFS}. Inoltre la radice del sotto albero viene chiamata
   \emph{testa} della componente fortemente connessa $C$.
 \end{quotation}
-la precedente idea riduce il problema di individuare le componenti
+La precedente idea riduce il problema di individuare le componenti
 fortemente connesse al problema di identificare i vertici
 \emph{radice} di sotto alberi della foresta. Tarjan propone il
-seguente criterio per individuare tali vertici:
+seguente criterio per individuare i vertici radice:
 \begin{quotation}
-  un vertice $v$ \`e \emph{testa} di una componente fortemente
-  connessa se e solo se $numero(v) = lowlink(v)$
+  Un vertice $v$ \`e \emph{testa} di una componente fortemente
+  connessa se e solo se $numero(v) = lowlink(v)$.
 \end{quotation}
-quanto detto in quota ha bisogno di alcune spiegazioni. La prima cosa
+Quanto detto in quota ha bisogno di alcune spiegazioni. La prima cosa
 che dobbiamo definire \`e come calcolare $lowlink(v)$:
 \begin{displaymath}
   \begin{split}
@@ -432,22 +446,21 @@ Anche questa variante personalizza lo schema classico della visita in
 profondit\`a, utilizzando gli stessi punti di estensione della
 versione descritta nella Sezione \ref{subsection:tarjan-algorithm}.
 \\\\
-Il metodo che descriviamo in questa sezione classifica i vertici in
-due insiemi:
+Il metodo che descriviamo classifica i vertici in due insiemi:
 \begin{description}
-\item[completi] sono tutti i vertici completamente esplorati ed
+\item[completi] sono tutti i vertici completamente visitati ed
   assegnati ad una componente fortemente connessa;
 \item[parziali] sono tutti i vertici appartenenti ad un cammino
   relativo ad una esecuzione della visita, di cui alcuni possono
-  essere completamente esplorati, ma ancora non associati a nessuna
-  componente fortemente connessa.
+  essere gi\`a visitati, ma non ancora associati ad una componente
+  fortemente connessa.
 \end{description}
-In base a questa classificazione, possiamo indurne una anche sulle
+In base a questa classificazione, possiamo indurne una sulle
 componenti fortemente connesse, avendo rispettivamente delle
 componenti \emph{complete}, \emph{parziali} oppure
 \emph{ignote}. Questa classificazione viene mantenuta in modo
 esplicito usando un vettore che associa ad ogni vertice un valore
-booleano. 
+booleano.
 
 Lo stesso concetto esiste nella versione di Tarjan, codificato come
 segue: se $lowlink(v) < numero(v) \wedge v \in Pila$ allora $v$ \`e
@@ -458,13 +471,14 @@ Un altro concetto in comune con la variante di Tarjan \`e quello di
 vertice $v$ si dice \emph{rappresentante} della propria componente
 fortemente connessa se \`e il primo vertice della componente
 fortemente connessa ad esser stato visitato. Il lettore noter\`a
-subito che \`e possibile mappare questo concetto a quello di
-\emph{testa} di una componente fortemente connessa utilizzato nella
-variante di Tarjan. Un'altra osservazione \`e necessaria:
+subito che \`e possibile mappare questo concetto su quello di
+\emph{testa} utilizzato nella variante di Tarjan. Un'altra
+osservazione \`e necessaria:
 \begin{quotation}
-  quando una componente fortemente connessa diviene \emph{completa},
-  tutti i vertici in essa contenuti sono a loro volta \emph{completi}
-  e i vertici che sono dei \emph{rappresentanti} perdono tale ruolo.
+  Quando una componente fortemente connessa diviene \emph{completa},
+  tutti i vertici in essa contenuti divengono a loro volta
+  \emph{completi} e i vertici che sono dei \emph{rappresentanti}
+  perdono tale ruolo.
 \end{quotation}
 Questo implica che se un vertice ha il ruolo di rappresentante allora
 appartiene ad una componente parziale.
@@ -479,31 +493,31 @@ La variante di Crescenzi-Gambosi-Grossi, a regime, mantiene due pile:
 una per mantenere l'insieme dei vertici parziali, una per mantenere
 l'insieme dei vertici rappresentanti. Tutti i vertici che appartengo
 alla stessa componente fortemente connessa occupano posizioni contigue
-nella relativa pila dei parziali, mentre il primo di essi sar\`a
-inserito anche nella pila dei rappresentanti e vi rester\`a finch\`e
-la componente fortemente connessa non viene creata.
+nella pila dei parziali, mentre il primo di essi sar\`a inserito anche
+nella pila dei rappresentanti e vi rester\`a finch\`e la componente
+fortemente connessa non verr\`a creata.
 
 L'algoritmo che implementa questa variante procede seguendo la
 seguente idea:
 \begin{quotation}
-  ogni volta che un nuovo vertice $v$ viene raggiunto, si inserisce
+  Ogni volta che un nuovo vertice $v$ viene raggiunto, si inserisce
   $v$ nelle due pile ed invochiamo ricorsivamente la procedura per
   ogni vertice vicino di $v$. Se invece $v$ \`e gi\`a stato visitato,
   si estrae dalla pila dei rappresentati finch\`e in testa non appare
   un vertice $w$ tale che $numero(w) \leq numero(v)$.
 \end{quotation}
-Inizialmente ogni nuovo vertice che viene esplorato viene inserito in
-entrambe le pile in quanto potrebbe essere il rappresentante di una
-nuova componente fortemente connessa.
+Inizialmente ogni nuovo vertice raggiunto viene inserito in entrambe
+le pile in quanto potrebbe essere il rappresentante di una nuova
+componente fortemente connessa.
 
 Commentiamo brevemente quando si debbono estrarre i vertici dalla pila
 dei rappresentanti: se, scandendo il vicinato, esiste un vertice $w$
-gi\`a visitato ma non completo, significa che l'arco attraversato
-comporta un ciclo e, quindi, si possono rimuovere dalla pila dei
-rappresentanti tutti i vertici che sono sopra $w$. Se invece $w$ fosse
-completo allora appartiene gi\`a ad una componente fortemente
-connessa, e l'arco attraversato \`e un arco trasversale, come chiamato
-nella variante di Tarjan.
+gi\`a visitato ma non completo, significa che l'arco attraversato per
+arrivare in $w$ comporta un ciclo e, quindi, si possono rimuovere
+dalla pila dei rappresentanti tutti i vertici che sono sopra $w$. Se
+invece $w$ fosse completo allora appartiene gi\`a ad una componente
+fortemente connessa, e l'arco attraversato \`e un arco trasversale,
+come chiamato nella variante di Tarjan.
 
 Infine, come nella variante di Tarjan, si costruisce una componente
 fortemente connessa quando un vertice, dopo aver completato la visita
