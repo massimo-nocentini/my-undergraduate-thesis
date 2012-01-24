@@ -7,7 +7,7 @@ realizzazione.
 
 Inoltre, come il lettore capir\`a dalle prossime righe, ogni
 funzionalit\`a pu\`o essere messa in corrispondenza con il concetto di
-filtro. Questa associazione porter\`a alla naturale astrazione che
+filtro. Quest'associazione porter\`a alla naturale astrazione che
 costituir\`a l'architettura della nostra libreria.
 
 \subsection{Costruzione del grafo a partire da una codifica SBML}
@@ -31,7 +31,7 @@ Con questa funzionalit\`a si vuole costruire un documento
 interpretabile dai motori di renderizzazione offerti dalla libreria
 \emph{graphviz}, rappresentando i nodi sorgenti e nodi pozzi con un
 cerchio completamente riempito (\emph{nodi neri}), mentre i nodi che
-non sono n\'e sorgente n\'e pozzi con un cerchio vuoto (\emph{nodi
+non sono n\'e sorgenti n\'e pozzi con un cerchio vuoto (\emph{nodi
   bianchi}).
 \begin{figure}
   \centering
@@ -216,7 +216,7 @@ $s$ componenti sorgenti, $d$ componenti pozzo e $w$ componenti
 intermedie.
 
 Come abbiamo detto ad inizio sezione, questa funzionalit\`a non
-trasforma il grafo in input, anzi \`e ortogonale ed una intera
+trasforma il grafo in input, anzi \`e ortogonale ad un'intera
 composizione di funzionalit\`a in quanto, elencando i dati raccolti
 per ogni specifico \emph{phase-identifier}, non ha dipendenze da
 ognuna di esse.
@@ -269,11 +269,12 @@ appare.
   \centering
   \includegraphics[scale=.5,
   angle=90]{images/ResultViewer-execution.eps}
-  \caption{Result Viewer for strongly connected components}
+  \caption{Visualizzatore dell'indagine relativa ad un insieme di
+    modelli}
   \label{fig:result-viewer-scc}
 \end{figure}
 La Figura \ref{fig:result-viewer-scc} riporta uno screenshot, diamo
-adesso la semantica alle informazioni rappresentate nella maschera.
+adesso la semantica delle informazioni rappresentate nella maschera.
 
 Il frame contiene i seguenti componenti, che andiamo a descrivere
 seguendo l'ordine da sinistra verso destra e dall'alto verso il basso:
@@ -341,8 +342,8 @@ raffinata la selezione nella tabella dei modelli.
 \subsection{Analizzare un grafo non associato ad un modello SBML}
 Nelle precedenti sezioni abbiamo sempre assunto di lavorare su un
 modello metabolico, ma niente ci vieta di poter utilizzare la libreria
-su un grafo che costruiamo direttamente utilizzando oggetti del nostro
-modello dati.
+su un grafo arbitrario che costruiamo direttamente utilizzando oggetti
+del nostro modello dati.
 
 Questo rende la libreria non strettamente legata ai concetti nel campo
 della biologia e, in particolare, delle reti metaboliche, restando

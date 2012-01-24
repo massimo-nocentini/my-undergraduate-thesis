@@ -430,8 +430,8 @@ due insiemi:
   assegnati ad una componente fortemente connessa;
 \item[parziali] sono tutti i vertici appartenenti ad un cammino
   relativo ad una esecuzione della visita, di cui alcuni possono
-  essere completamente esplorati, ma che ancora non sono stati
-  associati a nessuna componente fortemente connessa.
+  essere completamente esplorati, ma ancora non associati a nessuna
+  componente fortemente connessa.
 \end{description}
 In base a questa classificazione, possiamo indurne una anche sulle
 componenti fortemente connesse, avendo rispettivamente delle
@@ -449,11 +449,9 @@ Un altro concetto in comune con la variante di Tarjan \`e quello di
 vertice $v$ si dice \emph{rappresentante} della propria componente
 fortemente connessa se \`e il primo vertice della componente
 fortemente connessa ad esser stato visitato. Il lettore noter\`a
-subito che \`e possibile mappare questo concetto al concetto di
+subito che \`e possibile mappare questo concetto a quello di
 \emph{testa} di una componente fortemente connessa utilizzato nella
-variante di Tarjan.
-
-Un'osservazione \`e necessaria sul concetto di rappresentante:
+variante di Tarjan. Un'altra osservazione \`e necessaria:
 \begin{quotation}
   quando una componente fortemente connessa diviene \emph{completa},
   tutti i vertici in essa contenuti sono a loro volta \emph{completi}
@@ -473,8 +471,8 @@ una per mantenere l'insieme dei vertici parziali, una per mantenere
 l'insieme dei vertici rappresentanti. Tutti i vertici che appartengo
 alla stessa componente fortemente connessa occupano posizioni contigue
 nella relativa pila dei parziali, mentre il primo di essi sar\`a
-inserito anche nella pila dei rappresentanti finch\`e la componente
-fortemente connessa non viene creata.
+inserito anche nella pila dei rappresentanti e vi rester\`a finch\`e
+la componente fortemente connessa non viene creata.
 
 L'algoritmo che implementa questa variante procede seguendo la
 seguente idea:
@@ -490,24 +488,19 @@ entrambe le pile in quanto potrebbe essere il rappresentante di una
 nuova componente fortemente connessa.
 
 Commentiamo brevemente quando si debbono estrarre i vertici dalla pila
-dei rappresentanti. Se, scandendo il vicinato, esiste un vertice $w$
-gi\`a visitato ma non \`e completo, significa che l'arco attraversato
+dei rappresentanti: se, scandendo il vicinato, esiste un vertice $w$
+gi\`a visitato ma non completo, significa che l'arco attraversato
 comporta un ciclo e, quindi, si possono rimuovere dalla pila dei
-rappresentanti tutti i vertici che sono sopra $w$ nella stessa pila in
-quanto non possono essere dei rappresentanti. Se invece $w$ fosse
+rappresentanti tutti i vertici che sono sopra $w$. Se invece $w$ fosse
 completo allora appartiene gi\`a ad una componente fortemente
 connessa, e l'arco attraversato \`e un arco trasversale, come chiamato
 nella variante di Tarjan.
-
-Affinch\`e un vertice $v$ rimanga nella pila dei rappresentanti
-finch\`e non viene creata la componente fortemente connessa che lo
-conterr\`a, $v$ non deve avere archi all'indietro o archi trasversali.
 
 Infine, come nella variante di Tarjan, si costruisce una componente
 fortemente connessa quando un vertice, dopo aver completato la visita
 del suo vicinato, si trova in testa nella pila dei rappresentanti. La
 nuova componente fortemente connessa sar\`a composta da tutti i
-vertici contenuti nello pila dei parziali, contenuti tra la cima della
+vertici contenuti nella pila dei parziali, contenuti tra la cima della
 pila e la posizione del rappresentante compresa. Ognuno di loro viene
 marcato come completo e si continua l'eventuale computazione.
 \\\\
