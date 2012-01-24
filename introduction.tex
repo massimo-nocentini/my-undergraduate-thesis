@@ -223,7 +223,9 @@ aggiungendo il vincolo che solo un determinato sottoinsieme
 $\mathbb{B}$ di vertici possono avere il ruolo di sorgente o di pozzo
 nei \emph{DAG} enumerati. Ogni \emph{DAG} che soddisfa tale condizione
 \`e chiamato \emph{storia} e si vuole ``raccontare'' tutte le
-possibili storie dato un grafo orientato e l'insieme $\mathbb{B}$.
+possibili storie dato un grafo orientato e l'insieme
+$\mathbb{B}$. Ricordiamo che un \emph{DAG} \`e un grafo orientato che
+non contiene cicli.
 
 \section{Nostri obiettivi}
 Il concetto catturato dall'insieme $\mathbb{B}$, introdotto nella
@@ -232,14 +234,14 @@ precedente sezione, \`e quello di definire il ruolo che alcuni vertici
 $v$ avr\`a il ruolo di \emph{sorgente} o \emph{pozzo}, altrimenti il
 ruolo di \emph{intermedio}).
 
-Attualmente l'insieme $\mathbb{B}$, viene costruito in base a delle
-osservazioni e studi \emph{empirici}, costituito dall'insieme di
-metaboliti che hanno particolari propriet\`a in determinate
+Attualmente l'insieme $\mathbb{B}$ viene costruito in base a
+osservazioni e studi \emph{empirici}, ed \`e costituito dall'insieme
+di metaboliti che hanno particolari propriet\`a in determinate
 condizioni.  Ci chiediamo se \`e possibile identificare l'insieme
 $\mathbb{B}$ in modo automatico per analizzare la rete metabolica
 utilizzando gli algoritmi esposti in \cite{tellingStories}.
 \\\\
-Per rispondere a tale domanda abbiamo l'idea di analizzare la
+Per rispondere a tale domanda abbiamo deciso di analizzare la
 connettivit\`a del grafo in input, ricercando le sue componenti
 fortemente connesse. Questa idea si basa sulle seguenti motivazioni:
 \begin{itemize}
@@ -297,11 +299,7 @@ In questa sezione elenchiamo i capitoli in cui questo documento \`e
 suddiviso e, per ognuno di essi, daremo una breve descrizione del
 contenuto.
 
-Il Capitolo \ref{chapter:introduction} contiene una introduzione al
-lavoro svolto. Vengono introdotti i concetti chiave del problema, il
-linguaggio di codifica delle informazioni \emph{SBML}, come usarlo per
-modellare le reti metaboliche, riferiremo alcuni lavori esistenti e
-descriveremo i nostri obiettivi.
+Questo capitolo contiene un'introduzione al lavoro svolto.
 
 Il Capitolo \ref{chapter:theoretical-background} modella da un punto
 di vista teorico i concetti e gli algoritmi alla base delle
