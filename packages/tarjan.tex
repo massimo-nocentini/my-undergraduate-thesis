@@ -1,51 +1,33 @@
-\subsection{Tarjan package}
+\subsection{Pacchetto Tarjan}
+Questo pacchetto non contiene molte astrazioni limitandosi a definire un
+contratto fondamentale per implementare la visita \emph{DFS} e
+l'algoritmo per la ricerca di componenti fortemente connesse.
 
-In questa sezione descriveremo il package \textbf{tarjan}.
-
-Questo package non contiene molte astrazioni ma si limita a definire
-un contratto fondamentale per implementare la visita \emph{DFS} e
-l'algoritmo di Tarjan.
-
-\subsubsection*{Supplied Abstractions}
-
-Le astrazioni fornite da questo package sono le seguenti:
+\subsubsection*{Funzionalit\`a implementate}
+Le funzionalit\`a fornite da questo pacchetto sono le seguenti:
 \begin{itemize}
 \item definire il contratto nel quale vengono stabiliti gli eventi
-  salienti che avvengono durante la visita \emph{DFS} del
+  salienti che avvengono durante la visita in profondit\`a del
   grafo. Questi eventi vengono codificati come messaggi che possono
-  essere inviati ad un implementatore del contratto, in modo da
-  notificare che la ricerca si trova in un determinato stato. Questo
-  permette non solo di codificare la visita, bensi adattarne il
-  comportamento secondo le proprie esigenze e creare delle varianti
-  della stessa (come in realt\`a lo \`e lo stesso algoritmo di
-  Tarjan).
+  essere inviati ad un implementatore del contratto, notificando lo
+  stato in cui si trova la visita. Questo permette di introdurre i
+  punti di estensione come descritto nella Sezione
+  \ref{subsection:dfs-extension-point};
 \item fornire due implementatori del contratto descritto nel punto
-  precedente, uno che permette di costruire un grafo (o, per esser
-  pi\`u precisi, un albero) che rappresenta la visita \emph{DFS},
-  costituito dal sottoinsieme di archi visitati; l'altro costruisce un
-  grafo che \`e la minimizzazione di un grafo iniziale al quale si
-  applica l'algoritmo di Tarjan. I nodi del grafo risultate sono le
-  componenti fortemente connesse identificate dall'algoritmo.
+  precedente: uno per costruire un albero \emph{DFS}, l'altro per
+  costruire il meta grafo ottenuto ricercando le componenti fortemente
+  connesse.
 \end{itemize}
 
-\subsubsection*{Class diagram}
-Il diagramma rappresentato in figura \ref{fig:tarjan-package-classes}
-rappresenta i concetti implementati in questo package. Procediamo con
-ordine nel descrivere le idee principali catturate da ogni classe:
-
-\begin{figure}
-  \centering
-  % \includegraphics{packages/vertex-interface-class-diagram.eps} 
-  \caption{Tarjan package's classes}
-  \label{fig:tarjan-package-classes}
-\end{figure}
+\subsubsection*{Classi}
+Procediamo con ordine nel descrivere le idee principali catturate
+dalle seguenti classi:
 
 \begin{paragraph}{DfsEventsListener}
-Questo contratto permette di astrarre gli stati che si possono
-incontrare durante una visita \emph{DFS} in modo da permettere non
-solo l'implementazione della visita stessa, bensi anche di sue
-varianti. Riporto sotto la sua definizione direttamente dal relativo
-file sorgente:
+  Questo contratto definisce gli stati, in cui la visita in
+  profondit\`a pu\`o entrare, necessari alle nostre
+  implementazioni. Riporto sotto la sua definizione direttamente dal
+  relativo file sorgente:
 
 \begin{lstlisting}
 package tarjan; 
@@ -61,12 +43,12 @@ public interface DfsEventsListener {
   void alreadyKnownVertex(Vertex vertex);
   }
 \end{lstlisting}
-Il motore che utilizza questa interfaccia \`e la classe
-\emph{OurModel}. Aver definito questo contratto ci ha permesso di dare
-una implementazione molto object-oriented, che differisce nello stile
-rispetto ad una implementazione pi\`u comune in un linguaggio
-procedurale. Credo sia interessante vederla, per cui mi dilungher\`o
-in questi paragrafi nella sua descrizione. L'\emph{entry-point} della
+Il motore che utilizza quest'interfaccia \`e la classe
+\emph{OurModel}. Con la definizione di questo contratto possiamo
+implementare la visita in profondit\`a in stile orientato agli
+oggetti, allontanandosi da una pi\`u comune implementazione
+procedurale. Crediamo sia interessante vederla, per cui ci
+dilungheremo in questi paragrafi nella sua descrizione. L'inizio della
 computazione \`e il seguente metodo definito nella classe
 \emph{OurModel}:
 \begin{lstlisting}
@@ -88,18 +70,15 @@ computazione \`e il seguente metodo definito nella classe
     return this;
   }
 \end{lstlisting}
-Questo metodo incapsula l'algoritmo della ricerca \emph{DFS}, usando
-il listener passato come argomento, per notificare cosa st\`a
-accadendo durante la ricerca. Come si nota, mancano alcuni pezzi per
-avere una \emph{DFS} corretta: questi sono stati incapsulati nella
-classe \emph{ExploreStateWrapperVertex} per avere un sistema pi\`u
-object-oriented, rispetto a codificare tutto nel metodo sopra
-riportato. La responsabilit\`a di questa nuova classe \`e quella di
-associare ad ogni vertice l'informazione se questo \`e gia stato
-visitato oppure no durante la visita. Inoltre, possiamo chiedere ad
-oggetti istanze di questa classe, di esplorare il loro vicinato se non
-sono gia stati esplorati, inviando il messaggio \emph{ifNotExplored}
-che riporto:
+Come si nota, mancano alcuni pezzi per una visita corretta,
+incapsulati nella classe \emph{ExploreStateWrapperVertex}. Abbiamo
+preso questa decisione per avere un sistema pi\`u modulare, rispetto a
+codificare tutto in un unico metodo. La responsabilit\`a di
+quest'ultima classe \`e di associare ad ogni vertice l'informazione se
+questo \`e stato visitato oppure no durante la visita: in base a
+quest'informazione possiamo ``chiedere'' ai vertici non ancora
+visitati di esplorare il loro vicinato, inviando il messaggio
+\emph{ifNotExplored} che riportiamo:
 \begin{lstlisting}
 public class ExploredStateWrapperVertex...
   public ExploreStatedWrapperVertex ifNotExplored(
@@ -130,35 +109,30 @@ public class ExploredStateWrapperVertex...
 }
 \end{lstlisting}
 Questo \`e il blocco mancante nel metodo precedente e che
-effettivamente caratterizza la ricerca \emph{DFS} (linea 19). Nel
-metodo sopra riportato inoltre si nota che \`e stato molto semplice
-implementare questa parte, in quanto, data la natura ricorsiva
-dell'implementazione, non dobbiamo far altro che invocare lo stesso
-metodo su tutti i vertici del vicinato. Sar\`a il loro stato che
-propagher\`a ancora il messaggio al rispettivo vicinato oppure, nel
-caso il vertice sia gi\`a stato visitato, verr\`a segnalato al
-listener questo evento inviando il messaggio
-\emph{alreadyKnownVertex}. Una ultima osservazione deve essere fatta
-riguardo agli eventi notificati: i listener concreti non per forza
-devono definire della logica per ogni evento, in quanto ognuno di
-questi viene creato per implementare una specifica variante e non
-necessariamente ogni evento \`e richiesto per terminare quanto
-desiderato.
+effettivamente caratterizza la visita in profondit\`a. Nel metodo
+sopra riportato si nota che \`e stato semplice implementare questa
+parte in quanto, data la natura ricorsiva della struttura, non
+dobbiamo far altro che invocare lo stesso metodo su tutti i vertici
+del vicinato. Sar\`a in base al loro stato che l'invocazione si
+propagher\`a ai rispettivi vicinati. 
+
+Facciamo un'ultima osservazione riguardo agli eventi notificati: i
+listener concreti non per forza devono definire della logica per ogni
+evento, in quanto ognuno di questi viene creato per implementare una
+specifica variante e non necessariamente ogni evento \`e richiesto per
+raggiungere quanto desiderato.
 \end{paragraph}
 
 \begin{paragraph}{DfsEventsListenerTreeBuilder}
-  Questo listener permette di associare ad ogni vertice delle
-  informazioni per costruire l'albero \emph{DFS} che rappresenta la
-  ricerca. In particolare si mantiene una coppia di istanti $(t_{in},
-  t_{out})$ dove $t_{in}$ rappresenta l'istante in cui il vertice
-  viene esplorato, $t_{out}$ rappresenta l'istante in cui si \`e
-  finito di esplorare il rispettivo vicinato e la chiamata ricorsiva
-  termina per tale vertice.
+  Questo listener associa ad ogni vertice delle informazioni
+  necessarie per la costruzione dell'albero \emph{DFS}. In particolare
+  si mantiene una coppia di istanti $(t_{in}, t_{out})$ dove $t_{in}$
+  rappresenta l'istante in cui il vertice viene raggiunto e $t_{out}$
+  l'istante in cui si \`e finito di visitare il rispettivo vicinato.
 
   Inoltre, nella gestione dell'evento \emph{newVertexExplored}, si
   costruisce la nuova relazione di vicinato, includendo solo quegli
-  archi che hanno portato all'esporazione di nuovi vertici e che
-  caratterizzano l'albero \emph{DFS} risultante.
+  archi che hanno raggiunto vertici non ancora visitati.
 
   Riprendendo l'osservazione fatta al termine del paragrafo
   precedente, questo listener non ha bisogno di definire nessuna
@@ -166,18 +140,17 @@ desiderato.
 \end{paragraph}
 
 \begin{paragraph}{TarjanEventsListenerTreeBuilder}
-  Questo listener implementa l'algoritmo di Tarjan e codifica il
-  comportamento per produrre un grafo i cui nodi sono le componenti
-  fortemente connesse che si possono individuare nel grafo di
-  input. 
+  Questo listener implementa l'algoritmo per la ricerca delle
+  componenti fortemente connesse.
 
   Questo grafo contiene come vertici degli oggetti che hanno
-  comportamento specifico relativo alle componenti connesse, per cui,
+  comportamento specifico relativo alle componenti connesse per cui,
   nelle successive computazioni, sar\`a possibile usare il grafo in
-  modo astratto, inviando messaggi polimorfi che produrranno il
+  modo trasparente, inviando messaggi polimorfi che produrranno il
   comportamento desiderato (ad esempio la rappresentazione
-  dell'etichetta nel documento grafico sar\`a diversa rispetto a
-  quella che si pu\`o ottenere dopo una visita \emph{DFS}).
+  dell'etichetta nella rappresentazione grafica sar\`a diversa
+  rispetto a quella che si pu\`o ottenere dopo una visita in
+  profondit\`a).
 \end{paragraph}
 
 
