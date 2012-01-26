@@ -17,7 +17,7 @@ Le funzionalit\`a fornite da questo pacchetto sono le seguenti:
   vogliamo invece usare un approccio trasparente per mantenere
   flessibile il sistema. Le specializzazioni del concetto di vertice
   che abbiamo implementato sono quelle di vertice semplice, di vertice
-  da usare nella ricerca in profondit\`a e negli algoritmi per la
+  da usare nella visita in profondit\`a e negli algoritmi per la
   ricerca delle componenti fortemente connesse. Per la creazione di
   questi oggetti si utilizzano degli oggetti \emph{factory} (vedi
   relativo pattern in \cite{SmalltalkCompanion98});
@@ -25,7 +25,7 @@ Le funzionalit\`a fornite da questo pacchetto sono le seguenti:
   comportamenti per poterne modificare la struttura ed eseguire delle
   computazioni su di esso: \`e possibile usare due idee prese dal
   paradigma funzionale per agire sui vertici del grafo ed \`e fornita
-  una implementazione della ricerca in profondit\`a che espone i punti
+  una implementazione della visita in profondit\`a che espone i punti
   di estensione come esposto nella Sezione
   \ref{subsection:dfs-extension-point};
 \item interfacciare le astrazioni di vertice e grafo con gli oggetti
@@ -62,8 +62,8 @@ ogni contratto:
   un esportatore per costruire un documento in formato \emph{dot}.
 
   \`E possibile richiedere anche delle informazioni di carattere
-  testuale dalle quali si pu\`o capire meglio la struttura del grafo
-  rappresentandole in una tabella.
+  testuale rappresentandole in una tabella, dalle quali si pu\`o
+  capire meglio la struttura del grafo.
 
   Una propriet\`a che questo contratto richiede \`e quella di
   riscrivere i metodi \emph{equals} e \emph{hashCode} in modo che
@@ -92,18 +92,18 @@ ogni contratto:
 
   La prima responsabilit\`a di \emph{OurModel} \`e costruire il
   modello in diverse modalit\`a: a partire da un insieme di vertici
-  gi\`a costruiti (e, quindi, con le relazioni di vicinato gi\`a
-  fissate) oppure a partire da un modello SBML esistente in una path
-  del file system.
+  gi\`a costruiti (quindi con le relazioni di vicinato gi\`a fissate)
+  oppure a partire da un modello SBML esistente in una path del file
+  system.
 
   La seconda \`e templetizzare l'algoritmo della visita in
   profondit\`a, introducendo dei punti di estensione sui quali \`e
-  possibile ``personalizzare'' il comportamento della ricerca ed
+  possibile ``personalizzare'' il comportamento della visita ed
   implementare delle varianti. Quelle che abbiamo implementato in
   questo lavoro sono quelle definite nel Capitolo
   \ref{chapter:theoretical-background}, ma questo non limita un
   utilizzatore della libreria di definire il proprio comportamento e
-  di usare l'implementazione della ricerca per algoritmi che non
+  di usare l'implementazione della visita per algoritmi che non
   abbiamo trattato.
 
 \end{paragraph}
@@ -113,9 +113,9 @@ ogni contratto:
   come istanze dell'astrazione definita dal contratto
   \emph{Vertex}. Il vantaggio di aver implementato il codice
   riferendosi sempre al contratto e non alle singole caratterizzazioni
-  ha il vantaggio di essere trasparente e poter interscambiare i
-  comportamenti specifici, lasciando immutato il codice che implementa
-  i vari algoritmi.
+  \`e di essere trasparente e poter interscambiare i comportamenti
+  specifici, lasciando immutato il codice che implementa i vari
+  algoritmi.
 
   Vediamo quali sono gli implementatori del contratto \emph{Vertex},
   descrivendoli brevemente.
@@ -139,27 +139,26 @@ ogni contratto:
   \emph{TarjanWrapperVertex}. Queste implementano, in modo puramente
   orientato agli oggetti, l'algoritmo per la ricerca delle componenti
   fortemente connesse. In particolare
-  \emph{ConnectedComponentWrapperVertex} cattura le responsabilit\`a
-  di rappresentare una componente fortemente connessa e di mantenere
-  l'insieme dei vertici del grafo di origine, mentre
-  \emph{TarjanWrapperVertex} cattura la responsabilit\`a di mantenere
-  la relazione di vicinato tra le componenti fortemente
-  connesse. Inoltre abbiamo introdotto l'astrazione
-  \emph{ConnectedComponentInfoRecorder} per poter sviluppare un
-  semplice programma per la visualizzazione di semplici statistiche
-  come descritto nel Capitolo \ref{chapter:study}.
+  \emph{ConnectedComponentWrapperVertex} rappresenta una componente
+  fortemente connessa e mantiene l'insieme dei vertici del grafo di
+  origine di cui \`e composta, mentre \emph{TarjanWrapperVertex}
+  cattura la responsabilit\`a di mantenere la relazione di vicinato
+  tra le componenti fortemente connesse. Inoltre abbiamo introdotto
+  l'astrazione \emph{ConnectedComponentInfoRecorder} per poter
+  sviluppare un semplice programma per la visualizzazione di semplici
+  statistiche come descritto nel Capitolo \ref{chapter:study}.
 
   L'implementazione \emph{VertexWithLabelWrapperVertex}, ortogonale
-  alle precedenti,riporta un'etichetta sopra alla rappresentazione di
+  alle precedenti, riporta un'etichetta sopra alla rappresentazione di
   un vertice nella generazione dell'output grafico. Questo
   comportamento \`e possibile utilizzarlo in modo trasparente e
-  permette di fattorizzare il codice che implementa la decorazione da
-  quello che implementa le particolari implementazioni del contratto
+  permette di fattorizzare il codice che cattura la decorazione da
+  quello che cattura le particolari implementazioni del contratto
   \emph{Vertex}.
 
   Tutte le precedenti implementazioni sono nascoste ai client del
   contratto \emph{Vertex}, utilizzando \emph{VertexFactory} come unico
-  mezzo per richiederne la creazione. Questa classe espone un metodo
-  statico per ogni implementazione che abbiamo descritto.
+  mezzo per poterle costruire, esponendo un metodo statico per ogni
+  implementazione che abbiamo descritto.
 \end{paragraph}
 

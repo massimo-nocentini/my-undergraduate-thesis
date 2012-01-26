@@ -26,7 +26,7 @@ In questo pacchetto la classe principale \`e \emph{Connector}, la
 quale incapsula la responsabilit\`a di delegare alla libreria
 \emph{JSBML} la lettura di un modello SBML e, successivamente,
 interpretare il risultato della lettura per costruire un nostro
-modello dati interno, input di successive computazioni.
+modello dati interno.
 
 La parte di interpretazione del modello letto dalla libreria
 \emph{JSBML} \`e quella pi\`u interessante in quanto elabora e
@@ -34,6 +34,6 @@ seleziona solo quelle informazioni del modello SBML che effettivamente
 sono necessarie al nostro lavoro.
 
 Questo procedimento \`e implementato principalmente nel metodo
-\emph{readReactions}, il quale permette di costruire un insieme di
-vertici a partire da una collezione di reazioni, i quali verranno
-usati per costruire il modello di dominio.
+\emph{readReactions}, il quale costruisce un insieme di vertici a
+partire da una collezione di reazioni, i quali verranno usati per
+costruire il modello di dominio.

@@ -21,12 +21,11 @@ Le funzionalit\`a fornite da questo pacchetto sono le seguenti:
   nei percorsi di file e directory nel file system, posizioni degli
   output della libreria e delle cartelle dove trovare i modelli di
   input;
-\item fornire un wrapper per oggetti di tipo \emph{Writer}, che
-  permetta di concatenare alla rappresentazione testuale dell'oggetto
-  il carattere `;', i due caratteri di \emph{carriege return} e
-  \emph{new line} per appendere il prossimo contenuto su una nuova
-  linea. Questo agevola la scrittura di documenti dot, nei quali ogni
-  linea deve avere una linea propria ed essere terminata da `;'.
+\item fornire un wrapper per oggetti di tipo \emph{Writer}, per
+  concatenare alla rappresentazione testuale dell'oggetto il carattere
+  `;', i due caratteri di \emph{carriege return} e \emph{new line} per
+  appendere il prossimo contenuto su una nuova linea, agevolando la
+  scrittura di documenti dot.
 \end{itemize}
 
 \subsubsection*{Classi}
@@ -74,7 +73,7 @@ public interface DotExportable {
   essere implementate affinch\`e un oggetto sia esportabile in formato
   dot.
 
-  Non \`e un interfaccia molto ricca, ma il solo messaggio
+  Non \`e un'interfaccia molto ricca, ma il solo messaggio
   \emph{acceptExporter} \`e sufficiente per catturare la nostra
   idea. Questa struttura si avvicina molto a quella che viene esposta
   nel pattern \emph{Visitor} in \cite{SmalltalkCompanion98}, anche se

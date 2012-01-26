@@ -5,11 +5,10 @@ metodologia di sviluppo \emph{Test-Driven Development}: abbiamo
 cercato di studiare ed applicare quanto Beck espone nel volume
 \cite{beck2003}.
 
-Procedere per piccoli passi ed in modo incrementale ci ha permesso lo
-sviluppo di un sistema ad oggetti flessibile e mantenibile, avendo
-come ulteriore prodotto alla realizzazione della libreria, una
-\emph{runnable specification} composta dall'insieme delle batterie di
-test implementate.
+Procedere per piccoli passi ed in modo incrementale ci ha permesso di
+sviluppare un sistema ad oggetti, flessibile e mantenibile, avendo
+inoltre una \emph{runnable specification} composta dall'insieme delle
+batterie di test implementate.
 
 Il concetto di \emph{Learning Test} ci \`e stato particolarmente utile
 nella fase iniziale del progetto, durante la quale abbiamo
@@ -19,24 +18,23 @@ approfondiremo.
 
 \subsection{Learning tests}
 Questa tipologia di test viene introdotta in \cite{beck2003}, pagina
-136, ed hanno l'obiettivo di familiarizzare l'utilizzo di una libreria
-esterna.
+136: i test scritti seguendola hanno l'obiettivo di familiarizzare
+l'utilizzo di una libreria esterna.
 
 Nel nostro caso abbiamo applicato questi concetti per conoscere la
 libreria \emph{JSBML}, la cui documentazione \`e estesa e ben
 dettagliata, ma rimangono degli aspetti che non \`e possibile
 studiarli a priori.
 
-\`E utile osservare che non solo questi test permettono di apprendere
-il funzionamento di un sistema di oggetti fornito da terzi, bens\`i
-proteggono il sistema da noi implementato da eventuali problemi
-introdotti nei nuovi rilasci della libreria esterna.
+Questi test permettono di apprendere il funzionamento di un sistema di
+oggetti fornito da terzi e proteggono il sistema da noi implementato
+da eventuali problemi introdotti nei nuovi rilasci della libreria
+esterna.
 
 Nel nostro caso, se viene fornita una nuova versione della libreria
-\emph{JSBML}, abbiamo il grande vantaggio di avere delle asserzioni
-che verificano i concetti che sono dipendenze per il nostro lavoro:
-siamo interessati che nessuna di queste sia violata da un nuovo
-rilascio.
+\emph{JSBML}, abbiamo il vantaggio di avere delle asserzioni che
+verificano i concetti che sono dipendenze per il nostro lavoro: siamo
+interessati che nessuna di queste sia violata da un nuovo rilascio.
 
 Senza questi test avremmo dovuto provare il software manualmente per
 controllare che il comportamento non sia cambiato. Avendoli, invece,
