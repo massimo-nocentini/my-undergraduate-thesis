@@ -7,13 +7,12 @@ l'algoritmo per la ricerca di componenti fortemente connesse.
 \subsubsection*{Funzionalit\`a implementate}
 Le funzionalit\`a fornite da questo pacchetto sono le seguenti:
 \begin{itemize}
-\item definire il contratto nel quale vengono stabiliti gli eventi
-  salienti che avvengono durante la visita in profondit\`a del
-  grafo. Questi eventi vengono codificati come messaggi che possono
-  essere inviati ad un implementatore del contratto, notificando lo
-  stato in cui si trova la visita. Questo permette di introdurre i
-  punti di estensione come descritto nella Sezione
-  \ref{subsection:dfs-extension-point};
+\item definire il contratto che stabilisce gli eventi salienti che
+  avvengono durante la visita in profondit\`a del grafo. Questi eventi
+  sono codificati come messaggi che possono essere inviati ad un
+  implementatore del contratto, notificando lo stato in cui si trova
+  la visita. Questo permette di introdurre i punti di estensione come
+  descritto nella Sezione \ref{subsection:dfs-extension-point};
 \item fornire due implementatori del contratto descritto nel punto
   precedente: uno per costruire un albero \emph{DFS}, l'altro per
   costruire il meta grafo ottenuto ricercando le componenti fortemente
@@ -27,8 +26,8 @@ dalle seguenti classi:
 \begin{paragraph}{DfsEventsListener}
   Questo contratto definisce gli stati, in cui la visita in
   profondit\`a pu\`o entrare, necessari alle nostre
-  implementazioni. Riporto sotto la sua definizione direttamente dal
-  relativo file sorgente:
+  implementazioni. Riportiamo sotto la sua definizione direttamente
+  dal relativo file sorgente:
 
 \begin{lstlisting}
 package tarjan; 
@@ -76,10 +75,9 @@ incapsulati nella classe \emph{ExploreStateWrapperVertex}. Abbiamo
 preso questa decisione per avere un sistema pi\`u modulare, rispetto a
 codificare tutto in un unico metodo. La responsabilit\`a di
 quest'ultima classe \`e di associare ad ogni vertice l'informazione se
-questo \`e stato visitato oppure no durante la visita: in base a
-quest'informazione possiamo ``chiedere'' ai vertici non ancora
-visitati di esplorare il loro vicinato, inviando il messaggio
-\emph{ifNotExplored} che riportiamo:
+questo \`e stato visitato oppure no durante la visita, in modo da
+``chiedere'' ai vertici non ancora visitati di esplorare il loro
+vicinato, inviando il messaggio \emph{ifNotExplored} che riportiamo:
 \begin{lstlisting}
 public class ExploredStateWrapperVertex...
   public ExploreStatedWrapperVertex ifNotExplored(
@@ -118,7 +116,7 @@ del vicinato. Sar\`a in base al loro stato che l'invocazione si
 propagher\`a ai rispettivi vicinati. 
 
 Facciamo un'ultima osservazione riguardo agli eventi notificati: i
-listener concreti non per forza devono definire della logica per ogni
+listener concreti non sono obbligati a definire della logica per ogni
 evento, in quanto ognuno di questi viene creato per implementare una
 specifica variante e non necessariamente ogni evento \`e richiesto per
 raggiungere quanto desiderato.
@@ -142,16 +140,16 @@ raggiungere quanto desiderato.
 
 \begin{paragraph}{TarjanEventsListenerTreeBuilder}
   Questo listener implementa l'algoritmo per la ricerca delle
-  componenti fortemente connesse.
+  componenti fortemente connesse, utilizzando la variante descritta
+  nella Sezione \ref{subsection:crescenzi-gambosi-grossi}.
 
   Questo grafo contiene come vertici degli oggetti che hanno
-  comportamento specifico relativo alle componenti connesse per cui,
-  nelle successive computazioni, sar\`a possibile usare il grafo in
-  modo trasparente, inviando messaggi polimorfi che produrranno il
-  comportamento desiderato (ad esempio la rappresentazione
-  dell'etichetta nella rappresentazione grafica sar\`a diversa
-  rispetto a quella che si pu\`o ottenere dopo una visita in
-  profondit\`a).
+  comportamento specifico relativo alle componenti fortemente connesse
+  per cui, nelle successive computazioni, sar\`a possibile usare il
+  grafo in modo trasparente, inviando messaggi polimorfi che
+  produrranno il comportamento desiderato (ad esempio la l'etichetta
+  nella rappresentazione grafica sar\`a diversa rispetto a quella che
+  si pu\`o ottenere dopo una visita in profondit\`a).
 \end{paragraph}
 
 

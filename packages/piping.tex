@@ -9,8 +9,8 @@ numero quanto si voglia di filtri.
 Le funzionalit\`a fornite da questo pacchetto sono le seguenti:
 \begin{itemize}
 \item definire un \emph{template} di filtro, componente atomica per la
-  composizione di una \emph{pipeline}. In questo template codifica il
-  comportamento necessario affinch\`e possa essere combinato,
+  composizione di una \emph{pipeline}. Questo template codifica il
+  comportamento necessario affinch\'e possa essere combinato,
   lasciando all'implementatore il compito di sviluppare la logica che
   caratterizza il filtro che st\`a modellando;
 \item fornire un insieme di filtri gi\`a implementati necessari alla
@@ -21,9 +21,8 @@ Le funzionalit\`a fornite da questo pacchetto sono le seguenti:
   computazione. \`E possibile assemblare la propria pipeline ed,
   attraverso un listener, eseguire non solo le trasformazioni che
   questa produce, ma anche della logica aggiuntiva all'accadere di
-  determinati eventi. Questo \`e uno strumento molto potente in quanto
-  permette di essere ortogonali alla pipeline ed aver maggior
-  controllo sull'intera computazione.
+  determinati eventi. Questo strumento permette di essere ortogonali
+  alla pipeline ed aver maggior controllo sull'intera computazione.
 \end{itemize}
 
 \subsubsection*{Classi}
@@ -33,25 +32,23 @@ dalle seguenti classi:
 \begin{paragraph}{PipeFilter}
   Abbiamo cercato di formalizzare in modo preciso la pi\`u piccola
   unit\`a atomica capace di eseguire una computazione all'interno di
-  una sequenza pi\`u grande. Questo ci ha portato alla definizione
-  della classe astratta \emph{PipeFilter}. Averla introdotta ci ha
-  permesso di rendere il codice flessibile e trasparente, nonch\'e
-  pi\`u facile da implementare.
+  una sequenza pi\`u grande, portandoci a definire la classe
+  \emph{PipeFilter}: introducendola possiamo rendere il codice
+  flessibile e trasparente, nonch\'e pi\`u facile da implementare.
 
   Questa classe, come abbiamo detto nei paragrafi precedenti, in
   realt\`a rappresenta solo un \emph{template} del concetto di filtro
-  e non di un filtro che esegue una trasformazione sull'istanza di
-  input. Con questo template \`e possibile assemblare una sequenza di
-  filtri, usando l'idea della lista concatenata, ed eseguire la
-  computazione propagando la richiesta di esecuzione a tutti i filtri
-  che si sono assemblati.
+  e non esegue una trasformazione definita sull'istanza di
+  input. Usandola \`e possibile assemblare una sequenza di filtri, ed
+  eseguire la computazione propagando la richiesta di esecuzione a
+  tutti i filtri che si sono assemblati.
 
   Quello appena detto \`e stato implementato dando a \emph{PipeFilter}
   una struttura ricorsiva: ad esempio per costruire una pipeline con
   due filtri \`e sufficiente costruirli, fissare la relazione di
   precedenza che identifica la pipeline ed invocare la richiesta di
   esecuzione sull'ultimo filtro. Tale filtro, ricevendo la richiesta,
-  controlla se il filtro che lo precede esiste: se si allora delega la
+  controlla se il filtro che lo precede esiste: se si, delega la
   richiesta di esecuzione e si riapplica questo procedimento in modo
   ricorsivo, altrimenti esegue la trasformazione per cui \`e stato
   creato. Inoltre, sempre sfruttando la struttura ricorsiva di
@@ -74,9 +71,6 @@ dalle seguenti classi:
   metodo astratto, che ha come parametri il grafo di input e deve
   ritornare un grafo utilizzato come input per il filtro successivo.
 
-  Tutti i filtri che abbiamo implementato in questa libreria
-  utilizzando il comportamento esposto da altri oggetti.
-
   Il primo filtro concreto che abbiamo introdotto \`e stato
   \emph{PrinterPipeFilter}, il quale produce una rappresentazione
   grafica compilando un documento \emph{dot}: per adempiere a questo
@@ -98,11 +92,11 @@ dalle seguenti classi:
   \emph{TarjanPipeFilter}, il quale ricerca le componenti fortemente
   connesse sul grafo di input e restituisce un nuovo \emph{DAG}
   composto dalle componenti identificate. \`E importante notare che
-  programmando ``per interfaccie'', il grafo prodotto da questo filtro
+  programmando ``per interfacce'', il grafo prodotto da questo filtro
   non ha come vertici dei \emph{SimpleVertex}, bens\`i degli oggetti
   che caratterizzano le componenti fortemente connesse. In questo modo
   possiamo continuare ad inviare gli stessi messaggi che possiamo
-  inviare ad un oggetto di tipo \emph{SimpleVertex}, ma ottenere una
+  inviare ad un oggetto di tipo \emph{SimpleVertex}, ma ottenere un
   comportamento diverso, senza modificare il codice che implementa il
   modello di dominio.
 
@@ -115,7 +109,7 @@ dalle seguenti classi:
   \emph{PlainTextStatsPipeFilter} e
   \emph{ConnectedComponentInfoPipeFilter}. Questi hanno la
   responsabilit\`a di rappresentare in formato testuale il grafo in
-  input, producendo rispettivamente un output tabellare ed una una
+  input, producendo rispettivamente un output tabellare ed una
   struttura dati che mantiene delle informazioni sulle componenti
   fortemente connesse, consultabili utilizzando il relativo programma
   di visualizzazione che abbiamo sviluppato.
@@ -133,13 +127,13 @@ dalle seguenti classi:
   degli argomenti inviati dal mittente della notifica per elaborarli
   nel modo desiderato. Questi argomenti possono essere relativi non
   solo ad uno specifico filtro, bens\`i ad un insieme di filtri, in
-  quanto si usa lo stesso listener per tutta la durata della
-  pipeline. Un esempio \`e \emph{PlainTextInfoComputationListener},
-  che colleziona in una mappa avente come chiavi oggetti di tipo
-  filtro, e come valori informazioni sulla composizione del
-  grafo. Queste informazioni vengono raccolte dapprima durante
-  l'esecuzione di un filtro \emph{PlainTextStatsPipeFilter} e, quando
-  il processo termina, si invia un messaggio al listener allegando le
-  informazioni collezionate.
+  quanto si usa lo stesso listener per tutta la durata della pipeline:
+  un esempio \`e \emph{PlainTextInfoComputationListener}, il quale usa
+  una mappa, avente come chiavi oggetti di tipo filtro, e come valori
+  informazioni sulla composizione del grafo, per distinguere gli
+  argomenti ricevuti. Queste informazioni vengono raccolte dapprima
+  durante l'esecuzione di un filtro \emph{PlainTextStatsPipeFilter} e,
+  quando il processo termina, si invia un messaggio al listener
+  allegando le informazioni collezionate.
 \end{paragraph}
 
