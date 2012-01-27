@@ -1,64 +1,47 @@
+\section{Sviluppi futuri}
 
-\section{TODO}
-\begin{itemize}
-\item dire che l'azione di compattare tutte le sorgenti \`e nata dal
-  risultato della ricerca delle componenti fortemente connesse in
-  quanto avevamo troppe sorgenti.
-\item rivisitare la parte di implementazione e vedere se si possono
-  fare dei collegamenti alla parte degli use-case quando si discutono
-  le implementazioni.
-\end{itemize}
-
-\section{Further work}
-
-In questa sezione elenco alcuni punti che possono essere presi come
-basi di partenza per sviluppi futuri del progetto. 
-
+I seguenti punti possono essere presi come basi di partenza per
+sviluppi futuri del progetto:
 \begin{description}
 \item[dependency injection] Rifattorizzare le parti del codice in cui
-  vengono utilizzati degli oggetti \emph{factory} per nascondere la
-  costruzione di realizzazioni specifiche di interfaccie (ad esempio
-  come descritto in \nameref{itemize:model-supplied-abstraction}),
-  sostituendole con motori di \emph{dependency injection}, applicando
-  il principio di \emph{invertion of control}.
-\item[domain specific language] speficare e implementare un \emph{DSL}
-  per poter descrivere e assemblare la pipeline in modo dichiarativo,
-  senza dover scendere al livello delle interfaccie e delle classi che
-  abbiamo implementato. Questa dichiarazione potrebbe essere scritta o
-  direttamente nella riga di comando oppure in un file esterno.
+  vengono utilizzati degli oggetti \emph{factory} sostituendoli con
+  motori di \emph{dependency injection}, applicando il principio di
+  \emph{invertion of control};
+\item[domain specific language] specificare e implementare un
+  \emph{DSL} per poter descrivere e assemblare la pipeline in modo
+  dichiarativo, senza dover scendere al livello delle interfacce e
+  delle classi che abbiamo implementato. La definizione della pipeline
+  potrebbe essere caricata da riga di comando oppure da un file
+  esterno;
 \item[graphviz interface] utilizzare una libreria che permette di
   usare programmaticamente gli oggetti e le implementazioni fornite
   dalla libreria \emph{graphviz}. Nell'attuale lavoro si utilizzano
   tali oggetti solo eseguendoli in modalit\`a di comando, equivalente
-  ad una invocazione dal terminale \emph{bash}. Questo permetterebbe
-  di avere un maggior grado di portabilit\`a del lavoro svolto,
-  eliminando la dipendenza da una installazione a monte di
-  \emph{graphviz}.
-\item[configuration file] creare un file di configurazione nel quale
-  si potrebbero impostare quale motore di \emph{graphviz} utilizzare
-  per la renderizzazione dei grafi (ad esempio esistono anche
-  \emph{neato} e molti altri) e il preambolo dei documenti dot nei
-  quali si specifica le formattazioni, i colori di nodi e archi e le
-  rispettive dimesioni.
+  ad una invocazione da terminale. Questo permetterebbe di avere un
+  maggior grado di portabilit\`a del lavoro svolto, eliminando la
+  dipendenza da una installazione a monte di \emph{graphviz};
+\item[file di configurazione] creare un file di configurazione nel
+  quale impostare quale motore di \emph{graphviz} utilizzare per la
+  renderizzazione dei grafi (ad esempio esistono anche \emph{neato} e
+  molti altri oltre a quello che abbiamo usato in questo lavoro), il
+  preambolo dei documenti dot nei quali si specifica le formattazioni,
+  i colori e le dimensioni di nodi e archi.
 
-  Inoltre potrebbe essere interessante esprire quanto detto nel
-  precedente paragrafo con uno stesso DSL, in modo da poter esprire le
-  proprie pipeline in batterie e lasciare al codice il codice di
-  costruire i necessari oggetti ed eseguire le rispettive
-  computazioni.
+  Inoltre potrebbe essere interessante esprimere quanto detto nel
+  precedente paragrafo con uno stesso DSL, in modo da poter codificare
+  le proprie pipeline in batterie e lasciare al codice la
+  responsabilit\`a di costruire i necessari oggetti ed eseguire le
+  rispettive computazioni.
 
-\item[render a DFS tree in the original graph] costruire un nuovo
-  filtro che permetta di comporre l'applicazione del filtro della
-  ricerca \emph{DFS} e rappresentare l'albero risultate "sopra" il
-  grafo esistente.
-
-  Realizzare tale idea non dovrebbe essere difficoltoso in quanto si
-  tratterebbe di modificare la logica che implementa la ricerca
-  \emph{DFS}, eseguendola per un vertice scelto (oppure dato), e
-  successivamente colorare gli archi del grafo che sono anche archi
-  dell'albero \emph{DFS} di un colore pi\`u scuro (anche questo passo
-  \`e corto da fare in quanto il colore grigio che adesso viene
-  utilizzato per colorare gli archi non \`e stato scelto a caso).
+\item[rappresentare l'albero DFS nel grafo completo] costruire un
+  nuovo filtro che permetta di comporre la funzionalit\`a per eseguire
+  una visita in profondit\`a e rappresentare l'albero risultate
+  ``sopra'' il grafo esistente. Per realizzarlo si potrebbe modificare
+  la logica che implementa la visita eseguendola per un vertice scelto
+  (oppure dato) e, successivamente, colorare gli archi del grafo che
+  sono anche archi dell'albero \emph{DFS}, usando un colore pi\`u
+  scuro (anche questo passo \`e gi\`a predisposto in quanto il colore
+  grigio usato attualmente non \`e stato scelto a caso).
 
 
   % put here another further-work
