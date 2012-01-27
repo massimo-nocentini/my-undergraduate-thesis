@@ -45,8 +45,7 @@ non sono n\'e sorgenti n\'e pozzi con un cerchio vuoto (\emph{nodi
   \label{fig:simple-black-and-white}
 \end{figure}
 La Figura \ref{fig:simple-black-and-white} riporta il risultato di
-questa funzionalit\`a applicata ad un modello SBML codificato in un
-grafo. 
+questa funzionalit\`a.
 
 Il commento dell'implementazione di questa funzionalit\`a viene
 rimandato alla Sezione
@@ -57,19 +56,12 @@ Con questa funzionalit\`a si vuole visitare in profondit\`a il grafo
 in input.
 
 Il risultato prodotto \`e una foresta di alberi \emph{DFS}, i cui
-archi sono un sotto insieme dell'insieme di archi del grafo originale,
+archi sono un sotto insieme degli archi del grafo originale,
 attraversati durante la computazione.
 
-Inoltre siamo interessati ad associare, per ogni vertice, una coppia
-di interi che indica il momento in cui la visita esplora un vertice e
-quando l'esplorazione del vicinato di tale vertice viene
-completata. Queste informazioni possono risultare molto utili in fase
-di studio del grafo; abbiamo ripreso questo spunto da
-\cite{Algorithms}.
-
-Vediamo i risultati di una sua esecuzione, dopo aver composto la
-funzionalit\`a descritta nella Sezione
-\ref{subsection:represent-it-in-black-and-white}. La Figura
+Inoltre siamo interessati ad associare, ad ogni vertice $v$, una
+coppia di interi che indicano i momenti in cui si visita $v$ e in cui
+si termina la visita del vicinato di $v$. La Figura
 \ref{fig:before-applying-dfs-search} riporta il grafo originale di
 partenza, preso da \cite{Algorithms}:
 \begin{figure}
@@ -103,13 +95,8 @@ componenti.
 
 Inoltre siamo interessati ad associare, per ogni vertice, un intero
 che indica la cardinalit\`a della componente fortemente connessa che
-esso rappresenta.
-
-Vediamo i risultati di una sua esecuzione, dopo aver composto la
-funzionalit\`a descritta nella precedente Sezione
-\ref{subsection:represent-it-in-black-and-white}: la Figura
-\ref{fig:before-applying-tarjan} riporta il grafo originale di
-partenza, preso da \cite{Algoritmica}:
+esso rappresenta. La Figura \ref{fig:before-applying-tarjan} riporta
+il grafo originale di partenza, preso da \cite{Algoritmica}:
 \begin{figure}
   \centering
   \includegraphics{images/OnePipingLevelUnitTest_Printer_DFS_PrinterPipe_Crescenzi-phase-PrinterPipeFilter-level-0.eps}
@@ -139,11 +126,9 @@ Il \emph{side-effect} prodotto \`e collezionare le informazioni
 richieste visitando il grafo e scriverle in un file dedicato.
 
 Inoltre, per comodit\`a, vogliamo comporre pi\`u di una funzionalit\`a
-ed avere le informazioni relative alle computazioni di ognuna,
-presenti nello stesso documento.
-
-Vediamo i risultati di una sua esecuzione, allegando un documento
-prodotto:
+e scrivere nello stesso documento le informazioni relative alle
+computazioni di ognuna di esse. Vediamo i risultati di una sua
+esecuzione, allegando un documento prodotto:
 \begin{lstlisting}
 phase-PlainTextStatsPipeFilter-level-2
 NOfVertices: 1
@@ -189,12 +174,11 @@ phase-PlainTextStatsPipeFilter-level-0
 	NOfWhites:	436
 
 \end{lstlisting}
-Questo output necessita di alcune spiegazioni. Quello riportato \`e il
-documento che viene generato da questa funzionalit\`a, collezionando
-in un primo momento le informazioni sul grafo originale (riportate
-sotto l'etichetta \emph{phase-PlainTextStatsPipeFilter-level-0}) e in
-un secondo momento, dopo aver applicato l'algoritmo di Tarjan, le
-informazioni sul grafo minimizzato (riportate sotto l'etichetta
+Questo output necessita di alcune spiegazioni. Nel documento riportato
+sono collezionate le informazioni sul grafo originale (riportate sotto
+l'etichetta \emph{phase-PlainTextStatsPipeFilter-level-0}) e, dopo
+aver applicato l'algoritmo di Tarjan, quelle sul grafo minimizzato
+(riportate sotto l'etichetta
 \emph{phase-PlainTextStatsPipeFilter-level-2}).
 
 Come si nota i formati delle rappresentazioni tabulari sono vicini ma
@@ -213,10 +197,9 @@ $s$ vertici sono sorgenti, $d$ vertici sono pozzi e $w (= v -s -d)$
 sono intermedi.
 
 Definiamo adesso la semantica associata alle informazioni collezionate
-per il secondo passo. Come si pu\`o notare, queste informazioni
-ripetono uno schema, del quale \`e sufficiente dare la semantica,
-quante volte \`e necessario per elencare tutti i dati raccolti. Sia
-dato il \emph{template}:
+per il secondo passo. Come si pu\`o notare, queste informazioni sono
+composte da un blocco ricorrente per cui ci limiteremo a dare
+significato solo a questo. Sia dato il blocco:
 \begin{lstlisting}
 NOfVertices: v
 	NOfComponents:	c
@@ -245,12 +228,8 @@ dell'appendice.
 Con questa funzionalit\`a si vuole eliminare tutti i vertici sorgenti
 contenuti nel grafo in input, introducendo al loro posto un nuovo
 vertice sorgente, tale che il suo vicinato sia uguale all'unione dei
-vicinati dei vertici rimossi.
-
-Vediamo i risultati di una sua esecuzione, applicando la
-minimizzazione al grafo di input, dopo aver composto la funzionalit\`a
-descritta nella precedente Sezione
-\ref{subsection:represent-it-in-black-and-white}:
+vicinati dei vertici rimossi. Riportiamo il contenuto di un documento
+generato da questa funzionalit\`a:
 \begin{lstlisting}
 phase-PlainTextStatsPipeFilter-level-1
 	NOfVertices:	386
@@ -259,8 +238,8 @@ phase-PlainTextStatsPipeFilter-level-1
 	NOfSinks:	85
 	NOfWhites:	300
 \end{lstlisting}
-Come si vede dalle informazioni riportate, il nuovo grafo, input per
-successive computazioni, ha un solo vertice sorgente.
+Come si vede dalle informazioni riportate, il nuovo grafo ha un solo
+vertice sorgente.
 
 Il commento dell'implementazione di questa funzionalit\`a viene
 rimandato alla Sezione \ref{subsection:model-package-description}
@@ -269,26 +248,24 @@ dell'appendice.
 
 \subsection{Indagare propriet\`a di una batteria di modelli}
 \label{subsection:use-case-result-viewer}
-Con questa funzionalit\`a si vuole rappresentare informazioni relative
-ad una batteria di modelli, dei quali abbiamo calcolato le componenti
-fortemente connesse, attraverso una semplice GUI utilizzando il
-framework \emph{SWING}.
+Con questa funzionalit\`a si vogliono rappresentare delle informazioni
+relative ad una batteria di modelli, dei quali abbiamo calcolato le
+componenti fortemente connesse, attraverso una semplice interfaccia
+grafica.
 
-In realt\`a quello che ci piacerebbe costruire \`e un visualizzatore
-di strutture dati, costruite appositamente per contenere le
-informazioni di interesse, senza essere dipendenti dal risultato di
-una computazione appena conclusa. Ovvero, vorremmo serializzare tale
+In realt\`a quello che vogliamo costruire \`e un visualizzatore di
+strutture dati, costruite appositamente per contenere le informazioni
+di interesse, senza essere dipendenti dal risultato di una
+computazione appena conclusa. Ovvero, vorremmo serializzare tale
 struttura dati in una path del file system e poterla visualizzare
-successivamente. Questo secondo noi \`e un approccio pi\`u modulare in
-quanto permette di creare strutture dati e poterle scambiare,
-utilizzando la maschera come semplice \emph{render}, anche se non
-abbiamo generato noi stessi la serializzazione delle informazioni.
+successivamente: secondo noi \`e un approccio pi\`u modulare in quanto
+non \`e necessario eseguire ogni volta la computazione per creare la
+struttura dati, utilizzando la maschera come semplice \emph{render}.
 
 Inoltre siamo interessati a condurre la nostra indagine restringendosi
-non solo ad un modello (e quindi ad un solo grafo), bens\`i vorremmo
-analizzare un insieme di modelli affinch\'e sia possibile studiare in
-che tipo di componente fortemente connessa ogni metabolito incontrato
-appare.
+non solo ad un modello (e quindi ad un solo grafo), ma analizzare un
+insieme di modelli affinch\'e sia possibile studiare in che tipo di
+componente fortemente connessa ogni metabolito incontrato appare.
 
 \begin{figure}
   \centering
@@ -298,34 +275,29 @@ appare.
     modelli}
   \label{fig:result-viewer-scc}
 \end{figure}
-La Figura \ref{fig:result-viewer-scc} riporta uno screenshot, diamo
-adesso la semantica delle informazioni rappresentate nella maschera.
-
-Il frame contiene i seguenti componenti, che andiamo a descrivere
-seguendo l'ordine da sinistra verso destra e dall'alto verso il basso:
+La Figura \ref{fig:result-viewer-scc} riporta uno screenshot
+dell'interfaccia, di cui diamo la semantica dei componenti in essa
+rappresentati, descrivendoli seguendo l'ordine da sinistra verso
+destra e dall'alto verso il basso:
 \begin{itemize}
-\item una tabella dove vengono elencati tutti i modelli che sono stati
-  oggetto di indagine. Per ogni modello si associano tre coppie $(c,
-  v)$ per tre colonne, ognuna rappresentante una tipologia di vertice
-  (\emph{sources, whites, sinks}). Per esempio, se una coppia $c, v$
+\item nella tabella si elencano nelle righe tutti i modelli che sono
+  stati oggetto di indagine e nelle colonne le tipologie di vertici
+  (\emph{sources, whites, sinks}): dato un modello e una colonna, si
+  associa una coppia $(c, v)$. Per esempio, se una coppia $(c, v)$
   appartiene alla riga del modello $m$ e alla colonna $whites$, allora
-  significa che nel modello $m$ esistono $c$ componenti fortemente
-  connesse di tipo $whites$, le quali contengono in totale $m$ vertici
-  (che di conseguenza hanno pure loro il ruolo di $whites$);
-\item una \emph{list-box} nella quale sono riportate delle
-  informazioni relative ai metaboliti. Ogni oggetto raggruppa i
-  metaboliti in base ai ruoli (ovvero in base alla tipologia di
-  vertice) che hanno in tutti i modelli analizzati.
-
-  Inoltre si calcola anche una loro frequenza in percentuale per avere
-  un raffronto immediato riguardo alla predominanza dei ruoli svolti:
-  si considerano tutte le possibili combinazioni dell'insieme
-  ${sources, whites, sinks}$, escludendo l'insieme vuoto;
-\item nella successiva \emph{list-box} vengono elencate tutte i
-  metaboliti contenuti in almeno uno dei modelli oggetto
+  nel modello $m$ esistono $c$ componenti fortemente connesse di tipo
+  $whites$, le quali contengono in totale $m$ vertici;
+\item nella \emph{list-box} alla destra della tabella si riportano
+  delle informazioni relative ai metaboliti. Ogni oggetto \`e un
+  gruppo di metaboliti in base alla loro tipologia: i gruppi che
+  abbiamo considerato corrispondono alle combinazioni dell'insieme
+  $\{sources, whites, sinks\}$, escludendo l'insieme vuoto. Per ogni
+  gruppo si calcola la rispettiva frequenza in percentuale per avere
+  un raffronto sulla predominanza delle tipologie;
+\item nella \emph{list-box} sotto la tabella pi\`u a sinistra, vengono
+  elencati i metaboliti presenti in almeno un modello oggetto
   dell'indagine. Ogni metabolito \`e codificato con una stringa
-  composta dall'identificatore e, tra parantesi tonde, il nome del
-  compartimento in cui risiede;
+  composta dal suo identificatore;
 \item cliccando su un metabolito $s$, nella successiva \emph{list-box}
   vengono elencati i tipi delle componenti fortemente connesse che
   contengono il metabolito $s$;
@@ -344,25 +316,28 @@ seguendo l'ordine da sinistra verso destra e dall'alto verso il basso:
 \end{itemize}
 
 Non solo le ultime quattro \emph{list-box} sono contestualmente
-correlate, ma anche la tabella e la \emph{list-box} con le
-informazioni per tipologia di vertice lo sono. In particolare,
-selezionando nella tabella una o pi\`u righe, nella \emph{list-box}
-\`e possibile avere le informazioni riguardo ai metaboliti contenuti
-nei modelli selezionati. Se la selezione \`e vuota, allora le
-informazioni sono relative a tutti i modelli.
+correlate, ma lo sono anche la tabella e la \emph{list-box} con i
+gruppi per tipologia di vertice. In particolare, selezionando nella
+tabella una o pi\`u modelli, nella \emph{list-box} \`e si aggiornano
+le informazioni filtrandole rispetto ai metaboliti contenuti nei
+modelli selezionati. Se la selezione dei modelli \`e vuota, allora le
+informazioni sono relative a tutti i modelli. 
 
-Inoltre abbiamo esteso queste correlazioni anche tra il percorso
-selezionato nelle ultime quattro \emph{list-box} e la tabella (e di
-conseguenza alla prima \emph{list-box}). Selezionando un metabolito
-dalla seconda \emph{list-box} vengono selezionati in automatico nella
-tabella tutti i modelli che lo contengono e, come spiegato nel
-paragrafo precedente, anche la \emph{list-box} contenente le
-informazioni per tipologia di vertice verr\`a aggiornata di
-conseguenza.
+Abbiamo esteso queste correlazioni anche tra il percorso selezionato
+nelle ultime quattro \emph{list-box} e la tabella (e di conseguenza
+alla prima \emph{list-box}). Selezionando un metabolito dalla
+\emph{list-box} sotto la tabella pi\`u a sinistra, vengono selezionati
+in automatico nella tabella i modelli che lo contengono e, come
+spiegato nel paragrafo precedente, anche la \emph{list-box} contenente
+le informazioni per tipologia di vertice verr\`a aggiornata di
+conseguenza. Se si raffina il percorso, ad esempio scegliendo la
+tipologia di vertice e la cardinalit\`a nelle rispettive
+\emph{list-box}, viene raffinata la selezione nella tabella dei
+modelli.
 
-Se si raffina il percorso, ad esempio scegliendo la tipologia di
-vertice e la cardinalit\`a nelle rispettive \emph{list-box}, viene
-raffinata la selezione nella tabella dei modelli.
+Come ultima relazione, selezionando un gruppo nella \emph{list-box}
+alla destra della tabella si ricercano e selezionano i metaboliti
+appartenenti al gruppo selezionato.
 
 Il commento dell'implementazione di questa funzionalit\`a viene
 rimandato alla Sezione \ref{subsection:piping-package-description}
@@ -371,15 +346,14 @@ dell'appendice.
 \subsection{Analizzare un grafo non associato ad un modello SBML}
 Nelle precedenti sezioni abbiamo sempre assunto di lavorare su un
 modello metabolico, ma niente ci vieta di poter utilizzare la libreria
-su un grafo arbitrario che costruiamo direttamente utilizzando oggetti
-del nostro modello dati.
+su un grafo arbitrario che costruiamo utilizzando gli oggetti del
+nostro modello dati.
 
 Questo rende la libreria non strettamente legata ai concetti nel campo
-della biologia e, in particolare, delle reti metaboliche, restando
-invece aperta ad utilizzi nel campo della teoria dei grafi (in
-realt\`a il grafo riportato in Figura \ref{fig:simple-black-and-white}
-non \`e altro che il grafo utilizzato da Tarjan nel suo articolo
-\cite{Tarjan}.
+della biologia, in particolare delle reti metaboliche, restando aperta
+ad utilizzi nel campo della teoria dei grafi (in realt\`a il grafo
+riportato in Figura \ref{fig:simple-black-and-white} non \`e altro che
+il grafo utilizzato da Tarjan nel suo articolo \cite{Tarjan}).
 
 Il commento dell'implementazione di questa funzionalit\`a viene
 rimandato alla Sezione \ref{subsection:model-package-description}
