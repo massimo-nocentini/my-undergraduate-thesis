@@ -1,1 +1,90 @@
 \section{Risultati}
+In questa sezione riportiamo le informazioni riguardanti le esperienze
+che abbiamo effettuato: elencheremo le sorgenti dei modelli di
+interesse, come utilizzare la libreria sviluppata per riprodurre le
+prove e, in conclusione, analizzeremo il nostro processo di
+costruzione dell'insieme $\mathbb{B}$.
+
+\subsection{Modelli biologici oggetti di indagine}
+Da un punto di vista biologico, la maggior parte dei modelli oggetto
+dei nostri studi sono riferiti a micro organismi batterici e sono
+reperibili in \cite{SymBioCyc} e in \cite{MetExplore} gratuitamente:
+quelli che si trovano nel primo riferimento sono stati i primi su cui
+abbiamo lavorato, mentre i secondi sono quelli su cui abbiamo
+esercitato in modo massivo le nostre implementazioni.
+
+Se si trovassero difficolt\`a nella loro ricerca, le due sorgenti sono
+disponibili in \cite{MyJavaImpl}, descritto nella Sezione
+\ref{section:used-tools}. Dopo aver scaricato il repository, i modelli
+relativi a \cite{SymBioCyc} si trovano all'interno della cartella
+\emph{sbml-test-files}, mentre quelli relativi a \cite{MetExplore}
+nell'archivio \emph{sbml-test-files/BioCyc15.0.tar.gz}.
+
+\subsection{Come riprodurre le nostre esperienze}
+Ogni prova che abbiamo effettuato \`e codificata in un \emph{test
+  method}, indipendente dalle altre, per cui \`e sufficiente compilare
+i sorgenti reperibili in \cite{MyJavaImpl}, sia delle classi che dei
+metodi di test, ed esercitare con il \emph{TestRunner} che si
+preferisce tutta la batteria di test. I risultati vengono salvati
+nella cartella \emph{dot-test-files/tests-output}, all'interno
+troviamo:
+\begin{itemize}
+\item i documenti dot interpretabili con \emph{graphviz} e le relative
+  rappresentazioni sotto forma di immagine \emph{svg}, risultato di
+  quanto descritto nelle Sezioni
+  \ref{subsection:represent-it-in-black-and-white},
+  \ref{subsection:apply-depth-first-search} e
+  \ref{subsection:use-case-tarjan};
+\item i file testuali contenenti informazioni sulla struttura dei
+  grafi riferiti sia a dei modelli ``ad hoc'' riportati anche in
+  questo documento, sia a reti metaboliche, delle quali non \`e stato
+  possibile riportare una rappresentazione data la loro grande
+  dimensione. Questi file sono il risultato di quanto descritto nelle
+  Sezioni \ref{subsection:tabular-representation-use-case} e
+  \ref{subsection:collapse-sources-use-case};
+\item le strutture dati relative alla composizione delle componenti
+  fortemente connesse, relative ai modelli presenti nelle sorgenti
+  citate nella sezione precedente. Queste sono il risultato di quanto
+  descritto nella Sezione \ref{subsection:use-case-result-viewer}.
+\end{itemize}
+Per utilizzare la maschera descritta nella Sezione
+\ref{subsection:use-case-result-viewer} \`e sufficiente eseguire la
+classe util.ResultViewer: lo stato attuale del codice utilizza la
+struttura dati relativa ai modelli contenuti in \cite{MetExplore} ma
+\`e sufficiente apportare una piccola modifica per cambiare questo
+comportamento e visualizzare la struttura dati relativa ai propri
+modelli di interesse.
+
+\subsection{Osservazioni su quanto ottenuto}
+Le osservazioni che possiamo fare sui risultati delle prove possono
+essere divise in base agli obiettivi che ci poniamo:
+\begin{itemize}
+\item se si vuole costruire l'insieme $\mathbb{B}$ usando una sola
+  rete metabolica allora \`e possibile assegnare un ruolo ad ogni
+  metabolito: per dedurre quest'associazione \`e sufficiente
+  selezionare nella \emph{list-box} alla destra della tabella il ruolo
+  e, in risposta, ogni metabolito a questo associato verr\`a
+  selezionato nella rispettiva \emph{list-box}. Questo \`e il caso
+  proposto nella Figura (AGGIUNGERE QUI LA FIGURA RELATIVA);
+\item se si vuole costruire l'insieme $\mathbb{B}$ usando un insieme
+  di reti metaboliche allora si puo' avere incoerenza e perdita di
+  precisione. Considerando i modelli in \cite{MetExplore} vediamo che
+  esistono dei metaboliti che non hanno un singolo ruolo e questo,
+  seppur con delle percentuali basse, pu\`o introdurre errori nella
+  costruzione dell'insieme $\mathbb{B}$. Questo \`e il caso proposto
+  nella Figura (AGGIUNGERE QUI LA FIGURA RELATIVA);
+% \item facendo riferimento all'articolo
+%   \cite{large-scale-reconstruction} di cui abbiamo accennato nella
+%   Sezione \ref{section:existing-works}, se si vuole identificare un
+%   insieme di \emph{compound}, usando il termine originale, tra cui
+%   scegliere i rappresentanti dei \emph{seed sets} \`e sufficiente
+%   selezionare nella \emph{list-box} alla destra della tabella la
+%   tipologia \emph{Sources} e scegliere un metabolito tra quelli
+%   selezionati in automatico nella rispettiva \emph{list-box}. Questo
+%   \`e il caso proposto nella Figura ();
+\item se si vuole semplificare la rete utilizzando il meta grafo delle
+  componenti fortemente connesse osserviamo che, per tutti i modelli
+  studiati, non abbiamo un grafo significativo in quanto vi sono molte
+  componenti sorgenti e pozzo, mentre sono molto poche le componenti
+  intermedie. Questo \`e il caso proposto nella Figura ().
+\end{itemize}
