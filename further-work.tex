@@ -6,9 +6,9 @@ sviluppi futuri del progetto:
 \item[composizione delle componenti] realizzare un filtro che produca
   un file contenente l'insieme di metaboliti che compongono ogni
   componente fortemente connessa. Questo potrebbe risultare utile agli
-  scopi del lavoro in \cite{large-scale-reconstruction}, rendendo
-  agevole l'identificazione degli insiemi di metaboliti tra cui
-  scegliere i rappresentanti dei \emph{seed sets};
+  scopi del lavoro in \cite{large-scale-reconstruction}, agevolando
+  l'identificazione dei metaboliti tra cui scegliere i rappresentanti
+  dei \emph{seed sets};
 \item[dependency injection] rifattorizzare le parti del codice in cui
   vengono utilizzati degli oggetti \emph{factory} sostituendoli con
   motori di \emph{dependency injection}, applicando il principio di
@@ -25,7 +25,7 @@ sviluppi futuri del progetto:
   tali oggetti solo eseguendoli in modalit\`a di comando, equivalente
   ad una invocazione da terminale. Questo permetterebbe di avere un
   maggior grado di portabilit\`a del lavoro svolto, eliminando la
-  dipendenza da una installazione a monte di \emph{graphviz};
+  dipendenza da un'installazione a monte di \emph{graphviz};
 \item[file di configurazione] creare un file di configurazione nel
   quale impostare il motore di \emph{graphviz} che si vuole utilizzare
   per la renderizzazione dei grafi (ad esempio esistono anche
@@ -43,7 +43,7 @@ sviluppi futuri del progetto:
 \item[rappresentare l'albero DFS nel grafo completo] costruire un
   nuovo filtro che permetta di comporre la funzionalit\`a per eseguire
   una visita in profondit\`a e rappresentare l'albero risultate
-  ``sopra'' il grafo esistente. Per realizzarlo si potrebbe modificare
+  ``sopra'' il grafo visitato. Per realizzarlo si potrebbe modificare
   la logica che implementa la visita eseguendola per un vertice scelto
   (oppure dato) e, successivamente, colorare gli archi del grafo che
   sono anche archi dell'albero \emph{DFS}, usando un colore pi\`u
