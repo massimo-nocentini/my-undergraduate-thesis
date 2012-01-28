@@ -1,8 +1,8 @@
-/Elaborato.aux
-/Elaborato.toc
-/Elaborato.dvi
-/Elaborato.out
-/Elaborato.ps
+*.aux
+*.toc
+*.dvi
+*.out
+*.ps
 *.log
 *~
 *.pdf
