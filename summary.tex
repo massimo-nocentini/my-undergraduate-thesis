@@ -1,0 +1,163 @@
+\documentclass[twoside,openright,titlepage,fleqn,
+headinclude,11pt,a4paper,BCOR5mm,footinclude ]{scrbook}
+%--------------------------------------------------------------
+        \newcommand{\myTitle}{Analisi di reti metaboliche basata su
+          propriet\`a di connessione\xspace}
+% use the right myDegree option
+\newcommand{\myDegree}{Corso di Laurea in Informatica\xspace}
+%\newcommand{\myDegree}{
+	%Corso di Laurea Specialistica in Scienze e Tecnologie 
+	%dell'Informazione\xspace}
+\newcommand{\myName}{Massimo Nocentini\xspace}
+\newcommand{\myProf}{Pierluigi Crescenzi\xspace}
+\newcommand{\myOtherProf}{Nome Cognome\xspace}
+\newcommand{\mySupervisor}{Nome Cognome\xspace}
+\newcommand{\myFaculty}{
+	Facolt\`a di Scienze Matematiche, Fisiche e Naturali\xspace}
+\newcommand{\myDepartment}{
+	Dipartimento di Sistemi e Informatica\xspace}
+\newcommand{\myUni}{\protect{
+	Universit\`a degli Studi di Firenze}\xspace}
+\newcommand{\myLocation}{Firenze\xspace}
+\newcommand{\myTime}{Anno Accademico 2010-2011\xspace}
+\newcommand{\myVersion}{Version 0.1\xspace}
+%--------------------------------------------------------------
+\usepackage[latin1]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage[square,numbers]{natbib} 
+\usepackage[fleqn]{amsmath}  
+\usepackage[italian]{babel}
+%--------------------------------------------------------------
+\usepackage{dia-classicthesis-ldpkg} 
+%--------------------------------------------------------------
+% Options for classicthesis.sty:
+% tocaligned eulerchapternumbers drafting linedheaders 
+% listsseparated subfig nochapters beramono eulermath parts 
+% minionpro pdfspacing
+\usepackage[eulerchapternumbers,subfig,beramono,eulermath,
+	parts]{classicthesis}
+%--------------------------------------------------------------
+\newlength{\abcd} % for ab..z string length calculation
+% how all the floats will be aligned
+\newcommand{\myfloatalign}{\centering} 
+\setlength{\extrarowheight}{3pt} % increase table row height
+\captionsetup{format=hang,font=small}
+%--------------------------------------------------------------
+% Layout setting
+%--------------------------------------------------------------
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	ignoremp,
+	bindingoffset = 1cm, 
+	textwidth     = 13.5cm,
+	textheight    = 21.5cm,
+	lmargin       = 3.5cm, % left margin
+	tmargin       = 4cm    % top margin 
+}
+%--------------------------------------------------------------
+\usepackage{listings}
+\usepackage{hyperref}
+% My Theorem
+\newtheorem{oss}{Observation}[section]
+\newtheorem{exercise}{Exercise}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+
+\newtheorem{lem}[thm]{Lemma}
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+
+% questo comando e' relativo alle correzioni che puo
+% apportare il prof se lo desidera.
+\newcommand{\prof}[1]{\boldsymbol{#1}}
+
+% instead of boldsymbol I can use the arrow above the letter with
+%\newcommand{\vect}[1]{\vec{#1}}
+
+% page settings
+% \pagestyle{headings}
+%--------------------------------------------------------------
+\begin{document}
+\frenchspacing
+\raggedbottom
+\pagenumbering{roman}
+\pagestyle{plain}
+%--------------------------------------------------------------
+% Frontmatter
+%--------------------------------------------------------------
+%\include{titlePage}
+\pagestyle{scrheadings}
+%--------------------------------------------------------------
+% Mainmatter
+%--------------------------------------------------------------
+\pagenumbering{arabic}
+
+% settings for the lstlisting environment
+\lstset{
+	language = java
+	, numbers = left 
+	, basicstyle=\sffamily%\footnotesize
+	%, frame=single
+	, tabsize=2
+	, captionpos=b
+	, breaklines=true
+	, showspaces=false
+	, showstringspaces=false
+}
+
+\chapter*{Analisi di reti metaboliche basata su propriet\`a di
+  connessione}
+\begin{description}
+\item[Candidato] Massimo Nocentini, \url{massimo.nocentini@gmail.com}
+\item[Relatore] Pierluigi Crescenzi, \url{pierluigi.crescenzi@unifi.it}
+\end{description}
+Questo lavoro tratta l'analisi di reti metaboliche ed ha come
+obiettivo il supporto del lavoro \emph{Telling Stories} di Crescenzi,
+Marino ed altri, nel quale si studia una variante del problema di
+enumerare tutti i sotto grafi aciclici di un grafo orientato,
+aggiungendo il vincolo che solo un determinato sottoinsieme
+$\mathbb{B}$ di vertici possono avere il ruolo di sorgente o di pozzo
+nei \emph{DAG} enumerati. Ogni \emph{DAG} che soddisfa tale condizione
+\`e chiamato \emph{storia} e si vuole ``raccontare'' tutte le
+possibili storie dato un grafo orientato e l'insieme
+$\mathbb{B}$. Modellando una rete metabolica con la struttura astratta
+grafo \`e possibile ricercare le storie in essa contenute: il nostro
+lavoro verifica se \`e possibile costruire l'insieme $\mathbb{B}$ in
+modo automatico per condurre tale ricerca.
+
+Per raggiungere il nostro obiettivo abbiamo dapprima costruito il
+grafo da studiare a partire dalla rete metabolica codificata con il
+linguaggio \emph{SBML} e, successivamente, ne abbiamo analizzato la
+connettivit\`a, ricercando le sue componenti fortemente connesse. Una
+volta costruito il ``meta grafo'' che ha come vertici le componenti
+fortemente connesse e come archi gli archi che collegano metaboliti
+contenuti in componenti diverse (evitando duplicazioni), assegniamo un
+ruolo ad ogni componente $c$: se $c$ \`e \emph{sorgente} o
+\emph{pozzo} allora possiamo inserire i vertici che la compongono
+nell'insieme $\mathbb{B}$.
+
+Per automatizzare questo processo abbiamo prodotto una libreria,
+sviluppata con il linguaggio Java, nella quale vengono implementati
+gli algoritmi per la visita in profondit\`a e per la ricerca delle
+componenti fortemente connesse. Questa libreria non \`e orientata ad
+essere utilizzata come un programma a se stante, bens\`i mira ad un
+utilizzo programmatico ed estendibile. Nella libreria \`e presente
+anche una maschera realizzata utilizzando il framework \emph{SWING}
+per la renderizzazione di un particolare insieme di risultati,
+relativi alla composizione delle componenti fortemente connesse, utile
+per indagare la distribuzione dei ruoli ai metaboliti considerando un
+insieme di reti metaboliche.
+
+Abbiamo applicato le nostre implementazioni a due insiemi di reti
+metaboliche, analizzando circa 170 modelli contenenti circa 12500
+metaboliti, osservando che se ci limitiamo ad indagare una singola
+rete metabolica allora il nostro processo \`e in grado di costruire
+l'insieme $\mathbb{B}$, mentre se consideriamo un insieme di reti
+metaboliche la costruzione di $\mathbb{B}$ \`e affetta da errori in
+quanto esistono metaboliti che ``interpretano'' un ruolo diverso in
+modelli diversi.
+
+
+
+\end{document}
