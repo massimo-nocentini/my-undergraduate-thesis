@@ -2,7 +2,7 @@
 \label{chapter:theoretical-background}
 In questo capitolo affronteremo gli algoritmi alla base delle
 implementazioni da un punto di vista teorico. Vedremo la tecnica di
-visita del grafo che abbiamo adottato ed un palco di soluzioni per il
+visita del grafo che abbiamo adottato e diverse soluzioni per il
 calcolo delle componenti fortemente connesse.
 
 \section{Alcune definizioni}
@@ -156,7 +156,7 @@ Formalizziamo la visita in profondit\`a col seguente pseudo codice:
 
       per ogni v in V:
         se non visitato[v]:
-          esplora(v, E)
+          visita(v, E)
 
     procedura visita(v, E):
       visitato[v] = vero
@@ -206,12 +206,12 @@ rimane nella pila dei vertici raggiunti.
 Un risultato della visita in profondit\`a di un grafo non orientato $G
 = (V, E)$, parallelo alla verifica dell'esistenza di un cammino tra
 due vertici, \`e la costruzione di un albero ricoprente di $G$. Per
-\emph{albero ricoprente}, o \emph{albero DFS}, si intende un
-sotto grafo $T$ di $G$ tale che $T = (V, E')$, con $E' \subseteq E$, e
-che $T$ sia un albero.
+\emph{albero ricoprente} si intende un sotto grafo $T$ di $G$ tale che
+$T = (V, E')$, con $E' \subseteq E$, e che $T$ sia un albero.
 
-\`E possibile costruire l'insieme $E'$ aggiungendo gli archi $(v, w)
-\in E$ tali che $visitato[w] = falso$ quando la visita \`e a regime.
+\`E possibile costruire l'insieme $E'$ aggiungendo gli archi $(v, u)
+\in E$ tali che $visitato[u] = falso$ quando l'arco viene analizzato
+nella procedura di visita.
 
 Vedremo nel Capitolo \ref{chapter:study} come la costruzione di tali
 alberi verr\`a raggiunta da una specifica funzionalit\`a del nostro
@@ -441,7 +441,7 @@ inserito nella pila una e una sola volta. Inoltre, per verificare se
 un vertice \`e contenuto nella pila, possiamo utilizzare un vettore di
 valori booleani, che rende il costo di questa operazione lineare.
 
-\subsection{Crescenzi-Gambosi-Grossi: utilizzo di due pile}
+\subsection{Algoritmo di Tarjan mediante due pile}
 \label{subsection:crescenzi-gambosi-grossi}
 Anche questa variante personalizza lo schema classico della visita in
 profondit\`a, utilizzando gli stessi punti di estensione della
@@ -490,13 +490,13 @@ vengono numerati in ordine crescente rispetto al momento in cui
 vengono visitati (anche questo concetto lo si ritrova nella variante
 di Tarjan dove si utilizza la funzione $numero$).
 \\\\
-La variante di Crescenzi-Gambosi-Grossi, a regime, mantiene due pile:
-una per mantenere l'insieme dei vertici parziali, una per mantenere
-l'insieme dei vertici rappresentanti. Tutti i vertici che appartengo
-alla stessa componente fortemente connessa occupano posizioni contigue
-nella pila dei parziali, mentre il primo di essi sar\`a inserito anche
-nella pila dei rappresentanti e vi rester\`a finch\`e la componente
-fortemente connessa non verr\`a creata.
+Questa variante, a regime, mantiene due pile: una per mantenere
+l'insieme dei vertici parziali, una per mantenere l'insieme dei
+vertici rappresentanti. Tutti i vertici che appartengo alla stessa
+componente fortemente connessa occupano posizioni contigue nella pila
+dei parziali, mentre il primo di essi sar\`a inserito anche nella pila
+dei rappresentanti e vi rester\`a finch\`e la componente fortemente
+connessa non verr\`a creata.
 
 L'algoritmo che implementa questa variante procede seguendo la
 seguente idea:
