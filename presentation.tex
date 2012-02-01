@@ -1,0 +1,238 @@
+\documentclass{beamer}
+
+\usetheme{Boadilla} 
+% \setbeamertemplate{blocks}[rounded][shadow=false]
+% \useoutertheme{umbcfootline} 
+% \setfootline{\insertshortinstitute, \insertshortdate 
+%     \hfill slide \insertframenumber/\inserttotalframenumber} 
+
+\title{Analisi di reti metaboliche basata su propriet\`a di
+  connessione}
+\author{Massimo Nocentini}
+\date{Firenze, \today}
+%\institute{Universit\`a degli Studi di Firenze}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+  \begin{center}
+    \includegraphics[scale=.065]{logo/unifi}
+  \end{center}
+\end{frame}
+
+\frame{\tableofcontents}
+
+ 
+\section*{Introduction}  
+\begin{frame}
+	\begin{block}{Original source of the following notes}
+    Use case driven object modeling with UML - Theory and Practice,\\
+    Doug Rosenberg and Matt Stephens,\\
+    Apress editor
+    \end{block}
+\end{frame}
+ 
+\frame
+{ 
+  \frametitle{Some important points}
+  
+  \begin{itemize}
+  \item capturing your users’ actions and the associated system responses
+  \item use case modeling involves analyzing both the \textbf{basic course} (
+	typical “sunny-day” usage of the system) and the \textbf{alternate
+	courses} (what happens when things go wrong, or when the user tries some
+	infrequently used feature of the program)
+
+  \item The use case is written in the context of the domain model that is, all
+  	the terms (nouns and noun phrases) that went into the domain model should
+  also be used directly in your use case text 
+  \item  ICONIX approach assumes that the initial domain model is wrong and
+  provides for incrementally improving it as you analyze the use cases
+  \item Driving Your Design (and Your Tests) from the Use Cases
+  
+  \end{itemize}
+}
+
+\section{Follow the Two-Paragraph Rule}
+
+\begin{frame}
+  \frametitle{Follow the Two-Paragraph Rule}
+  \framesubtitle{The proof uses \textit{reductio ad absurdum}.}
+  Each use case should fit comfortably into two paragraphs, including both the 
+  basic course and alternate courses.
+  
+  The writer should just write about how the users will be using the system and
+ 	what the system will do in response.
+ 	
+ 	\begin{block}{Helping questions}
+ When writing use cases, you need to keep asking the following three
+ fundamental questions:
+		\begin{itemize} 
+		  \item \emph{What happens?} this is the client action gets your
+		  “sunny-day scenario” started.
+		  \item \emph{And then what happens?} this is the response of the system 
+			(keep asking this question until your “sunny-day scenario” is complete.)
+		  \item \emph{What else might happen?} (Keep asking this one until you’ve 
+		  	identified all the “rainy-day scenarios” you can think of, and
+		  	 described the related behavior.)
+		\end{itemize}    
+     \end{block}
+\end{frame}
+
+\section{Organize Your Use Cases with Actors and Use Case Diagrams}
+ 
+\begin{frame}
+  \frametitle{Organize Your Use Cases with Actors and Use Case Diagrams}
+  %\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
+      \begin{itemize}
+        \item A use case diagram shows multiple use cases on the one diagram
+        \item It’s an overview of a related group of use cases
+        \item The text in each oval is the use case title 
+      \end{itemize}
+ \end{frame}
+\begin{frame}
+ 	\begin{block}{Notations}
+		\begin{itemize} 
+		  \item \emph{An actor} is represented on the diagram as a stick figure and
+		  is analogous to a \textbf{role} that users can play.
+		  The actor is \emph{external} to the system, is on the outside area of the
+		  diagram, whereas the system is on the inside area. Actors can represent
+		  nonhuman external systems as well as people.
+		  \item An \emph{association} from the actor to a use case means that the
+		  actor is the one who carries out that use case.
+		  \item The association can also signify \textbf{responsibilities}. 
+		  	For example, an Administrator pointing to a Moderate Forum Messages
+			 use case means “The administrator is responsible for moderating forum
+			 messages.”
+		\end{itemize}    
+     \end{block}
+\end{frame}
+
+\section{Write Your Use Cases in Active Voice}
+ 
+\begin{frame}
+  \frametitle{Write Your Use Cases in Active Voice}
+  %\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
+      \begin{itemize}
+        \item Passive sentences are often unclear and they lack energy
+        \item Active sentences make clear who does what
+      \end{itemize}
+      \begin{block}{Good example}
+      The user enters her username and password, and then clicks the Login
+      button.\\ 
+      The system looks up the user profile using the username and
+      checks the password. \\
+      The system then logs in the user.
+      \end{block}
+ \end{frame}
+
+\section{Write Your Use Case Using an Event/Response Flow}
+ 
+\begin{frame}
+  \frametitle{Write Your Use Case Using an Event/Response Flow}
+A use case is often triggered by a user-initiated event that the system has to 
+respond to. However, it can also be triggered by a system-initiated event to
+which the user responds.\\ 
+      \begin{block}{Refined example}
+      The system displays the Login screen. The user enters her username and password, and
+then clicks the Login button. The system looks up the user profile using the username
+and checks the password. The system then logs in the user.
+      \end{block}
+ \end{frame}
+\begin{frame}
+\begin{itemize}
+        \item It’s important to remember to write both sides of the user/system dialogue
+        \item Use case modeling can be thought of as an outside-in type of approach
+        \item A use case will typically consist of several steps.
+			Each step involves an event and a response: the user’s action and the
+		system’s reaction, or vice versa
+        \item You need to write about the user side of the dialogue to keep
+        your behavior requirements firmly userfocused
+        \item it’s not sufficient to just write down what the user does, because ultimately
+you’re trying to spec software, and software really consists of the system’s behavior
+      \end{itemize}
+\end{frame}
+
+\section{Write Your Use Case in the Context of the Object Model}
+ 
+\begin{frame}
+  \frametitle{Write Your Use Case in the Context of the Object Model}
+      \begin{alertblock}{Oss}
+      You can’t drive object-oriented designs from use cases unless you tie your use cases
+to objects
+      \end{alertblock}
+      This means that you need to reference domain classes that participate in 
+      the use case, and you need to name your screens and other boundary objects
+explicitly in the use case text
+
+ \end{frame}
+
+\section{Write Your Use Cases Using a Noun-Verb-Noun Sentence Structure}
+ 
+\begin{frame}
+  \frametitle{Write Your Use Cases Using a Noun-Verb-Noun Sentence Structure}
+                                         
+  \begin{itemize}
+        \item use case text follows the \textbf{noun-verb-noun} style
+       \item The nouns are the object instances. These usually either come from
+       the domain model (entities) or are boundary/GUI objects.
+        \item The verbs are the messages between objects. These represent the software functions
+(controllers) that need to be built.
+ \end{itemize}
+ \end{frame}
+
+\section{Reference Domain Classes by Name}
+  
+\begin{frame}
+  \frametitle{Reference Domain Classes by Name}
+                                         
+  \begin{itemize}
+        \item the domain model serves as a project glossary                                                                    hat helps to
+ensure consistent usage of terms when describing the problem space
+        \item it’s critically important that the use cases are linked to the objects
+       \item referencing the domain classes by name in the use case text
+  \end{itemize}
+  \begin{block}{Example using domain object}
+   he user selects a Book and adds it to his Wish List. The system displays a page with the
+updated list and also displays the user’s Shopping Cart.
+  \end{block}
+instead of
+\begin{alertblock}{Wrong use case}
+The user selects a title and adds it to his list of books to be saved for later. The system
+displays a page with the updated list and also shows a list of titles in the user’s cart,
+ready for checkout.
+\end{alertblock}
+ \end{frame}
+ 
+\section{Final Example}
+ 
+\begin{frame}
+  \frametitle{Final Example}
+\begin{block}{Basic Course}
+The Customer clicks the Write Review button for the book currently being viewed, and
+the system shows the Write Review screen. The Customer types in a Book Review, gives it
+a Book Rating out of five stars, and clicks the Send button. The system ensures that the
+Book Review isn’t too long or short, and that the Book Rating is within one and five
+stars. The system then displays a confirmation screen, and the review is sent to a Moder-
+ator, ready to be added.
+\end{block} 
+\end{frame}
+ 
+\begin{frame}
+	\begin{alertblock}{Alternate Course}
+		\begin{itemize}
+		  \item \textbf{User not logged in} The user is first taken to the 
+		 	Login screen and then to the Write Review screen once he is logged in.
+		  \item \textbf{The user enters a review that is too long (text $>$ 1MB)}: 
+			The system rejects the review and responds with a message explaining why the
+			review was rejected.
+		\item \textbf{The review is too short ($<$ 10 characters)}: The system
+		rejects the review.
+		\end{itemize}
+	\end{alertblock} 
+\end{frame}
+
+\end{document}
+ 
+
