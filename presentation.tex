@@ -207,12 +207,25 @@ metaboliche] % (optional, use only with long paper titles)
 
 
 
-\subsection{Previous Work}
+\subsection{Lavori esistenti}
 
-\begin{frame}{Make Titles Informative.}
+\begin{frame}{Ricerca dei \emph{Seed Compounds}}
+  In \cite{Borenstein-Kupiec} si studiano le reti metaboliche per
+  identificare i \emph{seed compounds}, delle molecole che sono delle
+  ``interfacce'' tra la rete metabolica e il contesto che la ospita.
+
+  Prima si identificano le interazioni della rete con il suo contesto
+  (Figura A) poi, decomponendo la rete in componenti connesse, si
+  scelgono i metaboliti di componenti sorgenti (Figura B) come
+  \emph{seed compounds}.
+
+  \begin{figure}
+    \includegraphics[scale=.6]{images/sbml-code-chunk.eps}
+  \end{figure}
+
 \end{frame}
 
-\begin{frame}{Make Titles Informative.}
+\begin{frame}{``Raccontare Storie''}
 \end{frame}
 
 
@@ -277,30 +290,28 @@ metaboliche] % (optional, use only with long paper titles)
 % All of the following is optional and typically not needed. 
 \appendix
 \section<presentation>*{\appendixname}
-\subsection<presentation>*{For Further Reading}
+\subsection<presentation>*{Riferimenti Bibliografici}
 
-\begin{frame}[allowframebreaks]
-  \frametitle<presentation>{For Further Reading}
+\begin{frame}%[allowframebreaks]
+  \frametitle<presentation>{Riferimenti Bibliografici}
     
   \begin{thebibliography}{10}
     
-  \beamertemplatebookbibitems
-  % Start with overview books.
-
-  \bibitem{Author1990}
-    A.~Author.
-    \newblock {\em Handbook of Everything}.
-    \newblock Some Press, 1990.
- 
-    
   \beamertemplatearticlebibitems
-  % Followed by interesting articles. Keep the list short. 
 
-  \bibitem{Someone2000}
-    S.~Someone.
-    \newblock On this and that.
-    \newblock {\em Journal of This and That}, 2(1):50--100,
-    2000.
+  \bibitem{Crescenzi-Marino}
+    P.~Crescenzi, A.~Marino et altri.
+    \newblock {\em Telling Stories}.
+
+  \bibitem{Borenstein-Kupiec}
+    E.~Borenstein, M.~Kupiec, M.~Feldman, E.~Ruppin.
+    \newblock {\em Large-scale reconstruction and phylogenetic analysis of
+    metabolic environments}.
+
+  \bibitem{Tarjan}
+    R.~Tarjan.
+    \newblock {\em Depth-First Search and linear graph algorithms}.
+
   \end{thebibliography}
 \end{frame}
 
