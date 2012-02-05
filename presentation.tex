@@ -34,7 +34,7 @@
   % or whatever (possibly just delete it)
 }
 
-
+\usepackage{listings}
 \usepackage[italian]{babel}
 % or whatever
 
@@ -45,7 +45,13 @@
 \usepackage[T1]{fontenc}
 % Or whatever. Note that the encoding and the font should match. If T1
 % does not look nice, try deleting the line with the fontenc.
-
+\lstset{
+  language=XML,
+  basicstyle=\footnotesize,%\ttfamily,
+  columns=fullflexible,
+  morekeywords={encoding,
+    xs:schema,xs:element,xs:complexType,xs:sequence,xs:attribute}
+}
 
 \title[Analisi di reti
 metaboliche] % (optional, use only with long paper titles)
@@ -60,7 +66,7 @@ metaboliche] % (optional, use only with long paper titles)
 % - Use the \inst{?} command only if the authors have different
 %   affiliation.
 
- \institute[Universities of Somewhere and Elsewhere] % (optional, but mostly needed)
+ \institute[UniversitaStudiFirenze] % (optional, but mostly needed)
  { Universit\`a degli Studi di Firenze }
 %   \inst{1}%
 %   Department of Computer Science\\
@@ -139,52 +145,66 @@ metaboliche] % (optional, use only with long paper titles)
 % - If you omit details that are vital to the proof/implementation,
 %   just say so once. Everybody will be happy with that.
 
-\section{Motivation}
+\section{Motivazioni}
 
-\subsection{The Basic Problem That We Studied}
+\subsection{Analisi di reti metaboliche}
 
-\begin{frame}{Make Titles Informative. Use Uppercase Letters.}{Subtitles are optional.}
+\begin{frame}{Definizione di rete metabolica}
   % - A title should summarize the slide in an understandable fashion
   %   for anyone how does not follow everything on the slide itself.
-
+  \begin{definition}
+    Una rete metabolica \`e un insieme di reazioni chimiche che si
+    verificano all'interno di una cellula.
+  \end{definition}
+  \`E interessante studiarle per:
   \begin{itemize}
-  \item
-    Use \texttt{itemize} a lot.
-  \item
-    Use very short sentences or short phrases.
+  \item capire le propriet\`a fisiologiche e biochimiche delle
+    cellule;
+  \item ricostruire le reazioni che avvengono all'interno di
+    organismi, sia batteri che esseri umani;
+  \item studiare il comportamento della cellula in relazione al
+    contesto che la ospita.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Make Titles Informative.}
-
-  You can create overlays\dots
-  \begin{itemize}
-  \item using the \texttt{pause} command:
-    \begin{itemize}
-    \item
-      First item.
-      \pause
-    \item    
-      Second item.
-    \end{itemize}
-  \item
-    using overlay specifications:
-    \begin{itemize}
-    \item<3->
-      First item.
-    \item<4->
-      Second item.
-    \end{itemize}
-  \item
-    using the general \texttt{uncover} command:
-    \begin{itemize}
-      \uncover<5->{\item
-        First item.}
-      \uncover<6->{\item
-        Second item.}
-    \end{itemize}
-  \end{itemize}
+\begin{frame}{Codifica delle reti}{usando il linguaggio \emph{SBML}}
+  \textbf{SBML} (\textbf{S}ystems \textbf{B}iology \textbf{M}arkup
+  \textbf{L}anguage) \`e un linguaggio orientato alla descrizione di
+  sistemi in cui entit\`a biologiche sono oggetto di manipolazioni
+  eseguite da processi fisici.
+  \begin{figure}
+    \includegraphics[scale=.6]{images/sbml-code-chunk.eps}
+    \caption{Estratto della codifica del batterio Bartonella}
+  \end{figure}
 \end{frame}
+  % You can create overlays\dots
+  % \begin{itemize}
+  % \item using the \texttt{pause} command:
+  %   \begin{itemize}
+  %   \item
+  %     First item.
+  %     \pause
+  %   \item    
+  %     Second item.
+  %   \end{itemize}
+  % \item
+  %   using overlay specifications:
+  %   \begin{itemize}
+  %   \item<3->
+  %     First item.
+  %   \item<4->
+  %     Second item.
+  %   \end{itemize}
+  % \item
+  %   using the general \texttt{uncover} command:
+  %   \begin{itemize}
+  %     \uncover<5->{\item
+  %       First item.}
+  %     \uncover<6->{\item
+  %       Second item.}
+  %   \end{itemize}
+  % \end{itemize}
+
 
 
 \subsection{Previous Work}
