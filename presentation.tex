@@ -210,7 +210,7 @@ L'insieme $\mathbb{B}$ \`e composto dai vertici a cui \`e permesso di
 essere sorgenti o pozzi nelle \emph{storie}.
 \end{frame}
 
-\section{Nel nostro lavoro}
+\section{Nostro contributo}
 
 \subsection{Obiettivi}
 
@@ -218,10 +218,15 @@ essere sorgenti o pozzi nelle \emph{storie}.
     metodo}
 Gli obiettivi del nostro lavoro sono:
 \begin{itemize}
-\item<1-> rappresentare una rete mediante un grafo;
-\item<2-> fornire strumenti per analizzare insiemi di reti;
-\item<3-> costruire in modo automatico l'insieme $\mathbb{B}$;
-\item<4-> verificare se il metodo \`e accettabile.
+\item<1-> rappresentare una rete mediante un grafo\\
+  \footnotesize{astraendo dai molti dettagli di \emph{SBML}};
+\item<2-> fornire strumenti per analizzare insiemi di reti\\
+  \footnotesize{per avere informazioni sui metaboliti che appaiono in
+    pi\`u di una rete};
+\item<3-> costruire in modo automatico l'insieme $\mathbb{B}$\\
+  \footnotesize{sfruttando le informazioni di tutte le reti studiate};
+\item<4-> verificare se il metodo \`e accettabile\\
+  \footnotesize{per misurare la validit\`a di $\mathbb{B}$}.
 \end{itemize}
 \end{frame}
 
@@ -262,55 +267,79 @@ Gli obiettivi del nostro lavoro sono:
     \end{example}
 \end{frame}
 
-\begin{frame}{Analizzare un insieme di reti}
-  \begin{center}
-    \includegraphics[scale=.2]{images/ResultViewer-Escherichia-family}
-  \end{center}
-Nella tabella il pattern che si ripete per ogni cella \`e $(C:c, V:v:w)$.
+\begin{frame}{Ricerca delle componenti fortemente connesse}
+  Attualmente l'insieme $\mathbb{B}$ viene costruito in base a
+  osservazioni e studi \emph{empirici}, costituito da metaboliti con
+  propriet\`a particolari.
+
+  Per costruirlo in modo automatico partizioniamo la rete in
+  componenti connesse in quanto:
+\begin{itemize}
+\item<2-> \`e difficile assegnare il ruolo ad ogni vertice studiando
+  l'intera rete date le sue dimensioni;
+\item<3-> cercando le componenti \`e possibile astrarre dai cicli ed
+  identificare classi di metaboliti equivalenti;
+\item<4-> due metaboliti equivalenti si producono a vicenda, pertanto
+  gli associamo il ruolo della componente che li contiene;
+\item<5-> se una componente \`e \emph{sorgente} o \emph{pozzo} nel
+  ``meta grafo'' allora aggiungiamo i vertici che la compongono in
+  $\mathbb{B}$.
+\end{itemize}
 \end{frame}
 
 \subsection{Risultati}
 
-\begin{frame}{Make Titles Informative.}
+\begin{frame}{Struttura delle reti}
+  \begin{center}
+    \includegraphics[scale=.5]{images/ResultViewer-table-with-average-row-selected-particular.eps}
+  \end{center}
+Tutte le reti hanno una struttura a ``clessidra'':
+\begin{itemize}
+\item molte componenti \emph{sorgenti} contenenti pochi vertici;
+\item poche componenti \emph{intermedie} contenenti molti vertivi;
+\item molte componenti \emph{pozzo} contenenti pochi vertici.
+\end{itemize}
+\pause
+\begin{alertblock}{Troppi vertici sorgente}
+  Questo non \`e un buon risultato in quanto gli studi attuali mirano
+  a reti con pochi vertici in $\mathbb{B}$.
+\end{alertblock}
 \end{frame}
 
-\begin{frame}{Make Titles Informative.}
+\begin{frame}{Vertici con pi\`u ruoli in reti deverse}
+  \begin{center}
+    \includegraphics[scale=.5]{images/ResultViewer-grouping-table-zoom}
+  \end{center}
+  Studiando un insieme di reti, pi\`u del 10\% dei vertici non hanno
+  un ruolo univoco.
+  \pause
+  \begin{alertblock}{Incertezza sulla costruzione di $\mathbb{B}$}
+    Vertici con pi\`u di un ruolo inducono incertezza sul decidere la
+    loro appartenenza all'insieme $\mathbb{B}$.
+  \end{alertblock}
 \end{frame}
 
-\begin{frame}{Make Titles Informative.}
+\begin{frame}{Ridurre i vertici di $\mathbb{B}$}
+  Se consideriamo tutti i vertici che hanno un ruolo univoco rispetto
+  ad un insieme di reti, \`e possibile raffinare la costruzione di
+  ogni $\mathbb{B}$ escludendo tutti i vertici che hanno un ruolo non
+  conforme a quello calcolato su tutte le reti.
 \end{frame}
 
 
 \section*{Summary}
 
-\begin{frame}{Summary}
-  % put here the summary in two column like in the user guide.
-
+\begin{frame}{Riepilogo}
   % Keep the summary *very short*.
-  \begin{itemize}
-  \item
-    The \alert{first main message} of your talk in one or two lines.
-  \item
-    The \alert{second main message} of your talk in one or two lines.
-  \item
-    Perhaps a \alert{third message}, but not more than that.
-  \end{itemize}
-  
-  % The following outlook is optional.
-  \vskip0pt plus.5fill
-  \begin{itemize}
-  \item
-    Outlook
     \begin{itemize}
-    \item
-      Something you haven't solved.
-    \item
-      Something else you haven't solved.
+    \item costruire l'insieme $\mathbb{B}$ in modo automatico
+      decomponendo in componenti \emph{non} produce risultati
+      soddisfacenti;
+    \item l'unico caso utile riguarda l'analisi di modelli singoli,
+      anche se rimane il problema di avere molti vertici in
+      $\mathbb{B}$.
     \end{itemize}
-  \end{itemize}
 \end{frame}
-
-
 
 % All of the following is optional and typically not needed. 
 \appendix
