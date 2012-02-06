@@ -34,7 +34,6 @@
   % or whatever (possibly just delete it)
 }
 
-\usepackage{listings}
 \usepackage[italian]{babel}
 % or whatever
 
@@ -45,17 +44,16 @@
 \usepackage[T1]{fontenc}
 % Or whatever. Note that the encoding and the font should match. If T1
 % does not look nice, try deleting the line with the fontenc.
-\lstset{
-  language=XML,
-  basicstyle=\footnotesize,%\ttfamily,
-  columns=fullflexible,
-  morekeywords={encoding,
-    xs:schema,xs:element,xs:complexType,xs:sequence,xs:attribute}
-}
+% \lstset{
+%   language=XML,
+%   basicstyle=\footnotesize,%\ttfamily,
+%   columns=fullflexible,
+%   morekeywords={encoding,
+%     xs:schema,xs:element,xs:complexType,xs:sequence,xs:attribute}
+% }
 
-\title[Analisi di reti
-metaboliche] % (optional, use only with long paper titles)
-{Analisi di reti metaboliche basata su propriet\`a di connessione}
+\title[Analisi di reti metaboliche] {Analisi di reti metaboliche
+  basata su propriet\`a di connessione}
 
 % \subtitle
 % {Include Only If Paper Has a Subtitle}
@@ -101,7 +99,7 @@ metaboliche] % (optional, use only with long paper titles)
 % the beginning of each subsection:
 \AtBeginSubsection[]
 {
-  \begin{frame}<beamer>{Outline}
+  \begin{frame}<beamer>{Contenuti}
     \tableofcontents[currentsection,currentsubsection]
   \end{frame}
 }
@@ -122,7 +120,7 @@ metaboliche] % (optional, use only with long paper titles)
   % \end{center}
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Contenuti}
   \tableofcontents[pausesections]
   % You might wish to add the option [pausesections]
 \end{frame}
@@ -177,35 +175,6 @@ metaboliche] % (optional, use only with long paper titles)
     \caption{Estratto della codifica del batterio Bartonella}
   \end{figure}
 \end{frame}
-  % You can create overlays\dots
-  % \begin{itemize}
-  % \item using the \texttt{pause} command:
-  %   \begin{itemize}
-  %   \item
-  %     First item.
-  %     \pause
-  %   \item    
-  %     Second item.
-  %   \end{itemize}
-  % \item
-  %   using overlay specifications:
-  %   \begin{itemize}
-  %   \item<3->
-  %     First item.
-  %   \item<4->
-  %     Second item.
-  %   \end{itemize}
-  % \item
-  %   using the general \texttt{uncover} command:
-  %   \begin{itemize}
-  %     \uncover<5->{\item
-  %       First item.}
-  %     \uncover<6->{\item
-  %       Second item.}
-  %   \end{itemize}
-  % \end{itemize}
-
-
 
 \subsection{Lavori esistenti}
 
@@ -226,13 +195,81 @@ metaboliche] % (optional, use only with long paper titles)
 \end{frame}
 
 \begin{frame}{``Raccontare Storie''}
+In \cite{Crescenzi-Marino} si studiano le reti metaboliche per
+``raccontare'' tutte le \emph{storie} che vi sono contenute.
+\begin{definition}
+  Dato un grafo orientato $G = (\mathbb{B} \cup \mathbb{W}, E)$, una
+  \emph{storia} \`e un sottografo aciclico $G' = (\mathbb{B} \cup
+  \mathbb{W'}, E')$ di $G$ tale che $E' \subseteq E $ e:
+  \begin{displaymath}
+    \mathbb{W'} = \{w \in \mathbb{W}: indeg(w) > 0 \wedge outdeg(w)
+    > 0\}
+  \end{displaymath}
+\end{definition}
+L'insieme $\mathbb{B}$ \`e composto dai vertici a cui \`e permesso di
+essere sorgenti o pozzi nelle \emph{storie}.
 \end{frame}
 
+\section{Nel nostro lavoro}
 
+\subsection{Obiettivi}
 
-\section{Our Results/Contribution}
+\begin{frame}{Analizzare reti, costruire $\mathbb{B}$ e verificare il
+    metodo}
+Gli obiettivi del nostro lavoro sono:
+\begin{itemize}
+\item<1-> rappresentare una rete mediante un grafo;
+\item<2-> fornire strumenti per analizzare insiemi di reti;
+\item<3-> costruire in modo automatico l'insieme $\mathbb{B}$;
+\item<4-> verificare se il metodo \`e accettabile.
+\end{itemize}
+\end{frame}
 
-\subsection{Main Results}
+\subsection{Metodologia}
+
+\begin{frame}{Rappresentare una rete mediante un grafo}{Data una
+    reazione \emph{non reversibile} $r$ tale che $reagenti(r) = \{ r_{1},
+    \ldots, r_{n} \}$ e $prodotti(r) = \{ p_{1}, \ldots, p_{m} \}$}
+
+  Costruiamo la relazione: $reagenti(r) \times prodotti(r)$.
+  
+    \begin{example}
+      Con $reagenti(r) = \{ a, b, c, d \}$ e $prodotti(r) = \{a, e,
+      f\}$ otteniamo il grafo:
+      \begin{figure}
+        \centering
+        \includegraphics[scale=.6]{images/non-reversible-reaction-example.dot.eps}
+        \label{fig:non-reversible-reaction-mapping}
+      \end{figure}
+    \end{example}
+\end{frame}
+
+\begin{frame}{Rappresentare una rete mediante un grafo}{Data una
+    reazione \emph{reversibile} $r$ tale che $reagenti(r) = \{ r_{1},
+    \ldots, r_{n} \}$ e $prodotti(r) = \{ p_{1}, \ldots, p_{m} \}$}
+
+  Costruiamo la relazione: $(reagenti(r) \times prodotti(r)) \cup
+  (prodotti(r) \times reagenti(r))$.
+  
+    \begin{example}
+      Con $reagenti(r) = \{ a, b, c, d \}$ e $prodotti(r) = \{a, e,
+      f\}$ otteniamo il grafo:
+      \begin{figure}
+        \centering
+        \includegraphics[scale=.6]{images/reversible-reaction-example.dot.eps}
+        \label{fig:reversible-reaction-mapping}
+      \end{figure}
+    \end{example}
+\end{frame}
+
+\begin{frame}{Analizzare un insieme di reti}
+  \begin{center}
+    \includegraphics[scale=.2]{images/ResultViewer-Escherichia-family}
+  \end{center}
+Nella tabella il pattern che si ripete per ogni cella \`e $(C:c, V:v:w)$.
+\end{frame}
+
+\subsection{Risultati}
 
 \begin{frame}{Make Titles Informative.}
 \end{frame}
@@ -242,24 +279,12 @@ metaboliche] % (optional, use only with long paper titles)
 
 \begin{frame}{Make Titles Informative.}
 \end{frame}
-
-
-\subsection{Basic Ideas for Proofs/Implementation}
-
-\begin{frame}{Make Titles Informative.}
-\end{frame}
-
-\begin{frame}{Make Titles Informative.}
-\end{frame}
-
-\begin{frame}{Make Titles Informative.}
-\end{frame}
-
 
 
 \section*{Summary}
 
 \begin{frame}{Summary}
+  % put here the summary in two column like in the user guide.
 
   % Keep the summary *very short*.
   \begin{itemize}
