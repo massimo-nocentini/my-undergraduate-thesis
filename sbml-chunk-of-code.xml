@@ -1,0 +1,7 @@
+<model name=''Bartonella'' \/>
+<listOfCompartments> 
+  <compartment id="cytoplasm" />
+</listOfCompartments>
+<listOfSpecies>
+  <species id="ALANINE" />
+  <species id="Adenines" />
