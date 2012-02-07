@@ -180,8 +180,8 @@
 
 \begin{frame}{Ricerca dei \emph{Seed Compounds}}
   In \cite{Borenstein-Kupiec} si studiano le reti metaboliche per
-  identificare i \emph{seed compounds}, delle molecole che sono delle
-  ``interfacce'' tra la rete metabolica e il contesto che la ospita.
+  identificare i \emph{seed compounds}, ``interfacce'' tra la rete
+  metabolica e il contesto che la ospita.
 
   Prima si identificano le interazioni della rete con il suo contesto
   (Figura A) poi, decomponendo la rete in componenti connesse, si
@@ -189,7 +189,7 @@
   \emph{seed compounds}.
 
   \begin{figure}
-    \includegraphics[scale=.6]{images/sbml-code-chunk.eps}
+    \includegraphics[scale=.6]{images/biology-scc-decomposition.eps}
   \end{figure}
 
 \end{frame}
@@ -199,7 +199,7 @@ In \cite{Crescenzi-Marino} si studiano le reti metaboliche per
 ``raccontare'' tutte le \emph{storie} che vi sono contenute.
 \begin{definition}
   Dato un grafo orientato $G = (\mathbb{B} \cup \mathbb{W}, E)$, una
-  \emph{storia} \`e un sottografo aciclico $G' = (\mathbb{B} \cup
+  \emph{storia} \`e un sotto grafo aciclico $G' = (\mathbb{B} \cup
   \mathbb{W'}, E')$ di $G$ tale che $E' \subseteq E $ e:
   \begin{displaymath}
     \mathbb{W'} = \{w \in \mathbb{W}: indeg(w) > 0 \wedge outdeg(w)
@@ -207,7 +207,8 @@ In \cite{Crescenzi-Marino} si studiano le reti metaboliche per
   \end{displaymath}
 \end{definition}
 L'insieme $\mathbb{B}$ \`e composto dai vertici a cui \`e permesso di
-essere sorgenti o pozzi nelle \emph{storie}.
+essere sorgenti o pozzi nelle \emph{storie}, ne identifica il loro
+``ruolo''.
 \end{frame}
 
 \section{Nostro contributo}
@@ -277,8 +278,8 @@ Gli obiettivi del nostro lavoro sono:
 \begin{itemize}
 \item<2-> \`e difficile assegnare il ruolo ad ogni vertice studiando
   l'intera rete date le sue dimensioni;
-\item<3-> cercando le componenti \`e possibile astrarre dai cicli ed
-  identificare classi di metaboliti equivalenti;
+\item<3-> \`e possibile astrarre dai cicli ed identificare classi di
+  metaboliti equivalenti;
 \item<4-> due metaboliti equivalenti si producono a vicenda, pertanto
   gli associamo il ruolo della componente che li contiene;
 \item<5-> se una componente \`e \emph{sorgente} o \emph{pozzo} nel
@@ -296,7 +297,7 @@ Gli obiettivi del nostro lavoro sono:
 Tutte le reti hanno una struttura a ``clessidra'':
 \begin{itemize}
 \item molte componenti \emph{sorgenti} contenenti pochi vertici;
-\item poche componenti \emph{intermedie} contenenti molti vertivi;
+\item poche componenti \emph{intermedie} contenenti molti vertici;
 \item molte componenti \emph{pozzo} contenenti pochi vertici.
 \end{itemize}
 \pause
@@ -306,7 +307,7 @@ Tutte le reti hanno una struttura a ``clessidra'':
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Vertici con pi\`u ruoli in reti deverse}
+\begin{frame}{Vertici con pi\`u ruoli in reti diverse}
   \begin{center}
     \includegraphics[scale=.5]{images/ResultViewer-grouping-table-zoom}
   \end{center}
@@ -319,21 +320,23 @@ Tutte le reti hanno una struttura a ``clessidra'':
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{Ridurre i vertici di $\mathbb{B}$}
+\begin{frame}{Raffinare $\mathbb{B}$ rispetto ad un insieme di reti}
+    \begin{center}
+      \includegraphics[scale=.3]{images/many-models-with-b-refinement}
+  \end{center}
   Se consideriamo tutti i vertici che hanno un ruolo univoco rispetto
-  ad un insieme di reti, \`e possibile raffinare la costruzione di
-  ogni $\mathbb{B}$ escludendo tutti i vertici che hanno un ruolo non
-  conforme a quello calcolato su tutte le reti.
+  ad un insieme di reti, \`e possibile raffinare ogni $\mathbb{B}$
+  escludendo i vertici che non hanno un ruolo conforme.
 \end{frame}
 
 
-\section*{Summary}
+\section*{Sommario}
 
 \begin{frame}{Riepilogo}
   % Keep the summary *very short*.
     \begin{itemize}
     \item costruire l'insieme $\mathbb{B}$ in modo automatico
-      decomponendo in componenti \emph{non} produce risultati
+      attraverso le componenti connesse \emph{non} produce risultati
       soddisfacenti;
     \item l'unico caso utile riguarda l'analisi di modelli singoli,
       anche se rimane il problema di avere molti vertici in
