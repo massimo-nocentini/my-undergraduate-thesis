@@ -150,10 +150,10 @@
 \begin{frame}{Definizione di rete metabolica}
   % - A title should summarize the slide in an understandable fashion
   %   for anyone how does not follow everything on the slide itself.
-  \begin{definition}
+  \begin{block}{Definizione}
     Una rete metabolica \`e un insieme di reazioni chimiche che si
-    verificano all'interno di una cellula.
-  \end{definition}
+    verificano all'interno di una cellula
+  \end{block}
   \`E interessante studiarle per:
   \begin{itemize}
   \item capire le propriet\`a fisiologiche e biochimiche delle
@@ -183,7 +183,7 @@
   prodotti(r)$
     \begin{block}{Esempio}
       Se $reagenti(r) = \{ a, b, c, d \} \wedge prodotti(r) = \{a, e,
-      f\}$ allora:
+      f\}$ allora
       \begin{figure}
         \centering
         \includegraphics[scale=.6]{images/non-reversible-reaction-example.dot.eps}
@@ -206,9 +206,9 @@
 
 \begin{frame}{Storie}
   \begin{block}{Definizione}
-  Dato un grafo orientato $G = (\mathbb{B} \cup \mathbb{W}, E)$, una
-  \emph{storia} \`e un sotto grafo aciclico $G' = (\mathbb{B} \cup
-  \mathbb{W'}, E')$ di $G$ tale che $E' \subseteq E $ e:
+    Dato un grafo orientato $G = (\mathbb{B} \cup \mathbb{W}, E)$, una
+    \emph{storia} \`e un sotto grafo aciclico $G' = (\mathbb{B} \cup
+    \mathbb{W'}, E')$ di $G$ tale che $E' \subseteq E $ e
   \begin{displaymath}
     \mathbb{W'} = \{w \in \mathbb{W}: indeg(w) > 0 \wedge outdeg(w)
     > 0\}
@@ -244,65 +244,72 @@ Gli obiettivi del nostro lavoro sono:
 
 \subsection{Metodologia}
 
-\begin{frame}{Ricerca delle componenti fortemente connesse}
-  Attualmente l'insieme $\mathbb{B}$ viene costruito in base a
-  osservazioni e studi \emph{empirici}, costituito da metaboliti con
-  propriet\`a particolari.
+\begin{frame}{Rappresentazione della rete con grafo}
+\begin{center} 
+  \includegraphics[scale=.3]{images/sbml-code-chunk.eps}
+  \includegraphics[scale=.4]{images/presentation-input-graph-all-whites.eps}
+\end{center}
+\end{frame}
 
-  Per costruirlo in modo automatico partizioniamo la rete in
-  componenti connesse in quanto:
-\begin{itemize}
-\item<2-> \`e difficile assegnare il ruolo ad ogni vertice studiando
-  l'intera rete date le sue dimensioni;
-\item<3-> \`e possibile astrarre dai cicli ed identificare classi di
-  metaboliti equivalenti;
-\item<4-> due metaboliti equivalenti si producono a vicenda, pertanto
-  gli associamo il ruolo della componente che li contiene;
-\item<5-> se una componente \`e \emph{sorgente} o \emph{pozzo} nel
-  ``meta grafo'' allora aggiungiamo i vertici che la compongono in
-  $\mathbb{B}$.
-\end{itemize}
+\begin{frame}{Componenti fortemente connesse}
+\begin{center} 
+  \includegraphics[scale=.4]{images/presentation-input-graph-all-whites.eps}
+  \includegraphics[scale=.6]{images/presentation-scc-metagraph-all-whites.eps}
+\end{center}
+\end{frame}
+
+\begin{frame}{Componenti sorgenti e pozzo}
+\begin{center} 
+  \includegraphics[scale=.6]{images/presentation-scc-metagraph-all-whites.eps}
+  \includegraphics[scale=.6]{images/presentation-scc-metagraph-with-b.eps}
+\end{center}
+\end{frame}
+
+\begin{frame}{Selezione dell'insieme $\mathbb{B}$}
+\begin{center} 
+  \includegraphics[scale=.4]{images/presentation-input-graph-all-whites.eps}
+  \includegraphics[scale=.4]{images/presentation-input-graph-with-b.eps}
+\end{center}
 \end{frame}
 
 \subsection{Risultati}
 
-\begin{frame}{Struttura delle reti}
+\begin{frame}{Analisi delle reti}
   \begin{center}
     \includegraphics[scale=.5]{images/ResultViewer-table-with-average-row-selected-particular.eps}
   \end{center}
 Tutte le reti hanno una struttura a ``clessidra'':
 \begin{itemize}
-\item molte componenti \emph{sorgenti} contenenti pochi vertici;
-\item poche componenti \emph{intermedie} contenenti molti vertici;
-\item molte componenti \emph{pozzo} contenenti pochi vertici.
+\item molte componenti \emph{sorgenti} contenenti pochi vertici
+\item poche componenti \emph{intermedie} contenenti molti vertici
+\item molte componenti \emph{pozzo} contenenti pochi vertici
 \end{itemize}
 \pause
-\begin{alertblock}{Troppi vertici sorgente}
-  Questo non \`e un buon risultato in quanto gli studi attuali mirano
-  a reti con pochi vertici in $\mathbb{B}$.
+\begin{alertblock}{Troppi vertici sorgenti e pozzi}
+  L'obiettivo sarebbe stato averne pochi
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Vertici con pi\`u ruoli in reti diverse}
+\begin{frame}{Analisi dei vertici}
   \begin{center}
     \includegraphics[scale=.5]{images/ResultViewer-grouping-table-zoom}
   \end{center}
   Studiando un insieme di reti, pi\`u del 10\% dei vertici non hanno
-  un ruolo univoco.
+  un ruolo univoco
   \pause
   \begin{alertblock}{Incertezza sulla costruzione di $\mathbb{B}$}
     Vertici con pi\`u di un ruolo inducono incertezza sul decidere la
-    loro appartenenza all'insieme $\mathbb{B}$.
+    loro appartenenza all'insieme $\mathbb{B}$
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{Raffinare $\mathbb{B}$ rispetto ad un insieme di reti}
+\begin{frame}{Combinazione delle due analisi}
     \begin{center}
-      \includegraphics[scale=.3]{images/many-models-with-b-refinement}
+      \includegraphics[scale=.5]{images/many-models-with-b-refinement}
   \end{center}
   Se consideriamo tutti i vertici che hanno un ruolo univoco rispetto
   ad un insieme di reti, \`e possibile raffinare ogni $\mathbb{B}$
-  escludendo i vertici che non hanno un ruolo conforme.
+  escludendo i vertici che non hanno un ruolo conforme
 \end{frame}
 
 
@@ -312,40 +319,11 @@ Tutte le reti hanno una struttura a ``clessidra'':
   % Keep the summary *very short*.
     \begin{itemize}
     \item costruire l'insieme $\mathbb{B}$ in modo automatico
-      attraverso le componenti connesse \emph{non} produce risultati
-      soddisfacenti;
+      attraverso le componenti connesse \emph{non} sembra produrre
+      risultati soddisfacenti
     \item l'unico caso utile riguarda l'analisi di modelli singoli,
-      anche se rimane il problema di avere molti vertici in
-      $\mathbb{B}$.
+      anche se in molti casi rimangono molti vertici in $\mathbb{B}$
     \end{itemize}
-\end{frame}
-
-% All of the following is optional and typically not needed. 
-\appendix
-\section<presentation>*{\appendixname}
-\subsection<presentation>*{Riferimenti Bibliografici}
-
-\begin{frame}%[allowframebreaks]
-  \frametitle<presentation>{Riferimenti Bibliografici}
-    
-  \begin{thebibliography}{10}
-    
-  \beamertemplatearticlebibitems
-
-  \bibitem{Crescenzi-Marino}
-    P.~Crescenzi, A.~Marino et altri.
-    \newblock {\em Telling Stories}.
-
-  \bibitem{Borenstein-Kupiec}
-    E.~Borenstein, M.~Kupiec, M.~Feldman, E.~Ruppin.
-    \newblock {\em Large-scale reconstruction and phylogenetic analysis of
-    metabolic environments}.
-
-  \bibitem{Tarjan}
-    R.~Tarjan.
-    \newblock {\em Depth-First Search and linear graph algorithms}.
-
-  \end{thebibliography}
 \end{frame}
 
 \end{document}

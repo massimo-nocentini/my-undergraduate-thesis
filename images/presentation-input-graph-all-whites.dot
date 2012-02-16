@@ -1,0 +1,40 @@
+digraph G { ratio=1; center = true; edge [arrowsize=.5, weight=.1,
+	color="gray", fontsize=8]; node
+	[label="",shape=circle,height=0.12,width=0.12,fontsize=1];
+	dummy_species_id1dummy_compartment_id ->
+	dummy_species_id2dummy_compartment_id;
+	dummy_species_id2dummy_compartment_id ->
+	dummy_species_id1dummy_compartment_id;
+	dummy_species_id2dummy_compartment_id ->
+	dummy_species_id3dummy_compartment_id;
+	dummy_species_id3dummy_compartment_id ->
+	dummy_species_id4dummy_compartment_id;
+	dummy_species_id3dummy_compartment_id ->
+	dummy_species_id5dummy_compartment_id;
+	dummy_species_id4dummy_compartment_id ->
+	dummy_species_id10dummy_compartment_id;
+	dummy_species_id5dummy_compartment_id ->
+	dummy_species_id6dummy_compartment_id;
+	dummy_species_id5dummy_compartment_id ->
+	dummy_species_id7dummy_compartment_id;
+	dummy_species_id6dummy_compartment_id ->
+	dummy_species_id5dummy_compartment_id;
+	dummy_species_id7dummy_compartment_id ->
+	dummy_species_id10dummy_compartment_id;
+	dummy_species_id7dummy_compartment_id ->
+	dummy_species_id8dummy_compartment_id;
+	dummy_species_id8dummy_compartment_id ->
+	dummy_species_id9dummy_compartment_id;
+	dummy_species_id9dummy_compartment_id ->
+	dummy_species_id7dummy_compartment_id;
+	
+	dummy_species_id1dummy_compartment_id ;
+	dummy_species_id10dummy_compartment_id;
+	dummy_species_id2dummy_compartment_id ;
+	dummy_species_id3dummy_compartment_id ;
+	dummy_species_id4dummy_compartment_id ;
+	dummy_species_id5dummy_compartment_id ;
+	dummy_species_id6dummy_compartment_id ;
+	dummy_species_id7dummy_compartment_id ;
+	dummy_species_id8dummy_compartment_id ;
+	dummy_species_id9dummy_compartment_id ; }
