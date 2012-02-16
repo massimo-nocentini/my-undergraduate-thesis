@@ -157,47 +157,55 @@
   \`E interessante studiarle per:
   \begin{itemize}
   \item capire le propriet\`a fisiologiche e biochimiche delle
-    cellule;
+    cellule
   \item ricostruire le reazioni che avvengono all'interno di
-    organismi, sia batteri che esseri umani;
+    organismi, sia batteri che esseri umani
   \item studiare il comportamento della cellula in relazione al
-    contesto che la ospita.
+    contesto che la ospita
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Codifica delle reti}{usando il linguaggio \emph{SBML}}
+\begin{frame}{Codifica delle reti}%{usando il linguaggio \emph{SBML}}
   \textbf{SBML} (\textbf{S}ystems \textbf{B}iology \textbf{M}arkup
-  \textbf{L}anguage) \`e un linguaggio orientato alla descrizione di
-  sistemi in cui entit\`a biologiche sono oggetto di manipolazioni
-  eseguite da processi fisici.
+  \textbf{L}anguage) \`e un linguaggio per descrivere sistemi oggetto
+  di trasformazioni fisiche
   \begin{figure}
-    \includegraphics[scale=.6]{images/sbml-code-chunk.eps}
-    \caption{Estratto della codifica del batterio Bartonella}
+    \includegraphics[scale=.4]{images/sbml-code-chunk.eps}
   \end{figure}
 \end{frame}
 
-\subsection{Lavori esistenti}
+\subsection{Il problema delle storie}
 
-\begin{frame}{Ricerca dei \emph{Seed Compounds}}
-  In \cite{Borenstein-Kupiec} si studiano le reti metaboliche per
-  identificare i \emph{seed compounds}, ``interfacce'' tra la rete
-  metabolica e il contesto che la ospita.
+\begin{frame}{Dalla rete al grafo}
+  Data una reazione \emph{non reversibile} $r$ tale che $reagenti(r) =
+  \{ r_{1}, \ldots, r_{n} \} \wedge prodotti(r) = \{ p_{1}, \ldots,
+  p_{m} \}$, costruiamo il sotto grafo $reagenti(r) \times
+  prodotti(r)$
+    \begin{block}{Esempio}
+      Se $reagenti(r) = \{ a, b, c, d \} \wedge prodotti(r) = \{a, e,
+      f\}$ allora:
+      \begin{figure}
+        \centering
+        \includegraphics[scale=.6]{images/non-reversible-reaction-example.dot.eps}
+        \label{fig:non-reversible-reaction-mapping}
+      \end{figure}
+    \end{block}
+\end{frame}
 
-  Prima si identificano le interazioni della rete con il suo contesto
-  (Figura A) poi, decomponendo la rete in componenti connesse, si
-  scelgono i metaboliti di componenti sorgenti (Figura B) come
-  \emph{seed compounds}.
-
+\begin{frame}{Seed Compounds}
+  \begin{itemize}
+  \item cercare le componenti fortemente connesse
+  \item selezionare vertici in componenti sorgenti come \emph{seed
+      compounds}
+  \end{itemize}
   \begin{figure}
-    \includegraphics[scale=.6]{images/biology-scc-decomposition.eps}
+    \includegraphics[scale=.35]{images/biology-scc-decomposition.eps}
   \end{figure}
 
 \end{frame}
 
-\begin{frame}{``Raccontare Storie''}
-In \cite{Crescenzi-Marino} si studiano le reti metaboliche per
-``raccontare'' tutte le \emph{storie} che vi sono contenute.
-\begin{definition}
+\begin{frame}{Storie}
+  \begin{block}{Definizione}
   Dato un grafo orientato $G = (\mathbb{B} \cup \mathbb{W}, E)$, una
   \emph{storia} \`e un sotto grafo aciclico $G' = (\mathbb{B} \cup
   \mathbb{W'}, E')$ di $G$ tale che $E' \subseteq E $ e:
@@ -205,10 +213,13 @@ In \cite{Crescenzi-Marino} si studiano le reti metaboliche per
     \mathbb{W'} = \{w \in \mathbb{W}: indeg(w) > 0 \wedge outdeg(w)
     > 0\}
   \end{displaymath}
-\end{definition}
-L'insieme $\mathbb{B}$ \`e composto dai vertici a cui \`e permesso di
-essere sorgenti o pozzi nelle \emph{storie} e ne identifica il loro
-``ruolo''.
+\end{block}
+$\mathbb{B}$: vertici a cui \`e permesso essere sorgenti o pozzi
+\begin{center} 
+  \includegraphics[width=0.3\textwidth]{images/graph-with-b-setted.eps} 
+  \includegraphics[width=0.3\textwidth]{images/story-example.eps} 
+  \includegraphics[width=0.3\textwidth]{images/non-story-example.eps}
+\end{center} 
 \end{frame}
 
 \section{Nostro contributo}
@@ -220,53 +231,18 @@ essere sorgenti o pozzi nelle \emph{storie} e ne identifica il loro
 Gli obiettivi del nostro lavoro sono:
 \begin{itemize}
 \item<1-> rappresentare una rete mediante un grafo\\
-  \footnotesize{astraendo dai molti dettagli di \emph{SBML}};
+  \footnotesize{astraendo dai molti dettagli di \emph{SBML}}
 \item<2-> fornire strumenti per analizzare insiemi di reti\\
   \footnotesize{per avere informazioni sui metaboliti che appaiono in
-    pi\`u di una rete};
+    pi\`u di una rete}
 \item<3-> costruire in modo automatico l'insieme $\mathbb{B}$\\
-  \footnotesize{sfruttando le informazioni di tutte le reti studiate};
+  \footnotesize{sfruttando le informazioni di tutte le reti studiate}
 \item<4-> verificare se il metodo \`e accettabile\\
-  \footnotesize{per misurare la validit\`a di $\mathbb{B}$}.
+  \footnotesize{per misurare la validit\`a di $\mathbb{B}$}
 \end{itemize}
 \end{frame}
 
 \subsection{Metodologia}
-
-\begin{frame}{Rappresentare una rete mediante un grafo}{Data una
-    reazione \emph{non reversibile} $r$ tale che $reagenti(r) = \{ r_{1},
-    \ldots, r_{n} \}$ e $prodotti(r) = \{ p_{1}, \ldots, p_{m} \}$}
-
-  Costruiamo la relazione: $reagenti(r) \times prodotti(r)$.
-  
-    \begin{example}
-      Con $reagenti(r) = \{ a, b, c, d \}$ e $prodotti(r) = \{a, e,
-      f\}$ otteniamo il grafo:
-      \begin{figure}
-        \centering
-        \includegraphics[scale=.6]{images/non-reversible-reaction-example.dot.eps}
-        \label{fig:non-reversible-reaction-mapping}
-      \end{figure}
-    \end{example}
-\end{frame}
-
-\begin{frame}{Rappresentare una rete mediante un grafo}{Data una
-    reazione \emph{reversibile} $r$ tale che $reagenti(r) = \{ r_{1},
-    \ldots, r_{n} \}$ e $prodotti(r) = \{ p_{1}, \ldots, p_{m} \}$}
-
-  Costruiamo la relazione: $(reagenti(r) \times prodotti(r)) \cup
-  (prodotti(r) \times reagenti(r))$.
-  
-    \begin{example}
-      Con $reagenti(r) = \{ a, b, c, d \}$ e $prodotti(r) = \{a, e,
-      f\}$ otteniamo il grafo:
-      \begin{figure}
-        \centering
-        \includegraphics[scale=.6]{images/reversible-reaction-example.dot.eps}
-        \label{fig:reversible-reaction-mapping}
-      \end{figure}
-    \end{example}
-\end{frame}
 
 \begin{frame}{Ricerca delle componenti fortemente connesse}
   Attualmente l'insieme $\mathbb{B}$ viene costruito in base a

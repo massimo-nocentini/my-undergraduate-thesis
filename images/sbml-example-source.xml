@@ -1,0 +1,33 @@
+<sbml>
+  <model id="ACYPI" name="Acyrthosiphon pisum">
+    <listOfCompartments>
+      <compartment id="CCO__45__IN" name ="CCO-IN" />
+      <compartment id="CCO__45__OUT" name ="CCO-OUT" />
+    </listOfCompartments>
+    <listOfSpecies>
+      <species id="ADENYLOSUCC_IN_NIL"
+	       name="adenylo-succinate"
+	       compartment="CCO-IN"/>
+      ...
+    </listOfSpecies>
+    <listOfReactions>
+      <reaction id="CITRAMALYL__45__COA__45__LYASE__45__RXN"
+		name="Citramalyl-CoA lyase"
+		reversible="false">    
+	<listOfReactants>
+	  <speciesReference species="CPD__45__627_IN_NIL"/>
+	</listOfReactants>
+	<listOfProducts>
+	  <speciesReference species="PYRUVATE_IN_NIL"/>
+	  <speciesReference species="ACETYL__45__COA_IN_NIL"/>
+	</listOfProducts>
+      </reaction>
+      ...
+    </listOfReactions>
+  </model>
+</sbml>
+
+
+
+
+
