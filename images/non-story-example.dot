@@ -7,11 +7,13 @@ digraph G {
 	b->a;
 	b->c;
 	c->b [color=transparent];
+	b->b [headlabel="indeg(w)=0", color=transparent];
 	c->d;
 	d->c [color=transparent];
 	b->e;
 	c->f;
-	
+
+	b [color="grey", style=filled];
 	a [color="black", style=filled];
 	d [color="black", style=filled];
 	e [color="black", style=filled];
