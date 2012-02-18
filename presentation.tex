@@ -326,5 +326,25 @@ Tutte le reti hanno una struttura a ``clessidra'':
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Ricerca delle componenti fortemente connesse}
+  Attualmente l'insieme $\mathbb{B}$ viene costruito in base a
+  osservazioni e studi \emph{empirici}, costituito da metaboliti con
+  propriet\`a particolari.
+
+  Per costruirlo in modo automatico partizioniamo la rete in
+  componenti connesse in quanto:
+\begin{itemize}
+\item<2-> \`e difficile assegnare il ruolo ad ogni vertice studiando
+  l'intera rete date le sue dimensioni
+\item<3-> \`e possibile astrarre dai cicli ed identificare classi di
+  metaboliti equivalenti
+\item<4-> due metaboliti equivalenti si producono a vicenda, pertanto
+  gli associamo il ruolo della componente che li contiene
+\item<5-> se una componente \`e \emph{sorgente} o \emph{pozzo} nel
+  ``meta grafo'' allora aggiungiamo i vertici che la compongono in
+  $\mathbb{B}$
+\end{itemize}
+\end{frame}
+
 \end{document}
 

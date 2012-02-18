@@ -3,8 +3,8 @@ digraph G { ratio=1; center = true; edge [arrowsize=.5, weight=.1,
 	[label="",shape=circle,height=0.12,width=0.12,fontsize=1];
 	dummy_species_id12dummy_compartment_id ->
 	dummy_species_id11dummy_compartment_id;
-	dummy_species_id13dummy_compartment_id ->
-	dummy_species_id11dummy_compartment_id;
+	dummy_species_id11dummy_compartment_id ->
+	dummy_species_id13dummy_compartment_id;
 	dummy_species_id14dummy_compartment_id ->
 	dummy_species_id13dummy_compartment_id;
 	dummy_species_id15dummy_compartment_id ->
@@ -13,27 +13,27 @@ digraph G { ratio=1; center = true; edge [arrowsize=.5, weight=.1,
 	dummy_species_id14dummy_compartment_id;
 	dummy_species_id16dummy_compartment_id ->
 	dummy_species_id15dummy_compartment_id;
-	dummy_species_id11dummy_compartment_id [color="black",
-	style=filled]; dummy_species_id12dummy_compartment_id ;
-	dummy_species_id13dummy_compartment_id ;
-	dummy_species_id14dummy_compartment_id ;
+	dummy_species_id11dummy_compartment_id;
+	dummy_species_id12dummy_compartment_id ;
+	dummy_species_id13dummy_compartment_id [color="black",
+	style=filled] ; dummy_species_id14dummy_compartment_id ;
 	dummy_species_id15dummy_compartment_id ;
 	dummy_species_id16dummy_compartment_id [color="black",
 	style=filled]; dummy_species_id11dummy_compartment_id ->
-	dummy_species_id11dummy_compartment_id [taillabel="1",
-	labelangle=45, labeldistance=1, color=transparent];
+	dummy_species_id11dummy_compartment_id [taillabel="3",
+	labelangle=0, color=transparent];
 	dummy_species_id12dummy_compartment_id ->
-	dummy_species_id12dummy_compartment_id [taillabel="1",
-	labelangle=45, labeldistance=1, color=transparent];
+	dummy_species_id12dummy_compartment_id [taillabel="2",
+	labelangle=0, color=transparent];
 	dummy_species_id13dummy_compartment_id ->
-	dummy_species_id13dummy_compartment_id [taillabel="3",
-	labelangle=45, labeldistance=1, color=transparent];
+	dummy_species_id13dummy_compartment_id [taillabel="1",
+	labelangle=0, color=transparent];
 	dummy_species_id14dummy_compartment_id ->
-	dummy_species_id14dummy_compartment_id [taillabel="2",
-	labelangle=45, labeldistance=1, color=transparent];
+	dummy_species_id14dummy_compartment_id [taillabel="1",
+	labelangle=0, color=transparent];
 	dummy_species_id15dummy_compartment_id ->
 	dummy_species_id15dummy_compartment_id [taillabel="1",
-	labelangle=45, labeldistance=1, color=transparent];
+	labelangle=0, color=transparent];
 	dummy_species_id16dummy_compartment_id ->
 	dummy_species_id16dummy_compartment_id [taillabel="2",
-	labelangle=45, labeldistance=1, color=transparent]; }
+	labelangle=-45 color=transparent]; }
