@@ -13,7 +13,7 @@ digraph G {
 	b->e;
 	c->f;
 
-	b [color="grey", style=filled];
+	b [color="red", style=filled];
 	a [color="black", style=filled];
 	d [color="black", style=filled];
 	e [color="black", style=filled];
