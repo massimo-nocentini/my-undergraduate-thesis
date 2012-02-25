@@ -1,0 +1,23 @@
+* Undergraduate Thesis
+  This document is what I did for my undergraduate thesis. It concern
+  a study of metabolic networks and join a problem in graph theory
+  about a variant of the problem of enumerating all directed acyclic
+  subgraph of a given directed graph.
+  
+  All the document content is written using the Italian language.
+
+** How to compile the document
+   In order to compile the document is sufficient to run `make thesis`
+   if the complete thesis document is desired, otherwise `make
+   summary` if a brief summary is desired, at last run `make
+   presentation` if the presentation slides are desired. Of course the
+   previous commands have to be typed at the root of the project after
+   cloned the git repository.  During my develop time I've used the
+   full installation of the tex-live suite on a debian-powered
+   system. It can be installed by running 'apt-get install
+   texlive-full'.
+   
+   However, inside 'compiled-versions' folder, there are an already
+   compiled files which are the latest versions that are at least
+   presentable of each document.
+   
